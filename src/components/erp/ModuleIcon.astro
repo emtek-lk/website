@@ -1,0 +1,29 @@
+---
+import Icon from '../Icon.astro';
+import type { ErpModule } from '../../data/erp';
+
+interface Props {
+  module: ErpModule;
+  class?: string;
+}
+
+const { module: m, class: className = 'size-12' } = Astro.props;
+---
+
+{
+  m.icon ? (
+    <img src={m.icon} alt={`${m.name} app icon`} width="48" height="48" loading="lazy" decoding="async" class:list={[className, 'shrink-0 object-contain']} />
+  ) : m.glyph === 'plus' ? (
+    <span class:list={[className, 'grid shrink-0 place-items-center rounded-2xl border-2 border-dashed border-[var(--accent)]/40 text-[var(--accent)]']} aria-hidden="true">
+      <Icon name="plus" class="size-1/2" strokeWidth={1.8} />
+    </span>
+  ) : (
+    <span
+      class:list={[className, 'grid shrink-0 place-items-center rounded-2xl text-white shadow-[0_10px_20px_-10px_rgba(10,31,61,0.5)]']}
+      style="background: linear-gradient(145deg, #4fa9e0, var(--accent, #1c4d8d))"
+      aria-hidden="true"
+    >
+      <Icon name={m.glyph ?? 'layers'} class="size-1/2" strokeWidth={1.9} />
+    </span>
+  )
+}

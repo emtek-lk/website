@@ -1,18 +1,11 @@
 ---
 import Icon, { type IconName } from '../Icon.astro';
 import TechLogo from '../TechLogo.astro';
+import ModuleIcon from '../erp/ModuleIcon.astro';
+import { getErpPlatform } from '../../data/erp';
 
-// Odoo-style app launcher: each app is a coloured tile
-const apps: { icon: IconName; label: string; from: string; to: string }[] = [
-  { icon: 'chart', label: 'Sales', from: '#f59e7a', to: '#e8684a' },
-  { icon: 'target', label: 'CRM', from: '#7fd1c1', to: '#2fa58f' },
-  { icon: 'box', label: 'Inventory', from: '#8fb4f5', to: '#4f7fe0' },
-  { icon: 'wallet', label: 'Accounting', from: '#b79cf0', to: '#8a63d8' },
-  { icon: 'factory', label: 'Manufacturing', from: '#f5c96f', to: '#e0a020' },
-  { icon: 'users', label: 'Employees', from: '#f29bbb', to: '#d8608f' },
-  { icon: 'globe', label: 'Website', from: '#7cc4ee', to: '#3a9ad6' },
-  { icon: 'kanban', label: 'Project', from: '#a9d27a', to: '#72a83a' },
-];
+// App launcher uses Odoo's real app icons
+const apps = getErpPlatform('odoo')!.modules.filter((m) => m.icon).slice(0, 8);
 
 const capabilities: { icon: IconName; title: string; text: string }[] = [
   { icon: 'code', title: 'Custom modules', text: 'Built at the source-code level, in Python, to match your processes.' },
@@ -61,8 +54,8 @@ const builtWith = ['Python', 'PostgreSQL'];
         {builtWith.map((t) => <span class="chip"><TechLogo name={t} class="size-5" />{t}</span>)}
       </div>
 
-      <a href="/services/erp-business-solutions#erp-implementation" class="btn btn-odoo mt-10">
-        Talk about Odoo <Icon name="arrowRight" class="arrow size-4" />
+      <a href="/erp/odoo" class="btn btn-odoo mt-10">
+        Explore Odoo <Icon name="arrowRight" class="arrow size-4" />
       </a>
     </div>
 
@@ -83,10 +76,10 @@ const builtWith = ['Python', 'PostgreSQL'];
           {
             apps.map((a, i) => (
               <div class="app-tile flex flex-col items-center gap-2.5" style={`--i:${i}`}>
-                <span class="app-icon grid size-16 place-items-center rounded-2xl text-white shadow-[0_12px_24px_-10px_rgba(0,0,0,0.35)]" style={`background:linear-gradient(145deg,${a.from},${a.to})`}>
-                  <Icon name={a.icon} class="size-7" strokeWidth={1.8} />
+                <span class="app-icon grid size-16 place-items-center rounded-2xl bg-white shadow-[0_12px_24px_-12px_rgba(113,75,103,0.45)] ring-1 ring-[#714b67]/10">
+                  <ModuleIcon module={a} class="size-10" />
                 </span>
-                <span class="text-xs font-medium text-ink">{a.label}</span>
+                <span class="text-xs font-medium text-ink">{a.name.replace(' & Invoicing', '')}</span>
               </div>
             ))
           }

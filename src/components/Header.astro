@@ -1,12 +1,25 @@
 ---
 import { Image } from 'astro:assets';
-import Icon from './Icon.astro';
+import Icon, { type IconName } from './Icon.astro';
+import TechLogo from './TechLogo.astro';
 import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
 import { nav, site } from '../data/site';
 import { services } from '../data/services';
+import { erpPlatforms } from '../data/erp';
 
-const path = Astro.url.pathname;
+const path = Astro.url.pathname.replace(/\.html$/, '');
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+
+type MenuItem = { href: string; title: string; text: string; icon?: IconName; logo?: string; wide?: boolean };
+const menus: Record<string, { items: MenuItem[]; footer?: { href: string; label: string } }> = {
+  '/services': {
+    items: services.map((s) => ({ href: `/services/${s.slug}`, title: s.shortTitle, text: s.summary, icon: s.icon })),
+  },
+  '/erp': {
+    items: erpPlatforms.map((p) => ({ href: `/erp/${p.slug}`, title: p.name, text: p.eyebrow, logo: p.logo, wide: p.slug === 'odoo' })),
+    footer: { href: '/erp', label: 'All ERP platforms & how to choose' },
+  },
+};
 ---
 
 <header class="site-header fixed inset-x-0 top-0 z-50">
@@ -18,53 +31,52 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     <!-- Desktop -->
     <ul class="hidden items-center gap-1 md:flex">
       {
-        nav.map((item) =>
-          item.href === '/services' ? (
+        nav.map((item) => {
+          const menu = menus[item.href];
+          const linkClass = [
+            'inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/90 transition hover:text-white',
+            isActive(item.href) && 'text-white',
+          ];
+          return menu ? (
             <li class="group relative">
-              <a
-                href={item.href}
-                class:list={[
-                  'inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/90 transition hover:text-white',
-                  isActive(item.href) && 'text-white',
-                ]}
-                aria-haspopup="true"
-              >
+              <a href={item.href} class:list={linkClass} aria-haspopup="true" aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
                 <Icon name="chevronDown" class="size-4 transition group-hover:rotate-180 group-focus-within:rotate-180" />
               </a>
               <div class="invisible absolute top-full left-1/2 w-[26rem] -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                <ul class="rounded-2xl border border-line bg-white p-2 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.35)]">
-                  {services.map((s) => (
-                    <li>
-                      <a href={`/services/${s.slug}`} class="flex gap-4 rounded-xl p-3 transition hover:bg-canvas">
-                        <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700">
-                          <Icon name={s.icon} />
-                        </span>
-                        <span>
-                          <span class="block text-[15px] font-semibold text-ink">{s.shortTitle}</span>
-                          <span class="mt-0.5 line-clamp-2 block text-sm text-muted">{s.summary}</span>
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div class="rounded-2xl border border-line bg-white p-2 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.35)]">
+                  <ul>
+                    {menu.items.map((m) => (
+                      <li>
+                        <a href={m.href} class="flex items-center gap-4 rounded-xl p-3 transition hover:bg-canvas">
+                          <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
+                            {m.logo ? <TechLogo name={m.logo} class={m.wide ? 'h-4 w-9' : 'size-6'} /> : <Icon name={m.icon ?? 'layers'} />}
+                          </span>
+                          <span>
+                            <span class="block text-[15px] font-semibold text-ink">{m.title}</span>
+                            <span class="mt-0.5 line-clamp-2 block text-sm text-muted">{m.text}</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {menu.footer && (
+                    <a href={menu.footer.href} class="mt-1 flex items-center justify-between rounded-xl bg-canvas px-4 py-3 text-sm font-semibold text-brand-700 transition hover:text-brand-900">
+                      {menu.footer.label}
+                      <Icon name="arrowRight" class="size-4" />
+                    </a>
+                  )}
+                </div>
               </div>
             </li>
           ) : (
             <li>
-              <a
-                href={item.href}
-                class:list={[
-                  'rounded-full px-4 py-2 text-[15px] font-medium text-white/90 transition hover:text-white',
-                  isActive(item.href) && 'text-white',
-                ]}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
+              <a href={item.href} class:list={linkClass} aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
               </a>
             </li>
-          ),
-        )
+          );
+        })
       }
     </ul>
 
@@ -78,15 +90,32 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
         <Icon name="menu" class="size-6 group-open:hidden" />
         <Icon name="close" class="hidden size-6 group-open:block" />
       </summary>
-      <div class="absolute inset-x-4 top-18 rounded-2xl border border-line bg-white p-3 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.45)]">
+      <div class="absolute inset-x-4 top-18 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-2xl border border-line bg-white p-3 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.45)]">
         <p class="px-3 pt-2 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
         <ul>
           {
-            services.map((s) => (
+            menus['/services'].items.map((m) => (
               <li>
-                <a href={`/services/${s.slug}`} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
-                  <span class="text-brand-700"><Icon name={s.icon} /></span>
-                  {s.shortTitle}
+                <a href={m.href} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
+                  <span class="text-brand-700">
+                    <Icon name={m.icon ?? 'layers'} />
+                  </span>
+                  {m.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">ERP platforms</p>
+        <ul>
+          {
+            menus['/erp'].items.map((m) => (
+              <li>
+                <a href={m.href} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
+                  <span class="grid w-9 place-items-center">
+                    <TechLogo name={m.logo ?? ''} class={m.wide ? 'h-3.5 w-9' : 'size-5'} />
+                  </span>
+                  {m.title}
                 </a>
               </li>
             ))

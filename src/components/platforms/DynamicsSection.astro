@@ -1,6 +1,10 @@
 ---
 import Icon, { type IconName } from '../Icon.astro';
 import TechLogo from '../TechLogo.astro';
+import ModuleIcon from '../erp/ModuleIcon.astro';
+import { getErpPlatform } from '../../data/erp';
+
+const d365Modules = getErpPlatform('microsoft-dynamics-365')!.modules.slice(0, 6);
 
 const capabilities: { icon: IconName; title: string; text: string }[] = [
   { icon: 'code', title: 'Source-level customization', text: 'We modify the software itself, so it behaves the way your business does.' },
@@ -26,7 +30,7 @@ const builtWith = ['C#', '.NET', 'Microsoft SQL Server', 'Microsoft Azure'];
           <div>
             <p class="flex items-center gap-2 text-[0.65rem] font-semibold tracking-widest text-brand-600 uppercase"><span class="grid size-5 place-items-center rounded-full bg-brand-600 text-[0.65rem] text-white">1</span>The platform</p>
             <p class="mt-1.5 text-lg font-semibold text-ink">Microsoft Dynamics 365</p>
-            <p class="mt-0.5 text-xs text-muted">The system you already trust</p>
+            <div class="mt-2.5 flex gap-1.5">{d365Modules.map((m) => <span title={m.name}><ModuleIcon module={m} class="size-6" /></span>)}</div>
           </div>
         </div>
       </div>
@@ -88,8 +92,8 @@ const builtWith = ['C#', '.NET', 'Microsoft SQL Server', 'Microsoft Azure'];
         {builtWith.map((t) => <span class="chip"><TechLogo name={t} class="size-5" />{t.replace('Microsoft ', '')}</span>)}
       </div>
 
-      <a href="/services/erp-business-solutions#erp-implementation" class="btn btn-primary mt-10">
-        Talk about Dynamics 365 <Icon name="arrowRight" class="arrow size-4" />
+      <a href="/erp/microsoft-dynamics-365" class="btn btn-primary mt-10">
+        Explore Dynamics 365 <Icon name="arrowRight" class="arrow size-4" />
       </a>
     </div>
   </div>

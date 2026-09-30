@@ -4,13 +4,14 @@ import Icon from './Icon.astro';
 import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
 import { site } from '../data/site';
 import { services } from '../data/services';
+import { erpPlatforms } from '../data/erp';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="bg-ink text-brand-100/70">
-  <div class="container-page grid gap-12 py-16 md:grid-cols-12">
-    <div class="md:col-span-5">
+  <div class="container-page grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12">
+    <div class="sm:col-span-2 lg:col-span-4">
       <a href="/" aria-label={`${site.name} home`} class="inline-block rounded-md">
         <Image src={logoLight} alt={site.name} width={120} densities={[1, 2]} class="h-auto w-[120px]" />
       </a>
@@ -18,7 +19,7 @@ const year = new Date().getFullYear();
       <p class="mt-3 max-w-sm text-sm leading-relaxed">{site.description}</p>
     </div>
 
-    <div class="md:col-span-3">
+    <div class="lg:col-span-3">
       <h2 class="text-sm font-semibold text-white">Services</h2>
       <ul class="mt-4 space-y-3 text-sm">
         {
@@ -33,7 +34,23 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
-    <div class="md:col-span-2">
+    <div class="lg:col-span-2">
+      <h2 class="text-sm font-semibold text-white">ERP platforms</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        {
+          erpPlatforms.map((p) => (
+            <li>
+              <a href={`/erp/${p.slug}`} class="transition hover:text-white">
+                {p.name}
+              </a>
+            </li>
+          ))
+        }
+        <li><a href="/erp" class="transition hover:text-white">All ERP platforms</a></li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-1">
       <h2 class="text-sm font-semibold text-white">Company</h2>
       <ul class="mt-4 space-y-3 text-sm">
         <li><a href="/about" class="transition hover:text-white">About</a></li>
@@ -42,7 +59,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
-    <div class="md:col-span-2">
+    <div class="lg:col-span-2">
       <h2 class="text-sm font-semibold text-white">Get in touch</h2>
       <ul class="mt-4 space-y-3 text-sm">
         <li>
@@ -62,7 +79,7 @@ const year = new Date().getFullYear();
   <div class="border-t border-white/10">
     <div class="container-page flex flex-col gap-2 py-6 text-xs sm:flex-row sm:justify-between">
       <p>&copy; {year} {site.name}. All rights reserved.</p>
-      <p>emtek.lk</p>
+      <p>All product names, logos, and brands are property of their respective owners.</p>
     </div>
   </div>
 </footer>

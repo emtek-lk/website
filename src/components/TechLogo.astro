@@ -1,5 +1,5 @@
 ---
-import { getTechLogo } from '../data/tech';
+import { getTechLogo, nextLogoId } from '../data/tech';
 
 interface Props {
   name: string;
@@ -10,6 +10,12 @@ interface Props {
 
 const { name, class: className = 'size-5', muted = false } = Astro.props;
 const logo = getTechLogo(name);
+// Unique suffix per render so repeated logos never share gradient/clip IDs
+const uid = nextLogoId();
+const body = logo?.body
+  .replace(/\bid="([^"]+)"/g, `id="$1-${uid}"`)
+  .replace(/url\(#([^)]+)\)/g, `url(#$1-${uid})`)
+  .replace(/href="#([^"]+)"/g, `href="#$1-${uid}"`);
 const initials = name
   .replace(/\(.*\)/, '')
   .split(/[\s./]+/)
@@ -28,7 +34,7 @@ const initials = name
       fill={logo.color ?? undefined}
       role="img"
       aria-label={`${name} logo`}
-      set:html={logo.body}
+      set:html={body}
     />
   ) : (
     <span

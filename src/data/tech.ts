@@ -133,6 +133,11 @@ const registry: Record<string, TechLogoData> = {
   Datadog: simple(siDatadog),
 };
 
+// Module-level counter: component frontmatter re-runs per render, so it can't hold this state.
+// A shared SVG ID inside a hidden element (e.g. the closed mobile menu) would blank every other copy.
+let logoIdCounter = 0;
+export const nextLogoId = () => `t${(logoIdCounter++).toString(36)}`;
+
 /** Returns null for technologies without an available logo; the UI then shows a monogram. */
 export const getTechLogo = (name: string): TechLogoData | null => {
   const key = name.replace(/\s*\(proprietary\)$/i, '');
