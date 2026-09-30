@@ -120,10 +120,10 @@ const lifecycle = [
     <p class="text-center text-sm font-medium text-muted">The platforms, languages, and clouds we build and run on</p>
     <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
       {
-        featuredTech.map((name) => (
+        featuredTech.map(({ name, label }) => (
           <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-2 py-5 text-center transition duration-200 hover:border-line hover:bg-canvas">
             <TechLogo name={name} class="size-9" />
-            <span class="text-xs font-medium text-body transition group-hover:text-ink">{name}</span>
+            <span class="text-xs font-medium text-body transition group-hover:text-ink">{label ?? name}</span>
           </li>
         ))
       }

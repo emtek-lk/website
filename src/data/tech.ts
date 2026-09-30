@@ -129,22 +129,30 @@ export const getTechLogo = (name: string): TechLogoData | null => {
   return registry[key] ?? null;
 };
 
-/** Names shown in the home page logo wall, in display order. */
-export const featuredTech = [
-  'Cortex ERP',
-  'Odoo',
-  'SAP S/4HANA',
-  'Sage Intacct',
-  'PostgreSQL',
-  'Apache Kafka',
-  'Python',
-  'Java',
-  'React',
-  'Flutter',
-  'Docker',
-  'Kubernetes',
-  'Terraform',
-  'AWS',
-  'Microsoft Azure',
-  'Google Cloud',
+/** Logo wall on the home page, in display order (8 per row on desktop). "label" overrides the caption. */
+export const featuredTech: { name: string; label?: string }[] = [
+  { name: 'Cortex ERP' },
+  { name: 'Odoo' },
+  { name: 'SAP S/4HANA' },
+  { name: 'Sage Intacct' },
+  { name: 'PostgreSQL' },
+  { name: 'Apache Kafka' },
+  { name: 'Python' },
+  { name: 'Java' },
+  { name: 'React' },
+  { name: 'Flutter' },
+  { name: 'Docker' },
+  { name: 'Kubernetes' },
+  { name: 'Terraform' },
+  { name: 'AWS' },
+  { name: 'Microsoft Azure' },
+  { name: 'Google Cloud' },
+  { name: 'Microsoft SQL Server', label: 'SQL Server' },
+  { name: 'MongoDB' },
+  { name: '.NET' },
+  { name: 'Node.js' },
+  { name: 'Anthropic API (Claude)', label: 'Claude' },
+  { name: 'OpenAI API', label: 'OpenAI' },
+  { name: 'Ubuntu' },
+  { name: 'Datadog' },
 ];
