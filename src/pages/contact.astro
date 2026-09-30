@@ -1,137 +1,103 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+const mailSubject = encodeURIComponent('Project enquiry');
+
+const steps = [
+  { title: 'Tell us about your challenge', text: 'Email or call us with a short description of what you need and what’s getting in the way today.' },
+  { title: 'Discovery conversation', text: 'We learn how your business runs, which systems you use, and what success looks like for you.' },
+  { title: 'A clear proposal', text: 'You get a recommended approach, timeline, and scope, covering development, deployment, and ongoing support.' },
+];
 ---
 
-<Layout title="Contact EMTEK - Get in Touch">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container mx-auto px-4">
-      <h1>Contact Us</h1>
-      <p>We'd love to hear from you. Get in touch with our team today.</p>
+<BaseLayout
+  title="Contact Us"
+  description={`Talk to EMTEK about ERP, custom software, or managed IT services. Email ${site.email} or call ${site.phone}.`}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let’s talk about your business"
+    lead="Whether you’re planning an ERP rollout, need a custom application, or want dependable IT support, we’d like to hear from you."
+  />
+
+  <section class="container-page relative z-10 -mt-16 sm:-mt-24">
+    <div class="grid gap-6 md:grid-cols-2">
+      <a href={`mailto:${site.email}?subject=${mailSubject}`} class="card group flex items-center gap-6 shadow-[0_30px_60px_-30px_rgba(10,31,61,0.45)]">
+        <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-700 text-white">
+          <Icon name="mail" class="size-6" />
+        </span>
+        <span>
+          <span class="block text-sm text-muted">Email us</span>
+          <span class="mt-1 block text-xl font-semibold text-ink group-hover:text-brand-700 sm:text-2xl">{site.email}</span>
+        </span>
+      </a>
+      <a href={site.phoneHref} class="card group flex items-center gap-6 shadow-[0_30px_60px_-30px_rgba(10,31,61,0.45)]">
+        <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-700 text-white">
+          <Icon name="phone" class="size-6" />
+        </span>
+        <span>
+          <span class="block text-sm text-muted">Call us</span>
+          <span class="mt-1 block text-xl font-semibold whitespace-nowrap text-ink group-hover:text-brand-700 sm:text-2xl">{site.phone}</span>
+        </span>
+      </a>
     </div>
   </section>
 
-  <!-- Contact Content -->
-  <section class="section container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <!-- Contact Form -->
-      <div>
-        <h2 class="text-3xl font-bold mb-8">Send us a Message</h2>
-        <form class="space-y-6" name="contact" method="POST" netlify>
-          <div>
-            <label for="name" class="block font-semibold mb-2">Your Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-              placeholder="John Doe"
-            />
-          </div>
-          <div>
-            <label for="email" class="block font-semibold mb-2">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-              placeholder="john@example.com"
-            />
-          </div>
-          <div>
-            <label for="phone" class="block font-semibold mb-2">Phone (Optional)</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-              placeholder="+94 123 456 789"
-            />
-          </div>
-          <div>
-            <label for="service" class="block font-semibold mb-2">Service Interested In</label>
-            <select
-              id="service"
-              name="service"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              <option value="">Select a service</option>
-              <option value="web-design">Web Design</option>
-              <option value="web-development">Web Development</option>
-              <option value="seo">SEO Optimization</option>
-              <option value="ecommerce">E-commerce Solutions</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label for="message" class="block font-semibold mb-2">Message</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-              placeholder="Tell us about your project..."
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary w-full">Send Message</button>
-        </form>
+  <section class="container-page grid gap-14 py-20 sm:py-28 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <p class="eyebrow">What happens next</p>
+      <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">From first message to a clear plan</h2>
+      <ol class="mt-10 space-y-8">
+        {
+          steps.map((s, i) => (
+            <li class="flex gap-5">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-brand-50 font-semibold text-brand-700">{i + 1}</span>
+              <div>
+                <h3 class="text-lg font-semibold">{s.title}</h3>
+                <p class="mt-1">{s.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <aside class="lg:col-span-5">
+      <div class="card bg-canvas">
+        <h2 class="text-lg font-semibold">Helpful to include</h2>
+        <ul class="mt-4 space-y-3">
+          {
+            [
+              'Which service you’re interested in',
+              'The systems and tools you use today',
+              'The size of your team and number of locations',
+              'Your ideal timeline',
+            ].map((item) => (
+              <li class="flex gap-2">
+                <Icon name="check" class="mt-1 size-4 shrink-0 text-brand-500" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <h2 class="mt-8 text-lg font-semibold">Our services</h2>
+        <ul class="mt-4 space-y-2">
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}`} class="inline-flex items-center gap-2 font-medium text-brand-700 hover:text-brand-900">
+                  <Icon name={s.icon} class="size-4" />
+                  {s.shortTitle}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
-
-      <!-- Contact Info -->
-      <div>
-        <h2 class="text-3xl font-bold mb-8">Get in Touch</h2>
-
-        <div class="mb-8">
-          <h3 class="text-xl font-bold mb-3">Address</h3>
-          <p class="text-gray-600">
-            Your Business Address<br />
-            Colombo, Sri Lanka
-          </p>
-        </div>
-
-        <div class="mb-8">
-          <h3 class="text-xl font-bold mb-3">Email</h3>
-          <p class="text-gray-600">
-            <a href="mailto:info@emtek.lk" class="text-accent hover:underline">info@emtek.lk</a>
-          </p>
-        </div>
-
-        <div class="mb-8">
-          <h3 class="text-xl font-bold mb-3">Phone</h3>
-          <p class="text-gray-600">
-            <a href="tel:+94123456789" class="text-accent hover:underline">+94 123 456 789</a>
-          </p>
-        </div>
-
-        <div class="mb-8">
-          <h3 class="text-xl font-bold mb-3">Hours</h3>
-          <p class="text-gray-600">
-            Monday - Friday: 9:00 AM - 6:00 PM<br />
-            Saturday: 10:00 AM - 4:00 PM<br />
-            Sunday: Closed
-          </p>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-bold mb-3">Follow Us</h3>
-          <div class="flex gap-4">
-            <a href="#" class="text-accent hover:text-blue-600">Facebook</a>
-            <a href="#" class="text-accent hover:text-blue-600">Twitter</a>
-            <a href="#" class="text-accent hover:text-blue-600">LinkedIn</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    </aside>
   </section>
-
-  <!-- Map Section (Optional) -->
-  <section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-8">Location</h2>
-      <div class="w-full h-96 bg-gray-300 rounded-lg"></div>
-    </div>
-  </section>
-</Layout>
+</BaseLayout>

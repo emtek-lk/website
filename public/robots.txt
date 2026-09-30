@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://emtek.lk/sitemap-index.xml

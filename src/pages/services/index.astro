@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../data/services';
+---
+
+<BaseLayout
+  title="Services: ERP, Custom Software & Managed IT"
+  description="EMTEK delivers ERP implementation and AI automation, custom web, mobile and desktop applications, and managed IT, cloud, and cybersecurity services."
+>
+  <PageHero
+    eyebrow="Services"
+    title="Everything your business runs on, handled by one team"
+    lead="Three practices that work together: the ERP at the heart of your operations, the software built around it, and the infrastructure that keeps it all secure and online."
+  />
+
+  <section class="container-page space-y-8 py-20 sm:py-28">
+    {
+      services.map((s) => (
+        <article class="card grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <span class="grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-700">
+              <Icon name={s.icon} class="size-6" />
+            </span>
+            <h2 class="mt-6 text-2xl font-semibold sm:text-3xl">
+              <a href={`/services/${s.slug}`} class="hover:text-brand-700">{s.title}</a>
+            </h2>
+            <p class="mt-4 text-lg">{s.intro}</p>
+            <a href={`/services/${s.slug}`} class="btn btn-primary mt-8">
+              Explore {s.shortTitle} <Icon name="arrowRight" class="arrow size-4" />
+            </a>
+          </div>
+          <div class="lg:col-span-7">
+            <ul class="divide-y divide-line rounded-xl border border-line">
+              {s.offerings.map((o) => (
+                <li>
+                  <a href={`/services/${s.slug}#${o.id}`} class="group flex items-start gap-4 p-5 transition hover:bg-canvas">
+                    <Icon name="check" class="mt-1 size-5 shrink-0 text-brand-500" />
+                    <span class="flex-1">
+                      <span class="block font-semibold text-ink group-hover:text-brand-700">{o.title}</span>
+                      <span class="mt-1 line-clamp-2 block text-sm">{o.functionality}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-5 text-sm text-muted">
+              Including {s.stack.flatMap((g) => g.items).slice(0, 6).join(', ')}, and more.
+            </p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <CtaBand />
+</BaseLayout>

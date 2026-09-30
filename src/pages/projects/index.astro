@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { getService } from '../../data/services';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order || b.data.year - a.data.year,
+);
+---
+
+<BaseLayout
+  title="Projects & Case Studies"
+  description="See how EMTEK helps businesses with ERP implementation, custom software, and managed IT services."
+>
+  <PageHero
+    eyebrow="Projects"
+    title="Clarity, delivered"
+    lead="A look at the ERP rollouts, custom platforms, and IT transformations we’ve delivered for our clients."
+  />
+
+  <section class="container-page py-20 sm:py-28">
+    {
+      projects.length > 0 ? (
+        <div class="grid gap-6 md:grid-cols-2">
+          {projects.map((p) => (
+            <a href={`/projects/${p.id}`} class="card group flex flex-col overflow-hidden p-0 sm:p-0">
+              {p.data.cover ? (
+                <Image src={p.data.cover} alt={p.data.coverAlt ?? ''} width={720} class="aspect-[16/9] w-full object-cover" />
+              ) : (
+                <div class="hero-gradient aspect-[16/9] w-full" />
+              )}
+              <div class="flex flex-1 flex-col p-6 sm:p-8">
+                <p class="text-sm text-muted">
+                  {p.data.industry} · {p.data.year}
+                </p>
+                <h2 class="mt-2 text-xl font-semibold group-hover:text-brand-700">{p.data.title}</h2>
+                <p class="mt-3 flex-1">{p.data.summary}</p>
+                <div class="mt-6 flex flex-wrap gap-2">
+                  {p.data.services.map((slug) => (
+                    <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">{getService(slug)?.shortTitle}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="card mx-auto max-w-2xl text-center">
+          <span class="mx-auto grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-700">
+            <Icon name="layers" class="size-6" />
+          </span>
+          <h2 class="mt-6 text-2xl font-semibold">Case studies are on the way</h2>
+          <p class="mt-3 text-lg">
+            We’re writing up recent ERP, software, and infrastructure projects. In the meantime, we’re happy to walk you through relevant work on a call.
+          </p>
+          <a href="/contact" class="btn btn-primary mt-8">
+            Ask about our work <Icon name="arrowRight" class="arrow size-4" />
+          </a>
+        </div>
+      )
+    }
+  </section>
+
+  <CtaBand />
+</BaseLayout>

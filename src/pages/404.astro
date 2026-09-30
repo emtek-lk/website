@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Page not found" noindex>
+  <PageHero eyebrow="404" title="We couldn’t find that page" lead="The page may have moved, or the link may be mistyped.">
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="/" class="btn btn-light">Back to home <Icon name="arrowRight" class="arrow size-4" /></a>
+      <a href="/services" class="btn btn-ghost-light">Our services <Icon name="arrowRight" class="arrow size-4" /></a>
+    </div>
+  </PageHero>
+  <div class="pb-24"></div>
+</BaseLayout>

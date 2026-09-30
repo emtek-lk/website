@@ -1,0 +1,135 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services, type Service } from '../../data/services';
+import { site } from '../../data/site';
+
+export const getStaticPaths = (() => services.map((service) => ({ params: { slug: service.slug }, props: { service } }))) satisfies GetStaticPaths;
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug);
+const url = new URL(`/services/${service.slug}`, Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.summary,
+    url,
+    provider: { '@id': `${site.url}/#organization` },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: service.shortTitle,
+      itemListElement: service.offerings.map((o) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: o.title, description: o.functionality },
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/services` },
+      { '@type': 'ListItem', position: 3, name: service.shortTitle, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={service.shortTitle} description={service.summary} schema={schema}>
+  <PageHero eyebrow="Services" title={service.title} lead={service.intro}>
+    <nav aria-label="On this page" class="mt-10 flex flex-wrap gap-2">
+      {
+        service.offerings.map((o) => (
+          <a href={`#${o.id}`} class="rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white ring-1 ring-white/20 transition hover:bg-white/20">
+            {o.title}
+          </a>
+        ))
+      }
+      <a href="#technology" class="rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white ring-1 ring-white/20 transition hover:bg-white/20">Technology</a>
+    </nav>
+  </PageHero>
+
+  <!-- Offerings -->
+  <section class="container-page space-y-6 py-20 sm:py-28">
+    {
+      service.offerings.map((o, i) => (
+        <article id={o.id} class="card scroll-mt-8">
+          <p class="text-sm font-semibold text-muted">0{i + 1}</p>
+          <h2 class="mt-2 text-2xl font-semibold sm:text-3xl">{o.title}</h2>
+          <div class="mt-8 grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 class="flex items-center gap-2 text-sm font-semibold tracking-wide text-brand-700 uppercase">
+                <Icon name="target" class="size-4" /> What it does for you
+              </h3>
+              <p class="mt-3 text-lg leading-relaxed">{o.functionality}</p>
+            </div>
+            <div class="rounded-xl bg-canvas p-6">
+              <h3 class="flex items-center gap-2 text-sm font-semibold tracking-wide text-brand-700 uppercase">
+                <Icon name="code" class="size-4" /> How we build it
+              </h3>
+              <p class="mt-3 leading-relaxed">{o.development}</p>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <!-- Technology -->
+  <section id="technology" class="scroll-mt-8 bg-canvas">
+    <div class="container-page py-20 sm:py-28">
+      <div class="max-w-2xl">
+        <p class="eyebrow">Technology</p>
+        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">The stack behind the service</h2>
+        <p class="mt-4 text-lg">Proven, enterprise-grade tools, chosen for what fits your business rather than what we happen to prefer.</p>
+      </div>
+      <dl class="mt-12 grid gap-6 md:grid-cols-2">
+        {
+          service.stack.map((g) => (
+            <div class="card">
+              <dt class="font-semibold text-ink">{g.group}</dt>
+              <dd class="mt-4 flex flex-wrap gap-2">
+                {g.items.map((item) => (
+                  <span class="chip">{item}</span>
+                ))}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="container-page pt-20 sm:pt-28">
+    <h2 class="text-2xl font-semibold">Works even better together</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      {
+        others.map((s) => (
+          <a href={`/services/${s.slug}`} class="card group flex gap-5">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+              <Icon name={s.icon} class="size-6" />
+            </span>
+            <span>
+              <span class="block text-lg font-semibold text-ink">{s.shortTitle}</span>
+              <span class="mt-2 block">{s.summary}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBand title={`Talk to us about ${service.shortTitle}`} />
+</BaseLayout>

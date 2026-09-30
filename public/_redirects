@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects: /from /to status
+# https://developers.cloudflare.com/pages/configuration/redirects/
+https://www.emtek.lk/* https://emtek.lk/:splat 301

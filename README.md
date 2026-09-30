@@ -1,190 +1,59 @@
 # EMTEK Website
 
-A modern, fast, and SEO-optimized website built with **Astro**, **Tailwind CSS**, and deployed on **Cloudflare Pages**.
+Marketing site for [emtek.lk](https://emtek.lk), built with Astro and Tailwind CSS v4, and hosted on Cloudflare Pages. Every page is pre-rendered to static HTML, and no JavaScript ships to the browser.
 
-## 🚀 Features
+## Commands
 
-- ⚡ **Ultra-fast** - Static HTML, zero JavaScript overhead
-- 🎨 **Beautiful** - Modern responsive design with Tailwind CSS
-- 🔍 **SEO Optimized** - Structured data, meta tags, and performance
-- 📱 **Mobile First** - Works perfectly on all devices
-- 🌍 **Global CDN** - Cloudflare's 300+ edge locations
-- 🔒 **Secure** - HTTPS, DDoS protection, and security headers
-- 💨 **Fast Deploys** - Automatic deployments on git push
+| Command                | Action                                          |
+| :--------------------- | :---------------------------------------------- |
+| `npm install`          | Install dependencies                            |
+| `npm run dev`          | Dev server at `http://localhost:4321`           |
+| `npm run build`        | Build the production site to `dist/`            |
+| `npm run preview`      | Serve the production build locally              |
+| `npm run brand:assets` | Regenerate favicons and `og-image.png` from `src/logos/` |
 
-## 📂 Project Structure
+## Where things live
 
 ```
-/
-├── public/                 # Static assets (images, favicons)
-├── src/
-│   ├── components/        # Reusable Astro components
-│   ├── layouts/           # Page layouts (Header, Footer)
-│   ├── pages/             # Page routes
-│   │   ├── index.astro    # Home page
-│   │   ├── about.astro    # About page
-│   │   ├── services.astro # Services overview
-│   │   ├── projects.astro # Projects showcase
-│   │   ├── contact.astro  # Contact page
-│   │   ├── services/      # Service detail pages
-│   │   └── projects/      # Project detail pages
-│   └── styles/            # Global CSS
-├── astro.config.mjs       # Astro configuration
-├── tailwind.config.mjs    # Tailwind CSS configuration
-├── wrangler.toml          # Cloudflare Pages config
-└── package.json
+src/
+├── data/
+│   ├── site.ts          # Company name, tagline, email, phone, nav
+│   └── services.ts      # All service content (titles, offerings, tech stack)
+├── content/projects/    # One Markdown file per case study
+├── content.config.ts    # Projects schema
+├── components/          # Header, Footer, PageHero, CtaBand, Icon
+├── layouts/BaseLayout.astro  # <head>, SEO meta, JSON-LD, header/footer
+├── logos/               # Source logo files (optimized automatically at build)
+├── pages/               # Routes: /, /about, /services, /services/[slug], /projects, /projects/[slug], /contact, 404
+└── styles/global.css    # Tailwind + brand palette (@theme)
+public/
+├── _headers             # Cloudflare security + cache headers
+├── _redirects           # www → apex redirect
+├── robots.txt
+└── favicons, og-image.png
 ```
 
-## 🧞 Available Commands
+## Editing content
 
-All commands are run from the root of the project:
+- **Contact details and tagline:** edit `src/data/site.ts`. The footer, contact page, and structured data update automatically.
+- **Services:** edit `src/data/services.ts`. Each entry generates its own page at `/services/<slug>`, and is added to the nav menu, footer, and listings. To add a service, append an object to the array (and add its slug to your project files where relevant).
+- **Projects:** copy `src/content/projects/_template.md` to a new file such as `acme-erp-rollout.md`, fill in the frontmatter and body, and it appears at `/projects/acme-erp-rollout`. Files starting with `_` are ignored, and `draft: true` hides a project. Cover images go next to the Markdown file (`cover: ./acme.jpg`) and are optimized to WebP at build time.
+- **Colors and fonts:** edit the `@theme` block in `src/styles/global.css`. The palette is built around the logo navy (`#1c4d8d`) and sky (`#bde8f5`).
 
-| Command          | Action                              |
-|:-----------------|:------------------------------------|
-| `npm install`    | Install dependencies                |
-| `npm run dev`    | Start local dev server @ localhost:3000 |
-| `npm run build`  | Build production site to `./dist/`  |
-| `npm run preview`| Preview build locally before deploy |
+## Deploying to Cloudflare Pages
 
-## 🛠️ Development
+1. Push this repo to GitHub.
+2. In the Cloudflare dashboard, open **Workers & Pages → Create → Pages → Connect to Git** and select the repo.
+3. Use these build settings: framework preset **Astro**, build command `npm run build`, output directory `dist`. Set the environment variable `NODE_VERSION` to `22`.
+4. Under **Custom domains**, add `emtek.lk` and `www.emtek.lk`.
+5. Submit `https://emtek.lk/sitemap-index.xml` in Google Search Console.
 
-### Getting Started
+Every push to `main` then deploys to production, and other branches get preview URLs.
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+## SEO built in
 
-2. **Start development server:**
-   ```bash
-   npm run dev
-   ```
-   Your site will be available at `http://localhost:3000`
-
-3. **Edit pages:**
-   - Add new pages in `src/pages/`
-   - Create detail pages in subdirectories (e.g., `src/pages/services/web-design.astro`)
-
-### Adding Content
-
-- **Pages**: Create `.astro` files in `src/pages/`
-- **Components**: Create reusable components in `src/components/`
-- **Styles**: Edit `src/styles/global.css` for global styles
-- **Images**: Place images in `public/` folder
-
-## 🚀 Deployment to Cloudflare Pages
-
-### Prerequisites
-- GitHub account with repository
-- Cloudflare account
-- Domain connected to Cloudflare DNS
-
-### Step 1: Push to GitHub
-```bash
-git add .
-git commit -m "Initial website setup"
-git push origin main
-```
-
-### Step 2: Connect to Cloudflare Pages
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. Click **Pages** in the sidebar
-3. Click **Create a project** → **Connect to Git**
-4. Select your GitHub repository
-5. Configure build settings:
-   - **Framework preset**: Astro
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-6. Click **Save and Deploy**
-
-### Step 3: Configure Domain
-1. After first deployment, go to **Custom domains**
-2. Add your domain (e.g., `emtek.lk`)
-3. Update your domain's nameservers to Cloudflare's nameservers
-
-### Automatic Deployments
-Every time you push to `main` branch, Cloudflare Pages will automatically:
-1. Pull your latest code
-2. Install dependencies
-3. Build the site
-4. Deploy to production
-
-## 📋 Expanding the Site
-
-### Add New Pages
-Create new `.astro` files in appropriate directories:
-
-```astro
----
-import Layout from '../layouts/Layout.astro';
----
-
-<Layout title="Page Title">
-  <!-- Your content here -->
-</Layout>
-```
-
-### Add New Services
-1. Create `src/pages/services/service-name.astro`
-2. Update `/services` page with a link to new service
-3. Redeploy
-
-### Add New Projects
-1. Create `src/pages/projects/project-name.astro`
-2. Update `/projects` page with project card
-3. Redeploy
-
-## 🎨 Customization
-
-### Colors
-Edit `tailwind.config.mjs` to change primary and accent colors:
-```js
-extend: {
-  colors: {
-    primary: '#1f2937',    // Dark gray
-    accent: '#3b82f6',     // Blue
-  },
-}
-```
-
-### Navigation
-Update the navigation menu in `src/layouts/Layout.astro`
-
-### Footer Content
-Edit footer section in `src/layouts/Layout.astro`
-
-## 📈 SEO Optimization
-
-The site includes:
-- ✅ Meta descriptions on each page
-- ✅ Open Graph tags for social sharing
-- ✅ Responsive design (mobile-friendly)
-- ✅ Fast loading times (100 Lighthouse score)
-- ✅ Semantic HTML structure
-
-### Add Sitemap (Optional)
-To add a sitemap, install and use `@astrojs/sitemap`:
-```bash
-npm install @astrojs/sitemap
-```
-
-Then update `astro.config.mjs`:
-```js
-import sitemap from '@astrojs/sitemap';
-
-export default defineConfig({
-  integrations: [sitemap()],
-  site: 'https://emtek.lk',
-});
-```
-
-## 🔗 Links & Resources
-
-- [Astro Documentation](https://docs.astro.build)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [Cloudflare Pages Docs](https://developers.cloudflare.com/pages)
-- [Cloudflare Web Analytics](https://developers.cloudflare.com/analytics/web-analytics)
-
-## 📝 License
-
-© 2026 EMTEK. All rights reserved.
+- A unique title, description, and canonical URL on every page, with clean URLs (`/about`, not `/about/`)
+- Open Graph and Twitter card tags with a branded share image
+- JSON-LD `Organization` data on every page, plus `Service` and `BreadcrumbList` on service pages
+- An auto-generated sitemap and `robots.txt`
+- Self-hosted, preloaded Inter font (Latin subset only), WebP logos, and zero client-side JavaScript

@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ink text-brand-100/70">
+  <div class="container-page grid gap-12 py-16 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <a href="/" aria-label={`${site.name} home`} class="inline-block rounded-md">
+        <Image src={logoLight} alt={site.name} width={120} densities={[1, 2]} class="h-auto w-[120px]" />
+      </a>
+      <p class="mt-5 text-lg font-semibold text-white">{site.tagline}</p>
+      <p class="mt-3 max-w-sm text-sm leading-relaxed">{site.description}</p>
+    </div>
+
+    <div class="md:col-span-3">
+      <h2 class="text-sm font-semibold text-white">Services</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        {
+          services.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}`} class="transition hover:text-white">
+                {s.shortTitle}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="md:col-span-2">
+      <h2 class="text-sm font-semibold text-white">Company</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li><a href="/about" class="transition hover:text-white">About</a></li>
+        <li><a href="/projects" class="transition hover:text-white">Projects</a></li>
+        <li><a href="/contact" class="transition hover:text-white">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="md:col-span-2">
+      <h2 class="text-sm font-semibold text-white">Get in touch</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li>
+          <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 transition hover:text-white">
+            <Icon name="mail" class="size-4" />{site.email}
+          </a>
+        </li>
+        <li>
+          <a href={site.phoneHref} class="inline-flex items-center gap-2 whitespace-nowrap transition hover:text-white">
+            <Icon name="phone" class="size-4" />{site.phone}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-col gap-2 py-6 text-xs sm:flex-row sm:justify-between">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <p>emtek.lk</p>
+    </div>
+  </div>
+</footer>
