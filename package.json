@@ -21,7 +21,11 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@iconify-json/devicon": "^1.2.68",
+    "@iconify-json/logos": "^1.2.15",
+    "@iconify-json/mdi": "^1.2.3",
     "@tailwindcss/vite": "^4.3.3",
+    "simple-icons": "^16.33.0",
     "tailwindcss": "^4.3.3"
   }
 }

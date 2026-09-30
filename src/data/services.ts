@@ -52,7 +52,7 @@ export const services: Service[] = [
     stack: [
       {
         group: 'ERP frameworks',
-        items: ['Cortex ERP (proprietary)', 'Microsoft Dynamics 365', 'Odoo', 'SAP S/4HANA', 'Oracle NetSuite', 'Sage Intacct'],
+        items: ['Cortex ERP', 'Microsoft Dynamics 365', 'Odoo', 'SAP S/4HANA', 'Oracle NetSuite', 'Sage Intacct'],
       },
       { group: 'Data & databases', items: ['Microsoft SQL Server', 'PostgreSQL', 'MySQL', 'MongoDB', 'Apache Kafka'] },
       { group: 'Integration & AI', items: ['MuleSoft', 'Talend', 'OpenAI API', 'Anthropic API (Claude)'] },
@@ -89,7 +89,7 @@ export const services: Service[] = [
     stack: [
       {
         group: 'Backend & frameworks',
-        items: ['.NET (C# / .NET Core)', 'Node.js', 'Python (Django / FastAPI)', 'Java (Spring Boot)', 'Go'],
+        items: ['.NET', 'C#', 'Node.js', 'Python', 'Django', 'FastAPI', 'Java', 'Spring Boot', 'Go'],
       },
       {
         group: 'Frontend & cross-platform',
@@ -136,10 +136,10 @@ export const services: Service[] = [
     stack: [
       {
         group: 'Operating systems & cloud',
-        items: ['Linux (Ubuntu, RHEL, CentOS)', 'Windows Server', 'AWS', 'Google Cloud', 'Microsoft Azure'],
+        items: ['Ubuntu', 'Red Hat Enterprise Linux', 'CentOS', 'Windows Server', 'AWS', 'Google Cloud', 'Microsoft Azure'],
       },
       { group: 'DevOps & infrastructure', items: ['Docker', 'Kubernetes', 'Terraform'] },
-      { group: 'Cybersecurity & backup', items: ['CrowdStrike', 'Splunk (SIEM)', 'Veeam', 'OpenVPN'] },
+      { group: 'Cybersecurity & backup', items: ['CrowdStrike', 'Splunk', 'Veeam', 'OpenVPN'] },
       { group: 'Network & ITSM', items: ['ServiceNow', 'Jira Service Management', 'Datadog', 'Cisco Meraki'] },
     ],
   },

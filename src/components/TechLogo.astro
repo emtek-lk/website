@@ -1,0 +1,42 @@
+---
+import { getTechLogo } from '../data/tech';
+
+interface Props {
+  name: string;
+  class?: string;
+  /** Render the logo in a neutral gray until hovered (used in logo walls) */
+  muted?: boolean;
+}
+
+const { name, class: className = 'size-5', muted = false } = Astro.props;
+const logo = getTechLogo(name);
+const initials = name
+  .replace(/\(.*\)/, '')
+  .split(/[\s./]+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0].toUpperCase())
+  .join('');
+---
+
+{
+  logo ? (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={logo.viewBox}
+      class:list={[className, 'shrink-0', muted && 'grayscale opacity-60 transition duration-200 group-hover:opacity-100 group-hover:grayscale-0']}
+      fill={logo.color ?? undefined}
+      role="img"
+      aria-label={`${name} logo`}
+      set:html={logo.body}
+    />
+  ) : (
+    <span
+      class:list={[className, 'grid shrink-0 place-items-center rounded-md bg-brand-50 text-[0.55em] font-bold text-brand-700']}
+      aria-hidden="true"
+      style="font-size: 0.7rem"
+    >
+      {initials}
+    </span>
+  )
+}

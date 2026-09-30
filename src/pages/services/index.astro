@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import Icon from '../../components/Icon.astro';
+import TechLogo from '../../components/TechLogo.astro';
+import { getTechLogo } from '../../data/tech';
 import { services } from '../../data/services';
 ---
 
@@ -46,9 +48,18 @@ import { services } from '../../data/services';
                 </li>
               ))}
             </ul>
-            <p class="mt-5 text-sm text-muted">
-              Including {s.stack.flatMap((g) => g.items).slice(0, 6).join(', ')}, and more.
-            </p>
+            <ul class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2" aria-label="Technologies">
+              {s.stack
+                .flatMap((g) => g.items)
+                .filter((t) => getTechLogo(t))
+                .slice(0, 9)
+                .map((t) => (
+                  <li title={t}>
+                    <TechLogo name={t} class="size-6" />
+                  </li>
+                ))}
+              <li class="text-sm text-muted">and more</li>
+            </ul>
           </div>
         </article>
       ))

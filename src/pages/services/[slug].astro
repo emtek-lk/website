@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import Icon from '../../components/Icon.astro';
+import TechLogo from '../../components/TechLogo.astro';
 import { services, type Service } from '../../data/services';
 import { site } from '../../data/site';
 
@@ -101,7 +102,7 @@ const schema = [
               <dt class="font-semibold text-ink">{g.group}</dt>
               <dd class="mt-4 flex flex-wrap gap-2">
                 {g.items.map((item) => (
-                  <span class="chip">{item}</span>
+                  <span class="chip"><TechLogo name={item} class="size-5" />{item}</span>
                 ))}
               </dd>
             </div>
