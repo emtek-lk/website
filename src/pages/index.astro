@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
+import HeroMockup from '../components/HeroMockup.astro';
 import { site } from '../data/site';
 import { services } from '../data/services';
 import TechLogo from '../components/TechLogo.astro';
@@ -45,76 +46,7 @@ const lifecycle = [
         </div>
       </div>
 
-      <!-- Illustrative product mock-up (decorative) -->
-      <div class="relative hidden lg:col-span-6 lg:block" aria-hidden="true">
-        <div class="parallax-slow">
-        <div class="rotate-[-2deg] rounded-2xl bg-white p-4 shadow-[0_50px_100px_-20px_rgba(10,31,61,0.55)]">
-          <div class="flex items-center justify-between border-b border-line pb-3">
-            <div class="flex items-center gap-2">
-              <span class="size-2.5 rounded-full bg-brand-700"></span>
-              <span class="text-sm font-semibold text-ink">Cortex ERP</span>
-              <span class="text-sm text-muted">/ Overview</span>
-            </div>
-            <div class="flex gap-1.5"><span class="size-2 rounded-full bg-line"></span><span class="size-2 rounded-full bg-line"></span><span class="size-2 rounded-full bg-line"></span></div>
-          </div>
-          <div class="grid grid-cols-4 gap-4 pt-4">
-            <ul class="space-y-2 text-xs text-muted">
-              <li class="rounded-md bg-brand-50 px-2 py-1.5 font-medium text-brand-700">Dashboard</li>
-              <li class="px-2 py-1.5">Finance</li>
-              <li class="px-2 py-1.5">HR</li>
-              <li class="px-2 py-1.5">Inventory</li>
-              <li class="px-2 py-1.5">Sales</li>
-              <li class="px-2 py-1.5">Reports</li>
-            </ul>
-            <div class="col-span-3 space-y-4">
-              <div class="grid grid-cols-3 gap-3">
-                {
-                  [
-                    ['Finance', 'w-4/5'],
-                    ['Inventory', 'w-3/5'],
-                    ['Sales', 'w-11/12'],
-                  ].map(([label, w]) => (
-                    <div class="rounded-lg border border-line p-3">
-                      <p class="text-[11px] text-muted">{label}</p>
-                      <div class="mt-2 h-1.5 rounded-full bg-brand-50">
-                        <div class={`h-1.5 rounded-full bg-gradient-to-r from-brand-700 to-brand-400 ${w}`} />
-                      </div>
-                    </div>
-                  ))
-                }
-              </div>
-              <div class="rounded-lg border border-line p-3">
-                <p class="text-[11px] text-muted">Monthly performance</p>
-                <div class="mt-3 flex h-24 items-end gap-1.5">
-                  {
-                    [40, 55, 48, 62, 58, 70, 66, 78, 74, 85, 82, 94].map((h, i) => (
-                      <div class:list={['flex-1 rounded-t-sm', i === 11 ? 'bg-brand-700' : 'bg-brand-200']} style={`height:${h}%`} />
-                    ))
-                  }
-                </div>
-              </div>
-              <div class="flex items-center gap-2 rounded-lg bg-brand-50 px-3 py-2 text-xs text-brand-800">
-                <Icon name="sparkles" class="size-4 text-brand-600" />
-                <span><strong class="font-semibold">AI summary:</strong> invoices reconciled</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        </div>
-
-        <div class="parallax-fast absolute -bottom-36 -left-8 w-64 rotate-[2deg] rounded-xl bg-white p-4 shadow-[0_30px_60px_-15px_rgba(10,31,61,0.5)]">
-          <div class="flex items-center gap-2">
-            <span class="grid size-8 place-items-center rounded-lg bg-brand-50 text-brand-700"><Icon name="shield" class="size-4" /></span>
-            <p class="text-sm font-semibold text-ink">Infrastructure</p>
-          </div>
-          <ul class="mt-3 space-y-2 text-xs text-body">
-            <li class="flex items-center justify-between">Backups <span class="flex items-center gap-1.5 text-emerald-600"><span class="size-1.5 rounded-full bg-emerald-500"></span>Healthy</span></li>
-            <li class="flex items-center justify-between">Firewall <span class="flex items-center gap-1.5 text-emerald-600"><span class="size-1.5 rounded-full bg-emerald-500"></span>Protected</span></li>
-            <li class="flex items-center justify-between">Cloud servers <span class="flex items-center gap-1.5 text-emerald-600"><span class="size-1.5 rounded-full bg-emerald-500"></span>Online</span></li>
-          </ul>
-        </div>
-      </div>
+      <div class="hidden lg:col-span-6 lg:block"><HeroMockup /></div>
     </div>
   </section>
 

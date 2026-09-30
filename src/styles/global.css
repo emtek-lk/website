@@ -104,10 +104,10 @@
   /* Stripe-style slanted gradient hero */
   .hero-gradient {
     background:
-      radial-gradient(55% 70% at 88% 8%, rgb(143 211 238 / 0.85) 0%, transparent 60%),
-      radial-gradient(45% 60% at 60% 40%, rgb(45 127 208 / 0.7) 0%, transparent 65%),
-      radial-gradient(70% 90% at 5% 100%, rgb(28 77 141 / 0.9) 0%, transparent 70%),
-      linear-gradient(120deg, #0a1f3d 0%, #0f2a4f 35%, #1c4d8d 70%, #2d7fd0 100%);
+      radial-gradient(60% 80% at 92% 10%, rgb(143 211 238 / 0.95) 0%, transparent 62%),
+      radial-gradient(50% 65% at 62% 55%, rgb(79 169 224 / 0.75) 0%, transparent 68%),
+      radial-gradient(70% 90% at 0% 100%, rgb(28 77 141 / 0.9) 0%, transparent 70%),
+      linear-gradient(120deg, #0f2a4f 0%, #1c4d8d 40%, #2d7fd0 75%, #4fa9e0 100%);
     background-size: 140% 140%;
     animation: hero-drift 18s ease-in-out infinite alternate;
   }
@@ -152,72 +152,175 @@
   }
 }
 
-/* Scroll-driven effects: pure CSS, no JavaScript. Browsers without support simply show the static page. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* Fade and rise as elements enter the viewport. "backwards" fill means hover transforms work afterwards. */
-    .card,
-    .reveal,
-    .tech-wall > li,
-    .prose-emtek > * {
-      animation: reveal-up linear backwards;
-      animation-timeline: view();
-      animation-range: entry 0% entry 45%;
-    }
-    .tech-wall > li {
-      animation-name: reveal-pop;
-      animation-range: entry 0% entry 60%;
-    }
+/* ---------- Motion (driven by src/scripts/motion.ts) ---------- */
 
-    /* Hero mock-up drifts at two speeds as you scroll past */
-    .parallax-slow,
-    .parallax-fast {
-      animation: parallax linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 90vh;
-    }
-    .parallax-slow {
-      --shift: -36px;
-    }
-    .parallax-fast {
-      --shift: -90px;
-    }
+/* Scroll reveal: fade, rise, and un-blur. The script adds .reveal only to below-the-fold elements. */
+.reveal {
+  opacity: 0;
+  translate: 0 48px;
+  scale: 0.96;
+  filter: blur(8px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    scale 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.in {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  filter: blur(0);
+}
 
-    .scroll-progress {
-      animation: grow-x linear both;
-      animation-timeline: scroll(root);
-    }
-  }
+[data-parallax] {
+  translate: 0 var(--py, 0px);
+  will-change: translate;
+}
+[data-tilt] {
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.3s ease-out;
+}
+
+/* Sticky header turns into dark glass after scrolling */
+.site-header {
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    backdrop-filter 0.3s;
+}
+.site-nav {
+  transition: height 0.3s;
+}
+.site-header[data-scrolled] {
+  background-color: rgb(10 31 61 / 0.78);
+  backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.08),
+    0 12px 30px -14px rgb(10 31 61 / 0.6);
+}
+.site-header[data-scrolled] .site-nav {
+  height: 4rem;
 }
 
 .scroll-progress {
-  @apply pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] origin-left scale-x-0 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-700;
-}
-@supports not (animation-timeline: scroll()) {
-  .scroll-progress {
-    display: none;
-  }
+  @apply pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] origin-left bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700;
+  transform: scaleX(var(--p, 0));
 }
 
-@keyframes reveal-up {
-  from {
-    opacity: 0;
-    transform: translateY(32px);
+/* Hero mock-up animations */
+.float-a {
+  animation: float-a 7s ease-in-out infinite;
+}
+.float-b {
+  animation: float-b 6s ease-in-out infinite;
+}
+.blob {
+  animation: float-b 9s ease-in-out infinite;
+}
+.chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 2.4s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.chart-area {
+  opacity: 0;
+  animation: fade-in 1.4s 1.6s ease-out forwards;
+}
+.chart-dot {
+  opacity: 0;
+  animation: fade-in 0.5s 2.8s ease-out forwards;
+}
+.uptime-bar {
+  width: 0;
+  animation: fill-bar 2.4s 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.shimmer {
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.9) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: shimmer 3.6s ease-in-out infinite;
+}
+.swap {
+  opacity: 0;
+  animation: swap 9s ease-in-out infinite;
+}
+.pop-cycle {
+  animation: pop-cycle 8s ease-in-out infinite;
+}
+
+@keyframes float-a {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
-@keyframes reveal-pop {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.9);
+@keyframes float-b {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(12px) translateX(-6px);
   }
 }
-@keyframes parallax {
+@keyframes draw {
   to {
-    translate: 0 var(--shift);
+    stroke-dashoffset: 0;
   }
 }
-@keyframes grow-x {
+@keyframes fade-in {
   to {
-    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+@keyframes fill-bar {
+  to {
+    width: 92%;
+  }
+}
+@keyframes shimmer {
+  0%,
+  60% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes swap {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  6%,
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  36%,
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes pop-cycle {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.85);
+  }
+  14%,
+  70% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  78%,
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.92);
   }
 }

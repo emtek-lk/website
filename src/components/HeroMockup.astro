@@ -1,0 +1,136 @@
+---
+import Icon from './Icon.astro';
+import TechLogo from './TechLogo.astro';
+
+const insights = ['14 supplier invoices matched', 'Payroll run prepared for 128 staff', '3 low-stock items reordered'];
+---
+
+<!-- Decorative product mock-up: light glass panels, live counters, self-drawing chart -->
+<div class="relative h-[29rem]" aria-hidden="true" data-tilt>
+  <div class="blob absolute -top-8 right-0 size-64 rounded-full bg-brand-200/60 blur-3xl"></div>
+  <div class="blob absolute bottom-0 left-8 size-56 rounded-full bg-sky-200/50 blur-3xl [animation-delay:-4s]"></div>
+
+  <!-- Main dashboard -->
+  <div data-parallax="0.05" class="relative">
+    <div class="float-a">
+      <div class="rotate-[-1.5deg] rounded-3xl bg-white/85 p-5 shadow-[0_40px_90px_-25px_rgba(10,31,61,0.55)] ring-1 ring-white/70 backdrop-blur-xl">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <TechLogo name="Cortex ERP" class="size-8" />
+            <div class="leading-tight">
+              <p class="text-sm font-semibold text-ink">Cortex ERP</p>
+              <p class="text-[11px] text-muted">Overview · This month</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-600">
+            <span class="relative flex size-2">
+              <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
+            </span>
+            Live
+          </span>
+        </div>
+
+        <div class="mt-4 grid grid-cols-3 gap-3">
+          <div class="rounded-2xl bg-gradient-to-br from-brand-50 to-brand-200/70 p-3.5">
+            <p class="text-[11px] font-medium text-brand-700/80">Revenue</p>
+            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="1.24" data-decimals="2" data-prefix="Rs " data-suffix="M">Rs 1.24M</span></p>
+            <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 12.4%</p>
+          </div>
+          <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-100/80 p-3.5">
+            <p class="text-[11px] font-medium text-teal-700/80">Orders</p>
+            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="3482">3,482</span></p>
+            <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 8.1%</p>
+          </div>
+          <div class="rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-100/80 p-3.5">
+            <p class="text-[11px] font-medium text-indigo-700/80">Stock health</p>
+            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="98.6" data-decimals="1" data-suffix="%">98.6%</span></p>
+            <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 2.3%</p>
+          </div>
+        </div>
+
+        <div class="mt-3 rounded-2xl bg-gradient-to-b from-white to-brand-50/70 p-4 ring-1 ring-line/70">
+          <div class="flex items-center justify-between text-[11px] text-muted">
+            <span class="font-medium text-ink">Monthly performance</span>
+            <span class="flex items-center gap-3">
+              <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-brand-500"></span>Sales</span>
+              <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-brand-300"></span>Costs</span>
+            </span>
+          </div>
+          <svg viewBox="0 0 420 120" class="mt-3 h-28 w-full overflow-visible" fill="none">
+            <defs>
+              <linearGradient id="area-g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2d7fd0" stop-opacity="0.35" />
+                <stop offset="1" stop-color="#2d7fd0" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <g stroke="#e3e9f1" stroke-dasharray="3 5">
+              <path d="M0 30H420" /><path d="M0 70H420" /><path d="M0 110H420" />
+            </g>
+            <path class="chart-area" d="M0 95 C40 88 60 70 100 74 S160 50 200 54 S270 30 310 34 S380 12 416 8 L416 120 L0 120 Z" fill="url(#area-g)" />
+            <path class="chart-line" pathLength="1" d="M0 105 C50 100 70 92 110 90 S170 76 210 78 S280 64 320 62 S390 46 416 40" stroke="#8fd3ee" stroke-width="3" stroke-linecap="round" />
+            <path class="chart-line" pathLength="1" d="M0 95 C40 88 60 70 100 74 S160 50 200 54 S270 30 310 34 S380 12 416 8" stroke="#2d7fd0" stroke-width="3.5" stroke-linecap="round" />
+            <g class="chart-dot">
+              <circle cx="416" cy="8" r="9" fill="#2d7fd0" opacity=".2"><animate attributeName="r" values="6;14;6" dur="2.4s" repeatCount="indefinite" /></circle>
+              <circle cx="416" cy="8" r="5" fill="#fff" stroke="#2d7fd0" stroke-width="3" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="relative mt-3 flex h-10 items-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-brand-50 via-white to-violet-50 px-3 text-xs text-brand-800 ring-1 ring-brand-100">
+          <span class="shimmer absolute inset-0"></span>
+          <Icon name="sparkles" class="relative size-4 shrink-0 text-brand-600" />
+          <span class="relative font-semibold">AI</span>
+          <span class="relative h-4 flex-1">
+            {insights.map((t, i) => <span class="swap absolute inset-0 truncate" style={`animation-delay:${i * 3}s`}>{t}</span>)}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating: backup toast -->
+  <div data-parallax="0.2" class="absolute -top-5 right-2 z-10">
+    <div class="pop-cycle flex items-center gap-2.5 rounded-2xl bg-white px-3.5 py-2.5 shadow-[0_24px_50px_-18px_rgba(10,31,61,0.55)] ring-1 ring-brand-100">
+      <span class="grid size-8 place-items-center rounded-full bg-emerald-100 text-emerald-600"><Icon name="check" class="size-4" strokeWidth={3} /></span>
+      <span class="leading-tight">
+        <span class="block text-xs font-semibold text-ink">Backup complete</span>
+        <span class="block text-[11px] text-muted">Encrypted off-site · 02:00</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Floating: infrastructure status -->
+  <div data-parallax="0.13" class="absolute -bottom-20 -left-14 z-10 w-64">
+    <div class="float-b rotate-[2deg] rounded-2xl bg-white/90 p-4 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.55)] ring-1 ring-white/70 backdrop-blur-xl">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-200 text-brand-700"><Icon name="shield" class="size-4" /></span>
+          <p class="text-sm font-semibold text-ink">Infrastructure</p>
+        </div>
+        <span class="text-[11px] font-semibold text-emerald-600">99.98%</span>
+      </div>
+      <ul class="mt-3 space-y-2 text-xs text-body">
+        {
+          [
+            ['Backups', 'Healthy'],
+            ['Firewall', 'Protected'],
+            ['Cloud servers', 'Online'],
+          ].map(([label, state], i) => (
+            <li class="flex items-center justify-between">
+              {label}
+              <span class="flex items-center gap-1.5 font-medium text-emerald-600">
+                <span class="relative flex size-2">
+                  <span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" style={`animation-delay:${i * 0.5}s`} />
+                  <span class="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                </span>
+                {state}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-brand-50"><div class="uptime-bar h-full rounded-full bg-gradient-to-r from-brand-400 to-emerald-400"></div></div>
+    </div>
+  </div>
+</div>
