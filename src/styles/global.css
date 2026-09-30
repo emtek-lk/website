@@ -151,3 +151,73 @@
     background-position: 100% 60%;
   }
 }
+
+/* Scroll-driven effects: pure CSS, no JavaScript. Browsers without support simply show the static page. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Fade and rise as elements enter the viewport. "backwards" fill means hover transforms work afterwards. */
+    .card,
+    .reveal,
+    .tech-wall > li,
+    .prose-emtek > * {
+      animation: reveal-up linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+    .tech-wall > li {
+      animation-name: reveal-pop;
+      animation-range: entry 0% entry 60%;
+    }
+
+    /* Hero mock-up drifts at two speeds as you scroll past */
+    .parallax-slow,
+    .parallax-fast {
+      animation: parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .parallax-slow {
+      --shift: -36px;
+    }
+    .parallax-fast {
+      --shift: -90px;
+    }
+
+    .scroll-progress {
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+.scroll-progress {
+  @apply pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px] origin-left scale-x-0 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-700;
+}
+@supports not (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
+@keyframes reveal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.9);
+  }
+}
+@keyframes parallax {
+  to {
+    translate: 0 var(--shift);
+  }
+}
+@keyframes grow-x {
+  to {
+    transform: scaleX(1);
+  }
+}

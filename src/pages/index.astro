@@ -47,6 +47,7 @@ const lifecycle = [
 
       <!-- Illustrative product mock-up (decorative) -->
       <div class="relative hidden lg:col-span-6 lg:block" aria-hidden="true">
+        <div class="parallax-slow">
         <div class="rotate-[-2deg] rounded-2xl bg-white p-4 shadow-[0_50px_100px_-20px_rgba(10,31,61,0.55)]">
           <div class="flex items-center justify-between border-b border-line pb-3">
             <div class="flex items-center gap-2">
@@ -100,7 +101,9 @@ const lifecycle = [
           </div>
         </div>
 
-        <div class="absolute -bottom-36 -left-8 w-64 rotate-[2deg] rounded-xl bg-white p-4 shadow-[0_30px_60px_-15px_rgba(10,31,61,0.5)]">
+        </div>
+
+        <div class="parallax-fast absolute -bottom-36 -left-8 w-64 rotate-[2deg] rounded-xl bg-white p-4 shadow-[0_30px_60px_-15px_rgba(10,31,61,0.5)]">
           <div class="flex items-center gap-2">
             <span class="grid size-8 place-items-center rounded-lg bg-brand-50 text-brand-700"><Icon name="shield" class="size-4" /></span>
             <p class="text-sm font-semibold text-ink">Infrastructure</p>
@@ -118,7 +121,7 @@ const lifecycle = [
   <!-- Technology logo wall -->
   <section class="container-page pt-6 pb-8 sm:pt-10">
     <p class="text-center text-sm font-medium text-muted">The platforms, languages, and clouds we build and run on</p>
-    <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+    <ul class="tech-wall mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
       {
         featuredTech.map(({ name, label }) => (
           <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-2 py-5 text-center transition duration-200 hover:border-line hover:bg-canvas">
