@@ -324,3 +324,137 @@
     transform: translateY(-10px) scale(0.92);
   }
 }
+
+/* ---------- Platform showcase sections ---------- */
+
+.dot-grid {
+  background-image: radial-gradient(rgb(143 211 238 / 0.22) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 70% 40%, #000 15%, transparent 70%);
+}
+
+/* Cortex: modules orbiting the core. Ring spins, each node counter-spins so labels stay upright. */
+.orbit {
+  --s: min(26rem, 88vw);
+  --r: calc(var(--s) * 0.37);
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+}
+.orbit-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 9999px;
+}
+.orbit-ring-outer {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(143 211 238 / 0.14);
+}
+.orbit-ring-inner {
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border: 1px dashed rgb(143 211 238 / 0.35);
+  animation: spin-fwd 90s linear infinite;
+}
+.orbit-spin {
+  position: absolute;
+  inset: 0;
+  animation: spin-fwd 60s linear infinite;
+}
+.orbit-node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--a));
+}
+.orbit-spoke {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--r);
+  height: 1px;
+  background: linear-gradient(90deg, transparent 30%, rgb(143 211 238 / 0.4));
+}
+.orbit-pos {
+  position: absolute;
+  left: var(--r);
+  top: 0;
+  transform: rotate(calc(var(--a) * -1));
+}
+.orbit-counter {
+  width: max-content;
+  translate: -50% -50%;
+  animation: spin-rev 60s linear infinite;
+}
+
+/* Dynamics 365: cascading layer cards that fan apart on hover */
+.layer-stack {
+  position: relative;
+  height: 26.5rem;
+}
+.layer-card {
+  position: absolute;
+  width: 88%;
+  height: 9.75rem;
+  transition: translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.layer-1 {
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.layer-2 {
+  top: 8rem;
+  left: 6%;
+  z-index: 2;
+}
+.layer-3 {
+  top: 16rem;
+  left: 12%;
+  z-index: 3;
+}
+.layer-stack:hover .layer-2 {
+  translate: 0 0.9rem;
+}
+.layer-stack:hover .layer-3 {
+  translate: 0 1.8rem;
+}
+
+/* Odoo: app launcher tiles */
+.app-tile {
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.app-tile:hover {
+  transform: translateY(-5px);
+}
+.app-icon {
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.25s;
+}
+.app-tile:hover .app-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+.btn-odoo {
+  background-color: #714b67;
+  color: #fff;
+}
+.btn-odoo:hover {
+  background-color: #5d3d54;
+}
+
+@keyframes spin-fwd {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes spin-rev {
+  to {
+    rotate: -360deg;
+  }
+}

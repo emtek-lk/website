@@ -1,0 +1,112 @@
+---
+import Icon, { type IconName } from '../Icon.astro';
+import TechLogo from '../TechLogo.astro';
+
+// Odoo-style app launcher: each app is a coloured tile
+const apps: { icon: IconName; label: string; from: string; to: string }[] = [
+  { icon: 'chart', label: 'Sales', from: '#f59e7a', to: '#e8684a' },
+  { icon: 'target', label: 'CRM', from: '#7fd1c1', to: '#2fa58f' },
+  { icon: 'box', label: 'Inventory', from: '#8fb4f5', to: '#4f7fe0' },
+  { icon: 'wallet', label: 'Accounting', from: '#b79cf0', to: '#8a63d8' },
+  { icon: 'factory', label: 'Manufacturing', from: '#f5c96f', to: '#e0a020' },
+  { icon: 'users', label: 'Employees', from: '#f29bbb', to: '#d8608f' },
+  { icon: 'globe', label: 'Website', from: '#7cc4ee', to: '#3a9ad6' },
+  { icon: 'kanban', label: 'Project', from: '#a9d27a', to: '#72a83a' },
+];
+
+const capabilities: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'code', title: 'Custom modules', text: 'Built at the source-code level, in Python, to match your processes.' },
+  { icon: 'plug', title: 'Integrations', text: 'API hooks that link Odoo with the tools you already run.' },
+  { icon: 'database', title: 'Data migration', text: 'ETL pipelines that bring your legacy records across safely.' },
+  { icon: 'sparkles', title: 'AI automation', text: 'Smarter reporting and document processing on top of your data.' },
+];
+const builtWith = ['Python', 'PostgreSQL'];
+---
+
+<section id="odoo" class="relative isolate overflow-hidden bg-[#f8f3f7]">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -top-24 right-[-6%] size-[30rem] rounded-full bg-[#e9d5e4] blur-[100px]"></div>
+    <div class="absolute bottom-[-8rem] left-[-6%] size-[26rem] rounded-full bg-[#f6dfd2]/80 blur-[100px]"></div>
+  </div>
+
+  <div class="container-page grid items-center gap-16 py-24 sm:py-32 lg:grid-cols-2">
+    <div>
+      <TechLogo name="Odoo" class="h-10 w-28" />
+      <p class="mt-5 text-sm font-semibold tracking-wide text-[#714b67]">Open, modular ERP</p>
+      <h2 class="mt-3 text-4xl font-semibold sm:text-5xl">
+        Odoo, <span class="text-[#714b67]">tailored to fit</span> the way you work
+      </h2>
+      <p class="mt-5 max-w-xl text-lg leading-relaxed">
+        Switch on the apps you need and let us extend the rest. We adapt Odoo to your established workflows with custom modules, integrations, and migrated data, instead of making your team adapt to generic software.
+      </p>
+
+      <ul class="mt-10 divide-y divide-[#714b67]/10 overflow-hidden rounded-2xl bg-white/70 ring-1 ring-[#714b67]/10 backdrop-blur">
+        {
+          capabilities.map((c) => (
+            <li class="group flex items-center gap-4 px-5 py-4 transition hover:bg-white">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-[#f3e8f0] text-[#714b67] transition group-hover:bg-[#714b67] group-hover:text-white">
+                <Icon name={c.icon} class="size-5" />
+              </span>
+              <span>
+                <span class="block font-semibold text-ink">{c.title}</span>
+                <span class="block text-sm">{c.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-8 flex flex-wrap items-center gap-2">
+        <span class="mr-1 text-sm text-muted">Built with</span>
+        {builtWith.map((t) => <span class="chip"><TechLogo name={t} class="size-5" />{t}</span>)}
+      </div>
+
+      <a href="/services/erp-business-solutions#erp-implementation" class="btn btn-odoo mt-10">
+        Talk about Odoo <Icon name="arrowRight" class="arrow size-4" />
+      </a>
+    </div>
+
+    <!-- App launcher (decorative) -->
+    <div class="relative mx-auto w-full max-w-md" aria-hidden="true" data-reveal>
+      <div class="overflow-hidden rounded-3xl bg-white shadow-[0_40px_80px_-30px_rgba(113,75,103,0.45)] ring-1 ring-[#714b67]/10">
+        <div class="flex items-center justify-between bg-[#714b67] px-5 py-3.5 text-white">
+          <span class="flex items-center gap-2.5">
+            <span class="grid grid-cols-3 gap-[3px]">
+              {Array.from({ length: 9 }, () => <span class="size-[5px] rounded-[1px] bg-white/90" />)}
+            </span>
+            <span class="text-sm font-semibold">Apps</span>
+          </span>
+          <span class="flex gap-1.5"><span class="size-2 rounded-full bg-white/40"></span><span class="size-2 rounded-full bg-white/40"></span><span class="size-2 rounded-full bg-white/40"></span></span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-x-4 gap-y-6 p-6">
+          {
+            apps.map((a, i) => (
+              <div class="app-tile flex flex-col items-center gap-2.5" style={`--i:${i}`}>
+                <span class="app-icon grid size-16 place-items-center rounded-2xl text-white shadow-[0_12px_24px_-10px_rgba(0,0,0,0.35)]" style={`background:linear-gradient(145deg,${a.from},${a.to})`}>
+                  <Icon name={a.icon} class="size-7" strokeWidth={1.8} />
+                </span>
+                <span class="text-xs font-medium text-ink">{a.label}</span>
+              </div>
+            ))
+          }
+          <div class="app-tile flex flex-col items-center gap-2.5" style="--i:8">
+            <span class="app-icon grid size-16 place-items-center rounded-2xl border-2 border-dashed border-[#714b67]/40 bg-[#f8f3f7] text-[#714b67]">
+              <Icon name="plus" class="size-7" strokeWidth={1.8} />
+            </span>
+            <span class="text-xs font-semibold text-[#714b67]">Your module</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating chip -->
+      <div class="float-b absolute -right-5 -bottom-10 flex items-center gap-2.5 rounded-2xl bg-white px-3.5 py-2.5 shadow-[0_24px_50px_-18px_rgba(113,75,103,0.55)] ring-1 ring-[#714b67]/10">
+        <span class="grid size-8 place-items-center rounded-full bg-emerald-100 text-emerald-600"><Icon name="check" class="size-4" strokeWidth={3} /></span>
+        <span class="leading-tight">
+          <span class="block text-xs font-semibold text-ink">Module deployed</span>
+          <span class="block text-[11px] text-muted">Python · PostgreSQL</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

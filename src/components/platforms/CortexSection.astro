@@ -1,0 +1,99 @@
+---
+import Icon, { type IconName } from '../Icon.astro';
+import TechLogo from '../TechLogo.astro';
+
+const features: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'layers', title: 'One unified dashboard', text: 'Finance, HR, inventory, and sales in a single system of record.' },
+  { icon: 'target', title: 'Built to fit you', text: 'Custom modules so your team never bends its workflows to fit the software.' },
+  { icon: 'plug', title: 'Connected', text: 'API hooks into the tools you use, plus ETL pipelines for legacy data.' },
+  { icon: 'sparkles', title: 'AI-ready', text: 'Automated reporting and LLM-powered analysis with strict access controls.' },
+];
+
+// Modules orbiting the Cortex core; "a" is the angle around the ring
+const modules: { icon: IconName; label: string; a: number }[] = [
+  { icon: 'wallet', label: 'Finance', a: -90 },
+  { icon: 'users', label: 'HR', a: -30 },
+  { icon: 'box', label: 'Inventory', a: 30 },
+  { icon: 'chart', label: 'Sales', a: 90 },
+  { icon: 'sparkles', label: 'AI', a: 150 },
+  { icon: 'plug', label: 'Integrations', a: 210 },
+];
+---
+
+<section id="cortex" class="relative isolate overflow-hidden bg-ink">
+  <!-- Aurora + dot grid -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="dot-grid absolute inset-0 opacity-60"></div>
+    <div class="blob absolute -top-32 right-[8%] size-[32rem] rounded-full bg-brand-500/35 blur-[110px]"></div>
+    <div class="blob absolute -bottom-40 left-[-6%] size-[28rem] rounded-full bg-brand-300/20 blur-[110px] [animation-delay:-5s]"></div>
+    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-300/50 to-transparent"></div>
+  </div>
+
+  <div class="container-page grid items-center gap-16 py-24 sm:py-32 lg:grid-cols-2">
+    <div>
+      <div class="inline-flex items-center gap-3 rounded-full bg-white/5 py-1.5 pr-4 pl-1.5 ring-1 ring-white/15">
+        <TechLogo name="Cortex ERP" class="size-8" />
+        <span class="text-sm font-semibold tracking-wide text-brand-200">Cortex ERP · Our own platform</span>
+      </div>
+      <h2 class="mt-6 text-4xl font-semibold text-white sm:text-5xl">
+        Our own ERP, <span class="bg-gradient-to-r from-brand-200 via-brand-300 to-brand-400 bg-clip-text text-transparent">shaped around your workflows</span>
+      </h2>
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-brand-100/75">
+        Cortex is EMTEK’s proprietary ERP. It brings finance, HR, inventory, and sales into one dashboard, without the licensing fees of generic enterprise software, and connects to AI to turn your data into answers.
+      </p>
+
+      <ul class="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+        {
+          features.map((f) => (
+            <li class="group flex gap-4">
+              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-white/15 to-white/5 text-brand-200 ring-1 ring-white/15 transition duration-300 group-hover:from-brand-400 group-hover:to-brand-600 group-hover:text-white">
+                <Icon name={f.icon} class="size-5" />
+              </span>
+              <div>
+                <h3 class="font-semibold text-white">{f.title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-brand-100/65">{f.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a href="/services/erp-business-solutions" class="btn btn-light mt-10">
+        Explore ERP solutions <Icon name="arrowRight" class="arrow size-4" />
+      </a>
+    </div>
+
+    <!-- Orbiting module hub (decorative) -->
+    <div class="orbit mx-auto" aria-hidden="true" data-reveal>
+      <div class="orbit-ring orbit-ring-outer"></div>
+      <div class="orbit-ring orbit-ring-inner"></div>
+
+      <div class="orbit-spin">
+        {
+          modules.map((m) => (
+            <div class="orbit-node" style={`--a:${m.a}deg`}>
+              <span class="orbit-spoke"></span>
+              <div class="orbit-pos">
+                <div class="orbit-counter">
+                  <div class="flex items-center gap-2 rounded-full bg-white/10 py-1.5 pr-3.5 pl-2 text-xs font-semibold text-white shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] ring-1 ring-white/20 backdrop-blur-md">
+                    <span class="grid size-7 place-items-center rounded-full bg-gradient-to-br from-brand-300 to-brand-500 text-ink">
+                      <Icon name={m.icon} class="size-3.5" strokeWidth={2.4} />
+                    </span>
+                    {m.label}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Core -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <span class="absolute inset-0 -m-4 animate-ping rounded-[2rem] bg-brand-400/25 [animation-duration:3s]"></span>
+        <span class="absolute inset-0 -m-8 rounded-[2.4rem] bg-brand-400/10 blur-xl"></span>
+        <TechLogo name="Cortex ERP" class="relative size-24 drop-shadow-[0_20px_40px_rgba(79,169,224,0.5)]" />
+      </div>
+    </div>
+  </div>
+</section>

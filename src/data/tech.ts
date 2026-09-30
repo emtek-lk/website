@@ -39,6 +39,7 @@ import {
   siJira,
   siDatadog,
 } from 'simple-icons';
+import dynamicsSvg from '../logos/brands/dynamics-365.svg?raw';
 import logos from '@iconify-json/logos/icons.json';
 import devicon from '@iconify-json/devicon/icons.json';
 
@@ -71,12 +72,21 @@ const cortex: TechLogoData = {
   body: `<defs><linearGradient id="cortex-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4fa9e0"/><stop offset="1" stop-color="#1c4d8d"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="url(#cortex-g)"/><path d="M24 10 35.5 16.5v15L24 38l-11.5-6.5v-15Z" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2.2" stroke-linejoin="round"/><circle cx="24" cy="24" r="4" fill="#fff"/><path d="M24 20V10M27.5 26l8 5M20.5 26l-8 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>`,
 };
 
+// Full-colour artwork saved from the open theSVG collection (src/logos/brands/)
+const fromSvg = (raw: string): TechLogoData => {
+  const m = /<svg[^>]*viewBox="([^"]+)"[^>]*>([\s\S]*)<\/svg>/.exec(raw);
+  if (!m) throw new Error('Invalid SVG');
+  return { body: m[2], viewBox: m[1], color: null };
+};
+
 const L = logos as unknown as IconifySet;
 const D = devicon as unknown as IconifySet;
 
 const registry: Record<string, TechLogoData> = {
   'Cortex ERP': cortex,
-  Odoo: simple(siOdoo),
+  // The Odoo mark is a wide wordmark, so crop the viewBox to its real bounds
+  Odoo: { ...simple(siOdoo), viewBox: '0 7.4 24 9.2' },
+  'Microsoft Dynamics 365': fromSvg(dynamicsSvg),
   'SAP S/4HANA': simple(siSap),
   'Sage Intacct': simple(siSage),
   'Microsoft SQL Server': iconify(D, 'microsoftsqlserver'),
@@ -132,6 +142,7 @@ export const getTechLogo = (name: string): TechLogoData | null => {
 /** Logo wall on the home page, in display order (8 per row on desktop). "label" overrides the caption. */
 export const featuredTech: { name: string; label?: string }[] = [
   { name: 'Cortex ERP' },
+  { name: 'Microsoft Dynamics 365', label: 'Dynamics 365' },
   { name: 'Odoo' },
   { name: 'SAP S/4HANA' },
   { name: 'Sage Intacct' },
@@ -154,5 +165,4 @@ export const featuredTech: { name: string; label?: string }[] = [
   { name: 'Anthropic API (Claude)', label: 'Claude' },
   { name: 'OpenAI API', label: 'OpenAI' },
   { name: 'Ubuntu' },
-  { name: 'Datadog' },
 ];
