@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact EMTEK - Get in Touch">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container mx-auto px-4">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Get in touch with our team today.</p>
+    </div>
+  </section>
+
+  <!-- Contact Content -->
+  <section class="section container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- Contact Form -->
+      <div>
+        <h2 class="text-3xl font-bold mb-8">Send us a Message</h2>
+        <form class="space-y-6" name="contact" method="POST" netlify>
+          <div>
+            <label for="name" class="block font-semibold mb-2">Your Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="John Doe"
+            />
+          </div>
+          <div>
+            <label for="email" class="block font-semibold mb-2">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="john@example.com"
+            />
+          </div>
+          <div>
+            <label for="phone" class="block font-semibold mb-2">Phone (Optional)</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="+94 123 456 789"
+            />
+          </div>
+          <div>
+            <label for="service" class="block font-semibold mb-2">Service Interested In</label>
+            <select
+              id="service"
+              name="service"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+              <option value="">Select a service</option>
+              <option value="web-design">Web Design</option>
+              <option value="web-development">Web Development</option>
+              <option value="seo">SEO Optimization</option>
+              <option value="ecommerce">E-commerce Solutions</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="message" class="block font-semibold mb-2">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="Tell us about your project..."
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-full">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h2 class="text-3xl font-bold mb-8">Get in Touch</h2>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-bold mb-3">Address</h3>
+          <p class="text-gray-600">
+            Your Business Address<br />
+            Colombo, Sri Lanka
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-bold mb-3">Email</h3>
+          <p class="text-gray-600">
+            <a href="mailto:info@emtek.lk" class="text-accent hover:underline">info@emtek.lk</a>
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-bold mb-3">Phone</h3>
+          <p class="text-gray-600">
+            <a href="tel:+94123456789" class="text-accent hover:underline">+94 123 456 789</a>
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h3 class="text-xl font-bold mb-3">Hours</h3>
+          <p class="text-gray-600">
+            Monday - Friday: 9:00 AM - 6:00 PM<br />
+            Saturday: 10:00 AM - 4:00 PM<br />
+            Sunday: Closed
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold mb-3">Follow Us</h3>
+          <div class="flex gap-4">
+            <a href="#" class="text-accent hover:text-blue-600">Facebook</a>
+            <a href="#" class="text-accent hover:text-blue-600">Twitter</a>
+            <a href="#" class="text-accent hover:text-blue-600">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section (Optional) -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">Location</h2>
+      <div class="w-full h-96 bg-gray-300 rounded-lg"></div>
+    </div>
+  </section>
+</Layout>

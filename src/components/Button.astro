@@ -1,0 +1,28 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary';
+  children: string;
+}
+
+const { href, variant = 'primary', children } = Astro.props;
+const btnClass = variant === 'primary' ? 'btn-primary' : 'btn-secondary';
+---
+
+<a href={href} class:list={['btn', btnClass]}>
+  {children}
+</a>
+
+<style>
+  :global(.btn) {
+    @apply inline-block px-6 py-3 rounded-lg font-medium transition;
+  }
+
+  :global(.btn-primary) {
+    @apply bg-accent text-white hover:bg-blue-600;
+  }
+
+  :global(.btn-secondary) {
+    @apply bg-white text-primary hover:bg-gray-100;
+  }
+</style>

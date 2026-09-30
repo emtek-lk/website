@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Services - EMTEK Web Solutions">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container mx-auto px-4">
+      <h1>Our Services</h1>
+      <p>Comprehensive digital solutions for your business</p>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section container mx-auto px-4">
+    <h2 class="section-title">What We Offer</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Web Design -->
+      <div class="card" id="web-design">
+        <h3 class="text-2xl font-bold mb-4">Web Design</h3>
+        <p class="text-gray-600 mb-6">
+          Beautiful, modern websites that capture your brand's essence and engage your audience. We create responsive designs that work perfectly on all devices.
+        </p>
+        <ul class="text-gray-600 space-y-2">
+          <li>✓ Responsive Design</li>
+          <li>✓ User Experience Optimization</li>
+          <li>✓ Brand Consistency</li>
+          <li>✓ Modern UI/UX</li>
+        </ul>
+        <a href="/services/web-design" class="btn btn-primary inline-block mt-6">Learn More</a>
+      </div>
+
+      <!-- Web Development -->
+      <div class="card" id="development">
+        <h3 class="text-2xl font-bold mb-4">Web Development</h3>
+        <p class="text-gray-600 mb-6">
+          Powerful, scalable web applications built with the latest technologies. From static sites to complex applications, we deliver reliable solutions.
+        </p>
+        <ul class="text-gray-600 space-y-2">
+          <li>✓ Frontend Development</li>
+          <li>✓ Backend Development</li>
+          <li>✓ Full Stack Solutions</li>
+          <li>✓ API Development</li>
+        </ul>
+        <a href="/services/development" class="btn btn-primary inline-block mt-6">Learn More</a>
+      </div>
+
+      <!-- SEO Optimization -->
+      <div class="card" id="seo">
+        <h3 class="text-2xl font-bold mb-4">SEO Optimization</h3>
+        <p class="text-gray-600 mb-6">
+          Increase your online visibility and attract more customers through our comprehensive SEO strategies. We focus on sustainable, long-term growth.
+        </p>
+        <ul class="text-gray-600 space-y-2">
+          <li>✓ On-page SEO</li>
+          <li>✓ Technical SEO</li>
+          <li>✓ Content Strategy</li>
+          <li>✓ Link Building</li>
+        </ul>
+        <a href="/services/seo" class="btn btn-primary inline-block mt-6">Learn More</a>
+      </div>
+
+      <!-- E-commerce Solutions -->
+      <div class="card">
+        <h3 class="text-2xl font-bold mb-4">E-commerce Solutions</h3>
+        <p class="text-gray-600 mb-6">
+          Launch your online store with a platform built to convert. We create e-commerce solutions that are secure, fast, and easy to manage.
+        </p>
+        <ul class="text-gray-600 space-y-2">
+          <li>✓ Store Setup</li>
+          <li>✓ Payment Integration</li>
+          <li>✓ Inventory Management</li>
+          <li>✓ Performance Optimization</li>
+        </ul>
+        <a href="/services/ecommerce" class="btn btn-primary inline-block mt-6">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-accent text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-4">Ready to Transform Your Online Presence?</h2>
+      <p class="text-lg mb-8 text-blue-100">Let's discuss which service is right for your business</p>
+      <a href="/contact" class="btn bg-white text-accent hover:bg-gray-100">Get in Touch</a>
+    </div>
+  </section>
+</Layout>
