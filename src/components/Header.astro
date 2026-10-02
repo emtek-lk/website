@@ -1,25 +1,26 @@
 ---
 import { Image } from 'astro:assets';
-import Icon, { type IconName } from './Icon.astro';
+import Icon from './Icon.astro';
 import TechLogo from './TechLogo.astro';
+import ModuleIcon from './erp/ModuleIcon.astro';
 import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
 import { nav, site } from '../data/site';
 import { services } from '../data/services';
-import { erpPlatforms } from '../data/erp';
+import { erpPlatforms, otherErps } from '../data/erp';
 
 const path = Astro.url.pathname.replace(/\.html$/, '');
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
-type MenuItem = { href: string; title: string; text: string; icon?: IconName; logo?: string; wide?: boolean };
-const menus: Record<string, { items: MenuItem[]; footer?: { href: string; label: string } }> = {
-  '/services': {
-    items: services.map((s) => ({ href: `/services/${s.slug}`, title: s.shortTitle, text: s.summary, icon: s.icon })),
-  },
-  '/erp': {
-    items: erpPlatforms.map((p) => ({ href: `/erp/${p.slug}`, title: p.name, text: p.eyebrow, logo: p.logo, wide: p.slug === 'odoo' })),
-    footer: { href: '/erp', label: 'All ERP platforms & how to choose' },
-  },
+const megaMenus = new Set(['/services', '/erp']);
+const erpTagline: Record<string, string> = {
+  'cortex-erp': 'Our own ERP platform',
+  'microsoft-dynamics-365': 'Microsoft business apps',
+  odoo: 'Open, modular ERP',
 };
+const linkClass = (href: string) => [
+  'relative inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/85 transition hover:text-white',
+  isActive(href) && 'text-white',
+];
 ---
 
 <header class="site-header fixed inset-x-0 top-0 z-50">
@@ -28,55 +29,122 @@ const menus: Record<string, { items: MenuItem[]; footer?: { href: string; label:
       <Image src={logoLight} alt={site.name} width={112} densities={[1, 2]} loading="eager" fetchpriority="high" class="h-auto w-[112px]" />
     </a>
 
-    <!-- Desktop -->
-    <ul class="hidden items-center gap-1 md:flex">
+    <!-- Desktop: each <li> fills the nav height so the pointer never leaves it on the way to a mega menu -->
+    <ul class="hidden items-stretch self-stretch md:flex">
       {
-        nav.map((item) => {
-          const menu = menus[item.href];
-          const linkClass = [
-            'inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/90 transition hover:text-white',
-            isActive(item.href) && 'text-white',
-          ];
-          return menu ? (
-            <li class="group relative">
-              <a href={item.href} class:list={linkClass} aria-haspopup="true" aria-current={isActive(item.href) ? 'page' : undefined}>
+        nav.map((item) =>
+          megaMenus.has(item.href) ? (
+            <li class="group flex items-center">
+              <a href={item.href} class:list={linkClass(item.href)} aria-haspopup="true" aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
-                <Icon name="chevronDown" class="size-4 transition group-hover:rotate-180 group-focus-within:rotate-180" />
+                <Icon name="chevronDown" class="size-4 transition duration-200 group-hover:rotate-180 group-focus-within:rotate-180" />
+                {isActive(item.href) && <span class="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-brand-300" />}
               </a>
-              <div class="invisible absolute top-full left-1/2 w-[26rem] -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                <div class="rounded-2xl border border-line bg-white p-2 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.35)]">
-                  <ul>
-                    {menu.items.map((m) => (
-                      <li>
-                        <a href={m.href} class="flex items-center gap-4 rounded-xl p-3 transition hover:bg-canvas">
-                          <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
-                            {m.logo ? <TechLogo name={m.logo} class={m.wide ? 'h-4 w-9' : 'size-6'} /> : <Icon name={m.icon ?? 'layers'} />}
-                          </span>
-                          <span>
-                            <span class="block text-[15px] font-semibold text-ink">{m.title}</span>
-                            <span class="mt-0.5 line-clamp-2 block text-sm text-muted">{m.text}</span>
-                          </span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                  {menu.footer && (
-                    <a href={menu.footer.href} class="mt-1 flex items-center justify-between rounded-xl bg-canvas px-4 py-3 text-sm font-semibold text-brand-700 transition hover:text-brand-900">
-                      {menu.footer.label}
-                      <Icon name="arrowRight" class="size-4" />
-                    </a>
-                  )}
+
+              <!-- Mega menu: spans the page container, directly under the bar -->
+              <div class="invisible absolute inset-x-0 top-full translate-y-2 pt-1 opacity-0 transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                <div class="container-page">
+                  <div class="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_40px_80px_-24px_rgba(10,31,61,0.45)]">
+                    {item.href === '/services' ? (
+                      <div class="grid lg:grid-cols-12">
+                        <div class="grid gap-x-2 p-4 lg:col-span-9 lg:grid-cols-3">
+                          {services.map((s) => (
+                            <div class="rounded-2xl p-4 transition hover:bg-canvas">
+                              <a href={`/services/${s.slug}`} class="group/col flex items-center gap-3">
+                                <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover/col:bg-brand-700 group-hover/col:text-white">
+                                  <Icon name={s.icon} class="size-5" />
+                                </span>
+                                <span class="text-[15px] leading-snug font-semibold text-ink group-hover/col:text-brand-700">{s.shortTitle}</span>
+                              </a>
+                              <ul class="mt-4 space-y-0.5 border-t border-line pt-3">
+                                {s.offerings.map((o) => (
+                                  <li>
+                                    <a href={`/services/${s.slug}#${o.id}`} class="flex items-start gap-2 rounded-lg px-2 py-1.5 text-sm leading-snug text-body transition hover:bg-white hover:text-brand-700">
+                                      <Icon name="arrowRight" class="mt-0.5 size-3.5 shrink-0 text-brand-400" />
+                                      {o.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                        <div class="hero-gradient relative flex flex-col justify-between p-7 lg:col-span-3">
+                          <div>
+                            <p class="text-sm font-semibold text-brand-200">Not sure where to start?</p>
+                            <p class="mt-2 text-xl leading-snug font-semibold text-white">Tell us what’s slowing your business down.</p>
+                            <p class="mt-3 text-sm leading-relaxed text-white/75">We’ll help you plan the right mix of ERP, software, and IT support.</p>
+                          </div>
+                          <div class="mt-6 space-y-3">
+                            <a href="/contact" class="btn btn-light w-full justify-center">Talk to us <Icon name="arrowRight" class="arrow size-4" /></a>
+                            <a href={site.phoneHref} class="flex items-center justify-center gap-2 text-sm font-medium text-white/85 hover:text-white">
+                              <Icon name="phone" class="size-4" /> {site.phone}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="grid lg:grid-cols-12">
+                        <div class="grid gap-x-2 p-4 lg:col-span-9 lg:grid-cols-3">
+                          {erpPlatforms.map((p) => (
+                            <a href={`/erp/${p.slug}`} class="group/col rounded-2xl p-4 transition hover:bg-canvas" style={`--accent:${p.theme.accent}`}>
+                              <span class="flex items-center gap-3">
+                                <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-canvas ring-1 ring-line transition group-hover/col:bg-white">
+                                  <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-4 w-9' : 'size-7'} />
+                                </span>
+                                <span class="leading-snug">
+                                  <span class="block text-[15px] font-semibold text-ink group-hover/col:text-[var(--accent)]">{p.name}</span>
+                                  <span class="block text-xs text-muted">{erpTagline[p.slug]}</span>
+                                </span>
+                              </span>
+                              <span class="mt-4 block border-t border-line pt-4 text-sm leading-relaxed text-body">{p.intro.title}.</span>
+                              <span class="mt-4 flex items-center gap-1.5">
+                                {p.modules
+                                  .filter((m) => m.glyph !== 'plus')
+                                  .slice(0, 6)
+                                  .map((m) => (
+                                    <span title={m.name}>
+                                      <ModuleIcon module={m} class="size-7" />
+                                    </span>
+                                  ))}
+                              </span>
+                              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]">
+                                Explore <Icon name="arrowRight" class="size-4 transition group-hover/col:translate-x-1" />
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                        <div class="flex flex-col justify-between bg-canvas p-7 lg:col-span-3">
+                          <div>
+                            <p class="text-sm font-semibold text-ink">Also implemented by EMTEK</p>
+                            <ul class="mt-4 space-y-2">
+                              {otherErps.map((name) => (
+                                <li class="chip w-full">
+                                  <TechLogo name={name} class="size-5" />
+                                  {name}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <a href="/erp" class="btn btn-primary mt-6 w-full justify-center">
+                            Compare ERP platforms <Icon name="arrowRight" class="arrow size-4" />
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </li>
           ) : (
-            <li>
-              <a href={item.href} class:list={linkClass} aria-current={isActive(item.href) ? 'page' : undefined}>
+            <li class="flex items-center">
+              <a href={item.href} class:list={linkClass(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
+                {isActive(item.href) && <span class="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-brand-300" />}
               </a>
             </li>
-          );
-        })
+          ),
+        )
       }
     </ul>
 
@@ -94,13 +162,13 @@ const menus: Record<string, { items: MenuItem[]; footer?: { href: string; label:
         <p class="px-3 pt-2 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
         <ul>
           {
-            menus['/services'].items.map((m) => (
+            services.map((s) => (
               <li>
-                <a href={m.href} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
+                <a href={`/services/${s.slug}`} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
                   <span class="text-brand-700">
-                    <Icon name={m.icon ?? 'layers'} />
+                    <Icon name={s.icon} />
                   </span>
-                  {m.title}
+                  {s.shortTitle}
                 </a>
               </li>
             ))
@@ -109,13 +177,13 @@ const menus: Record<string, { items: MenuItem[]; footer?: { href: string; label:
         <p class="px-3 pt-3 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">ERP platforms</p>
         <ul>
           {
-            menus['/erp'].items.map((m) => (
+            erpPlatforms.map((p) => (
               <li>
-                <a href={m.href} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
+                <a href={`/erp/${p.slug}`} class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-ink hover:bg-canvas">
                   <span class="grid w-9 place-items-center">
-                    <TechLogo name={m.logo ?? ''} class={m.wide ? 'h-3.5 w-9' : 'size-5'} />
+                    <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-3.5 w-9' : 'size-5'} />
                   </span>
-                  {m.title}
+                  {p.name}
                 </a>
               </li>
             ))

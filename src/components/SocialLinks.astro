@@ -4,14 +4,16 @@ import { socialLinks } from '../data/social';
 interface Props {
   /** "dark" for the footer, "light" for white backgrounds */
   variant?: 'dark' | 'light';
+  /** Smaller buttons so six fit in a narrow column */
+  compact?: boolean;
   class?: string;
 }
 
-const { variant = 'dark', class: className = '' } = Astro.props;
+const { variant = 'dark', compact = false, class: className = '' } = Astro.props;
 const base = variant === 'dark' ? 'bg-white/10 text-brand-100 hover:text-white' : 'bg-white text-ink ring-1 ring-line hover:text-white hover:ring-transparent';
 ---
 
-<ul class:list={['flex flex-wrap gap-2.5', className]} aria-label="EMTEK on social media">
+<ul class:list={['flex flex-wrap', compact ? 'gap-1.5' : 'gap-2.5', className]} aria-label="EMTEK on social media">
   {
     socialLinks.map((s) => (
       <li>
@@ -21,10 +23,10 @@ const base = variant === 'dark' ? 'bg-white/10 text-brand-100 hover:text-white' 
           rel="noopener noreferrer me"
           aria-label={`EMTEK on ${s.label}`}
           title={s.label}
-          class:list={['social-btn grid size-10 place-items-center rounded-full transition duration-200 hover:-translate-y-0.5', base]}
+          class:list={['social-btn grid place-items-center rounded-full', compact ? 'size-8' : 'size-10', 'transition duration-200 hover:-translate-y-0.5', base]}
           style={`--hover:${s.color}`}
         >
-          <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true" set:html={s.icon} />
+          <svg viewBox="0 0 24 24" class={compact ? 'size-4' : 'size-5'} fill="currentColor" aria-hidden="true" set:html={s.icon} />
         </a>
       </li>
     ))
