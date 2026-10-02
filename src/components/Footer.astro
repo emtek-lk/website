@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import SocialLinks from './SocialLinks.astro';
 import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
-import { site } from '../data/site';
+import { site, addressLine, mapsUrl } from '../data/site';
 import { services } from '../data/services';
 import { erpPlatforms } from '../data/erp';
 
@@ -71,6 +71,14 @@ const year = new Date().getFullYear();
         <li>
           <a href={site.phoneHref} class="inline-flex items-center gap-2 whitespace-nowrap transition hover:text-white">
             <Icon name="phone" class="size-4" />{site.phone}
+          </a>
+        </li>
+        <li>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-start gap-2 transition hover:text-white">
+            <Icon name="pin" class="mt-0.5 size-4 shrink-0" />
+            <address class="not-italic">
+              {site.address.street},<br />{site.address.city} {site.address.postalCode},<br />{site.address.country}
+            </address>
           </a>
         </li>
       </ul>

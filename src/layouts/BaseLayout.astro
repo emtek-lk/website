@@ -57,7 +57,13 @@ const organization = {
   email: site.email,
   telephone: site.phone,
   sameAs: socialProfiles,
-  address: { '@type': 'PostalAddress', addressCountry: site.country },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    postalCode: site.address.postalCode,
+    addressCountry: site.country,
+  },
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'sales',

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import SocialLinks from '../components/SocialLinks.astro';
-import { site } from '../data/site';
+import { site, mapsUrl } from '../data/site';
 import { services } from '../data/services';
 
 const mailSubject = encodeURIComponent('Project enquiry');
@@ -43,6 +43,20 @@ const steps = [
         <span>
           <span class="block text-sm text-muted">Call us</span>
           <span class="mt-1 block text-xl font-semibold whitespace-nowrap text-ink group-hover:text-brand-700 sm:text-2xl">{site.phone}</span>
+        </span>
+      </a>
+      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="card group flex items-center gap-6 shadow-[0_30px_60px_-30px_rgba(10,31,61,0.45)] md:col-span-2">
+        <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-700 text-white">
+          <Icon name="pin" class="size-6" />
+        </span>
+        <span class="flex-1">
+          <span class="block text-sm text-muted">Visit our office</span>
+          <address class="mt-1 block text-xl font-semibold text-ink not-italic group-hover:text-brand-700 sm:text-2xl">
+            {site.address.street}, {site.address.city} {site.address.postalCode}, {site.address.country}
+          </address>
+        </span>
+        <span class="hidden items-center gap-1.5 text-sm font-semibold text-brand-700 sm:inline-flex">
+          Get directions <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
         </span>
       </a>
     </div>

@@ -8,7 +8,17 @@ export const site = {
   phone: '+94 77 254 0120',
   phoneHref: 'tel:+94772540120',
   country: 'LK',
+  address: {
+    street: '48A, Papiliyana Road',
+    city: 'Nugegoda',
+    postalCode: '10250',
+    country: 'Sri Lanka',
+  },
 };
+
+/** One-line and multi-line forms of the office address */
+export const addressLine = `${site.address.street}, ${site.address.city} ${site.address.postalCode}, ${site.address.country}`;
+export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`EMTEK, ${addressLine}`)}`;
 
 export const nav = [
   { label: 'Services', href: '/services' },
