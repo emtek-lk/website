@@ -9,6 +9,8 @@ import { getService } from '../../data/services';
 import Flag from '../../components/Flag.astro';
 import { countryNames } from '../../data/testimonials';
 import { site } from '../../data/site';
+import RelatedProjects from '../../components/RelatedProjects.astro';
+import TechLogo from '../../components/TechLogo.astro';
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection('projects', ({ data }) => !data.draft);
@@ -22,8 +24,21 @@ interface Props {
 const { project } = Astro.props;
 const { data } = project;
 const { Content } = await render(project);
+const url = `${site.url}/projects/${project.id}`;
+const more = (await getCollection('projects', ({ data: d, id }) => !d.draft && id !== project.id)).sort((a, b) => a.data.order - b.data.order);
 
 const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: data.title,
+    description: data.summary,
+    url,
+    mainEntityOfPage: url,
+    author: { '@id': `${site.url}/#organization` },
+    publisher: { '@id': `${site.url}/#organization` },
+    about: [{ '@type': 'Organization', name: data.client }, ...data.technologies.map((t) => ({ '@type': 'Thing', name: t }))],
+  },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -36,12 +51,12 @@ const schema = [
 ];
 ---
 
-<BaseLayout title={data.title} description={data.summary} schema={schema}>
+<BaseLayout title={data.seoTitle ?? data.title} description={data.summary} schema={schema} ogType="article">
   <PageHero eyebrow={data.industry ? `Case study · ${data.industry}` : 'Case study'} title={data.title} lead={data.summary}>
     {
       data.clientLogo && (
         <div class="mt-8 inline-flex items-center gap-4 rounded-2xl bg-white px-5 py-3 shadow-lg">
-          <Image src={data.clientLogo} alt={`${data.client} logo`} width={200} class="max-h-12 w-auto max-w-40 object-contain" />
+          <Image src={data.clientLogo} alt={`${data.client} logo`} width={240} loading="eager" class="h-14 w-auto max-w-48 object-contain" />
           {data.country && (
             <span class="inline-flex items-center gap-2 border-l border-line pl-4 text-sm font-semibold text-ink">
               <Flag code={data.country} class="size-5" />
@@ -112,7 +127,7 @@ const schema = [
               <dt class="text-sm text-muted">Technology</dt>
               <dd class="mt-2 flex flex-wrap gap-2">
                 {data.technologies.map((t) => (
-                  <span class="chip">{t}</span>
+                  <span class="chip"><TechLogo name={t} class="size-5" />{t}</span>
                 ))}
               </dd>
             </div>
@@ -121,6 +136,8 @@ const schema = [
       </dl>
     </aside>
   </section>
+
+  <RelatedProjects projects={more} eyebrow="More case studies" title="See what else we’ve delivered" class="!pt-0" />
 
   <CtaBand title="Have a similar challenge?" />
 </BaseLayout>

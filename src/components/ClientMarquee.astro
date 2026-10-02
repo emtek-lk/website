@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import { clients } from '../data/clients';
+---
+
+<!-- Infinite logo marquee: the list is rendered twice and the track slides by exactly half its width -->
+<section class="pt-8 pb-4 sm:pt-12" aria-labelledby="clients-heading">
+  <p id="clients-heading" class="container-page text-center text-sm font-medium text-muted">Trusted by businesses in Sri Lanka, the UK, and India</p>
+  <div class="marquee group mt-8 overflow-hidden">
+    <ul class="marquee-track flex w-max items-center gap-4 group-hover:[animation-play-state:paused]">
+      {
+        [...clients, ...clients].map((c, i) => (
+          <li class="grid h-20 w-44 shrink-0 place-items-center rounded-2xl bg-white px-6 ring-1 ring-line" aria-hidden={i >= clients.length ? 'true' : undefined}>
+            <Image src={c.logo} alt={i < clients.length ? `${c.name} logo` : ''} width={176} class="h-11 w-auto max-w-full object-contain" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -49,7 +49,7 @@ export const erpPlatforms: ErpPlatform[] = [
     name: 'Cortex ERP',
     shortName: 'Cortex ERP',
     logo: 'Cortex ERP',
-    seoTitle: 'Cortex ERP: Custom ERP Software Built Around Your Business',
+    seoTitle: 'Cortex ERP: Custom ERP Software for Your Business',
     seoDescription:
       'Cortex is EMTEK’s own ERP platform. Finance, HR, inventory, and sales in one dashboard, tailored to your workflows, with AI automation and no generic licensing fees.',
     eyebrow: 'Our own ERP platform',
@@ -119,9 +119,9 @@ export const erpPlatforms: ErpPlatform[] = [
     name: 'Microsoft Dynamics 365',
     shortName: 'Dynamics 365',
     logo: 'Microsoft Dynamics 365',
-    seoTitle: 'Microsoft Dynamics 365 Implementation, Customization & Integration',
+    seoTitle: 'Microsoft Dynamics 365 Implementation & Customization',
     seoDescription:
-      'Microsoft Dynamics 365 implementation and customization by EMTEK. Custom modules, source-level changes, integrations, data migration, and AI, adapted to your workflows.',
+      'Microsoft Dynamics 365 implementation and customization by EMTEK: custom modules, source-level changes, integrations, data migration, and AI for your workflows.',
     eyebrow: 'Microsoft Dynamics 365',
     heroTitle: 'Dynamics 365, adapted to the way your business works',
     heroLead:

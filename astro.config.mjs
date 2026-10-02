@@ -12,5 +12,8 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    // Emit every asset as a cacheable file: inlining small SVG icons as data URIs
+    // repeated them in the HTML of every page (the mega menu alone carried ~50KB)
+    build: { assetsInlineLimit: 0 },
   },
 });

@@ -6,7 +6,7 @@
 
   --color-ink: #0a1f3d;
   --color-body: #475872;
-  --color-muted: #6b7a90;
+  --color-muted: #5b6a80;
   --color-line: #e3e9f1;
   --color-canvas: #f6f9fc;
 
@@ -102,14 +102,33 @@
   }
 
   /* Stripe-style slanted gradient hero */
-  .hero-gradient {
+  /* The gradient lives on a ::before layer that drifts with transform (GPU-composited, no repaints) */
+  .hero-gradient,
+  .hero-custom {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: #0f2a4f;
+  }
+  .hero-gradient::before,
+  .hero-custom::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    animation: hero-pan 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .hero-gradient::before {
     background:
-      radial-gradient(60% 80% at 92% 10%, rgb(143 211 238 / 0.95) 0%, transparent 62%),
-      radial-gradient(50% 65% at 62% 55%, rgb(79 169 224 / 0.75) 0%, transparent 68%),
-      radial-gradient(70% 90% at 0% 100%, rgb(28 77 141 / 0.9) 0%, transparent 70%),
+      radial-gradient(50% 65% at 85% 15%, rgb(143 211 238 / 0.95) 0%, transparent 62%),
+      radial-gradient(42% 55% at 60% 52%, rgb(79 169 224 / 0.75) 0%, transparent 68%),
+      radial-gradient(60% 75% at 8% 92%, rgb(28 77 141 / 0.9) 0%, transparent 70%),
       linear-gradient(120deg, #0f2a4f 0%, #1c4d8d 40%, #2d7fd0 75%, #4fa9e0 100%);
-    background-size: 140% 140%;
-    animation: hero-drift 18s ease-in-out infinite alternate;
+  }
+  .hero-custom::before {
+    background: var(--hero-bg);
   }
   .hero-slant {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
@@ -143,12 +162,12 @@
   }
 }
 
-@keyframes hero-drift {
+@keyframes hero-pan {
   from {
-    background-position: 0% 0%;
+    transform: translate3d(-5%, -3%, 0) scale(1.02);
   }
   to {
-    background-position: 100% 60%;
+    transform: translate3d(5%, 3%, 0) scale(1.05);
   }
 }
 
@@ -460,8 +479,34 @@
 }
 
 /* Per-platform hero background (set --hero-bg inline) */
-.hero-custom {
-  background: var(--hero-bg);
-  background-size: 140% 140%;
-  animation: hero-drift 18s ease-in-out infinite alternate;
+
+
+/* Client logo marquee */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+/* With reduced motion the animations above never run, so show their finished state instead */
+@media (prefers-reduced-motion: reduce) {
+  .chart-line {
+    stroke-dashoffset: 0;
+  }
+  .chart-area,
+  .chart-dot {
+    opacity: 1;
+  }
+  .uptime-bar {
+    width: 92%;
+  }
+  .swap:first-child {
+    opacity: 1;
+  }
 }

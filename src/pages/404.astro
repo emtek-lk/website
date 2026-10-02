@@ -1,15 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import Icon from '../components/Icon.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+
+const links: { href: string; title: string; text: string; icon: IconName }[] = [
+  { href: '/services', title: 'Services', text: 'ERP, custom software, and managed IT', icon: 'layers' },
+  { href: '/erp', title: 'ERP platforms', text: 'Cortex ERP, Dynamics 365, and Odoo', icon: 'box' },
+  { href: '/projects', title: 'Projects', text: 'Case studies from our clients', icon: 'chart' },
+  { href: '/contact', title: 'Contact', text: 'Email, call, or visit our office', icon: 'mail' },
+];
 ---
 
-<BaseLayout title="Page not found" noindex>
-  <PageHero eyebrow="404" title="We couldn’t find that page" lead="The page may have moved, or the link may be mistyped.">
+<BaseLayout title="Page not found" description="The page you were looking for could not be found. Explore EMTEK’s services, ERP platforms, and projects, or get in touch." noindex>
+  <PageHero eyebrow="404" title="We couldn’t find that page" lead="The page may have moved, or the link may be mistyped. These are good places to continue.">
     <div class="mt-10 flex flex-wrap gap-4">
       <a href="/" class="btn btn-light">Back to home <Icon name="arrowRight" class="arrow size-4" /></a>
-      <a href="/services" class="btn btn-ghost-light">Our services <Icon name="arrowRight" class="arrow size-4" /></a>
     </div>
   </PageHero>
-  <div class="pb-24"></div>
+
+  <section class="container-page py-20">
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} class="card group flex h-full flex-col">
+              <span class="grid size-11 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+                <Icon name={l.icon} class="size-5" />
+              </span>
+              <span class="mt-5 text-lg font-semibold text-ink">{l.title}</span>
+              <span class="mt-1 text-sm">{l.text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </BaseLayout>

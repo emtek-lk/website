@@ -10,6 +10,8 @@ import ProcessSteps from '../../components/erp/ProcessSteps.astro';
 import ExpertiseGrid from '../../components/erp/ExpertiseGrid.astro';
 import { erpPlatforms, otherErps, type ErpPlatform } from '../../data/erp';
 import { site } from '../../data/site';
+import { getCollection } from 'astro:content';
+import RelatedProjects from '../../components/RelatedProjects.astro';
 
 export const getStaticPaths = (() => erpPlatforms.map((platform) => ({ params: { slug: platform.slug }, props: { platform } }))) satisfies GetStaticPaths;
 
@@ -21,6 +23,7 @@ const { platform: p } = Astro.props;
 const url = `${site.url}/erp/${p.slug}`;
 const others = erpPlatforms.filter((o) => o.slug !== p.slug);
 const isCortex = p.slug === 'cortex-erp';
+const projects = await getCollection('projects', ({ data }) => !data.draft && data.technologies.includes(p.name));
 
 // Floating module tiles around the logo in the hero
 const orbitSpots = [
@@ -191,6 +194,8 @@ const schema = [
     <ProcessSteps title={`How we deliver ${p.shortName}`} />
 
     <ExpertiseGrid title={`Why businesses choose EMTEK for ${p.shortName}`} />
+
+    <RelatedProjects projects={projects} eyebrow="Case study" title={`${p.shortName} in production`} />
 
     <!-- FAQ -->
     <section class="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-12">

@@ -13,12 +13,16 @@ export interface Service {
   slug: string;
   title: string;
   shortTitle: string;
+  /** Page <title> (kept under ~57 characters so the brand suffix fits in search results) */
+  seoTitle: string;
   icon: IconName;
   /** One line, used on cards and in meta descriptions */
   summary: string;
   intro: string;
   offerings: Offering[];
   stack: { group: string; items: string[] }[];
+  /** Shown on the service page and published as FAQPage structured data */
+  faqs: { q: string; a: string }[];
 }
 
 export const services: Service[] = [
@@ -26,6 +30,7 @@ export const services: Service[] = [
     slug: 'erp-business-solutions',
     title: 'Enterprise Resource Planning (ERP) & Business Solutions',
     shortTitle: 'ERP & Business Solutions',
+    seoTitle: 'ERP Solutions: Implementation, Customization & AI',
     icon: 'layers',
     summary:
       'Centralize finance, HR, inventory, and sales with our Cortex ERP or a tailored Dynamics 365, Odoo, SAP, or NetSuite rollout, then put AI to work on your data.',
@@ -58,11 +63,34 @@ export const services: Service[] = [
       { group: 'Integration & AI', items: ['MuleSoft', 'Talend', 'OpenAI API', 'Anthropic API (Claude)'] },
       { group: 'Customization languages', items: ['Python', 'Java', 'C#', 'Node.js'] },
     ],
+    faqs: [
+      {
+        q: 'What does an ERP system do for my business?',
+        a: 'An ERP gives you one unified system to manage finance, HR, inventory, and sales, so every department works from the same data instead of separate spreadsheets and tools.',
+      },
+      {
+        q: 'Which ERP platforms do you work with?',
+        a: 'Our own Cortex ERP, Microsoft Dynamics 365, Odoo, SAP S/4HANA, Oracle NetSuite, and Sage Intacct. We help you choose the platform that fits your processes and budget.',
+      },
+      {
+        q: 'Can you customize an ERP to fit our existing workflows?',
+        a: 'Yes. Our engineers modify ERP software at the source-code level and build custom functional modules, so you don’t have to change established workflows to fit generic software.',
+      },
+      {
+        q: 'Can you migrate data from our current systems?',
+        a: 'Yes. We run ETL (Extract, Transform, Load) pipelines to move data from legacy systems into secure relational databases with ACID-compliant transaction records.',
+      },
+      {
+        q: 'How can AI work with our ERP?',
+        a: 'We connect your ERP to large language models with orchestration logic that feeds them enterprise data securely, so you can automate financial reporting and analyze invoices and supply chain records without compromising access controls.',
+      },
+    ],
   },
   {
     slug: 'custom-software-development',
     title: 'Custom Application Engineering & Digital Platforms',
     shortTitle: 'Custom Software & Apps',
+    seoTitle: 'Custom Software Development: Web, Mobile & APIs',
     icon: 'code',
     summary:
       'Bespoke web, mobile, desktop, and cloud applications, plus the APIs and microservices that connect them to the rest of your business.',
@@ -97,11 +125,34 @@ export const services: Service[] = [
       },
       { group: 'Design & version control', items: ['Figma', 'Git', 'GitHub', 'GitLab'] },
     ],
+    faqs: [
+      {
+        q: 'What kinds of software do you build?',
+        a: 'Bespoke web, mobile, desktop, and cloud applications, from customer-facing mobile apps and secure B2B web portals to heavy-duty internal desktop tools.',
+      },
+      {
+        q: 'Can you build one app for both iOS and Android?',
+        a: 'Yes. We use cross-platform frameworks such as Flutter and React Native, so a single codebase can be compiled and deployed across platforms.',
+      },
+      {
+        q: 'Can a new application connect to our existing systems?',
+        a: 'Yes. We build RESTful and GraphQL APIs secured with OAuth, so your new application can push and pull data from your CRM, payment gateways, ERP, or AI chat assistants.',
+      },
+      {
+        q: 'What does your development process look like?',
+        a: 'We manage the full software development life cycle: UI/UX prototyping in Figma, frontend and backend development, and deployment in containerized environments.',
+      },
+      {
+        q: 'Do you support the software after launch?',
+        a: 'Yes. We partner with you from development, through deployment, and into dedicated ongoing support, including the infrastructure your application runs on.',
+      },
+    ],
   },
   {
     slug: 'managed-it-services',
     title: 'Managed IT Infrastructure, Security & Cloud Services',
     shortTitle: 'Managed IT, Security & Cloud',
+    seoTitle: 'Managed IT Services: Cloud, Cybersecurity & Support',
     icon: 'server',
     summary:
       'Cloud migration, server and OS management, cybersecurity, backup and disaster recovery, networking, and help desk support that keeps your business online.',
@@ -141,6 +192,28 @@ export const services: Service[] = [
       { group: 'DevOps & infrastructure', items: ['Docker', 'Kubernetes', 'Terraform'] },
       { group: 'Cybersecurity & backup', items: ['CrowdStrike', 'Splunk', 'Veeam', 'OpenVPN'] },
       { group: 'Network & ITSM', items: ['ServiceNow', 'Jira Service Management', 'Datadog', 'Cisco Meraki'] },
+    ],
+    faqs: [
+      {
+        q: 'What do your managed IT services include?',
+        a: 'Cloud migration and server management, cybersecurity, backup and disaster recovery, office network administration, and help desk support for your employees.',
+      },
+      {
+        q: 'Can you move our servers to the cloud?',
+        a: 'Yes. We migrate on-premise systems to AWS, Microsoft Azure, or Google Cloud, using Infrastructure as Code with tools such as Terraform for repeatable, well-documented environments.',
+      },
+      {
+        q: 'How do you protect our business from ransomware and breaches?',
+        a: 'We deploy next-generation firewalls, endpoint protection, and VPNs, monitor for suspicious activity, automate encrypted off-site backups, and run routine disaster recovery tests.',
+      },
+      {
+        q: 'Do you provide help desk support for our staff?',
+        a: 'Yes. We run enterprise ticketing with structured triage workflows and remote-desktop support, so your employees have a reliable lifeline for software and hardware issues.',
+      },
+      {
+        q: 'Can you set up and manage our office network?',
+        a: 'Yes. We configure routers, switches, and subnets to give your offices secure, fast Wi-Fi and LAN connectivity, and we keep them maintained.',
+      },
     ],
   },
 ];

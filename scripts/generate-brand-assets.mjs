@@ -41,4 +41,43 @@ await sharp(background)
   .png({ compressionLevel: 9 })
   .toFile(out('og-image.png'));
 
+// favicon.ico (a single 48px PNG wrapped in an ICO container); many crawlers request it directly
+import { writeFileSync } from 'node:fs';
+const png48 = await sharp(favicon).resize(48, 48).png().toBuffer();
+const ico = Buffer.alloc(22);
+ico.writeUInt16LE(0, 0); // reserved
+ico.writeUInt16LE(1, 2); // type: icon
+ico.writeUInt16LE(1, 4); // image count
+ico.writeUInt8(48, 6); // width
+ico.writeUInt8(48, 7); // height
+ico.writeUInt8(0, 8); // palette
+ico.writeUInt8(0, 9); // reserved
+ico.writeUInt16LE(1, 10); // colour planes
+ico.writeUInt16LE(32, 12); // bits per pixel
+ico.writeUInt32LE(png48.length, 14); // image size
+ico.writeUInt32LE(22, 18); // image offset
+writeFileSync(out('favicon.ico'), Buffer.concat([ico, png48]));
+
+// Web app manifest (install name, icons, colours)
+writeFileSync(
+  out('site.webmanifest'),
+  JSON.stringify(
+    {
+      name: 'EMTEK',
+      short_name: 'EMTEK',
+      description: 'ERP, custom software, and managed IT services.',
+      start_url: '/',
+      display: 'browser',
+      background_color: '#ffffff',
+      theme_color: '#0a1f3d',
+      icons: [
+        { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      ],
+    },
+    null,
+    2,
+  ) + '\n',
+);
+
 console.log('Brand assets written to public/');

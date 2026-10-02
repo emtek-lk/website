@@ -1,5 +1,6 @@
 ---
 title: Microsoft Dynamics 365 and managed cloud for Daikin Air Conditioning India
+seoTitle: "Daikin India: Dynamics 365 & Managed Cloud for BI"
 client: Daikin Air Conditioning India (Pvt) Ltd
 summary: We implemented Microsoft Dynamics 365 for Daikin Air Conditioning India and manage the cloud systems that power their business intelligence (BI) solutions.
 services: [erp-business-solutions, managed-it-services]

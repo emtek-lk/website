@@ -1,6 +1,8 @@
 ---
 # Copy this file to a new name without the leading underscore (e.g. acme-cortex-erp-rollout.md).
 # The file name becomes the URL: /projects/acme-cortex-erp-rollout
+# Optional shorter title for search results (max 57 characters):
+# seoTitle: "Acme: Cortex ERP Rollout"
 title: Cortex ERP rollout for a regional distributor
 client: Client name (or "A leading regional distributor")
 industry: Distribution

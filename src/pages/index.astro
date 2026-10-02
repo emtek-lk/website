@@ -4,6 +4,7 @@ import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import HeroMockup from '../components/HeroMockup.astro';
 import ClientStories from '../components/ClientStories.astro';
+import ClientMarquee from '../components/ClientMarquee.astro';
 import CortexSection from '../components/platforms/CortexSection.astro';
 import DynamicsSection from '../components/platforms/DynamicsSection.astro';
 import OdooSection from '../components/platforms/OdooSection.astro';
@@ -30,9 +31,25 @@ const lifecycle = [
     text: 'We stay on as your technology partner: monitoring, securing, backing up, and improving your systems, with help desk support for your people.',
   },
 ] as const;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${site.url}/#website`,
+    name: site.name,
+    url: site.url,
+    description: site.description,
+    publisher: { '@id': `${site.url}/#organization` },
+    inLanguage: 'en',
+  },
+];
 ---
 
-<BaseLayout>
+<BaseLayout
+  description="EMTEK builds custom ERP software (Cortex ERP), implements Microsoft Dynamics 365 and Odoo, develops custom apps, and provides managed IT, cloud, and security."
+  schema={schema}
+>
   <!-- Hero -->
   <section class="hero-gradient hero-slant relative overflow-hidden pt-36 pb-32 sm:pt-44 sm:pb-44">
     <div class="container-page relative grid items-center gap-16 lg:grid-cols-12">
@@ -54,20 +71,7 @@ const lifecycle = [
     </div>
   </section>
 
-  <!-- Technology logo wall -->
-  <section class="container-page pt-6 pb-8 sm:pt-10">
-    <p class="text-center text-sm font-medium text-muted">The platforms, languages, and clouds we build and run on</p>
-    <ul class="tech-wall mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-      {
-        featuredTech.map(({ name, label }) => (
-          <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-2 py-5 text-center transition duration-200 hover:border-line hover:bg-canvas">
-            <TechLogo name={name} class="size-9" />
-            <span class="text-xs font-medium text-body transition group-hover:text-ink">{label ?? name}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <ClientMarquee />
 
   <!-- Services -->
   <section class="container-page py-20 sm:py-28">
@@ -136,6 +140,25 @@ const lifecycle = [
   </section>
 
   <ClientStories />
+
+  <!-- Technology logo wall -->
+  <section class="container-page py-20 sm:py-24">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="eyebrow">Technology</p>
+      <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">The platforms, languages, and clouds we work with</h2>
+    </div>
+    <ul class="tech-wall mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+      {
+        featuredTech.map(({ name, label }) => (
+          <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-2 py-5 text-center transition duration-200 hover:border-line hover:bg-canvas">
+            <TechLogo name={name} class="size-9" />
+            <span class="text-xs font-medium text-body transition group-hover:text-ink">{label ?? name}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
 
   <CtaBand />
 </BaseLayout>

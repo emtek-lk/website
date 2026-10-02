@@ -16,9 +16,11 @@ interface Props {
   /** Extra JSON-LD objects for this page */
   schema?: Record<string, unknown>[];
   noindex?: boolean;
+  /** Open Graph type: "article" for case studies, otherwise "website" */
+  ogType?: 'website' | 'article';
 }
 
-const { title, description = site.description, image = '/og-image.png', schema = [], noindex = false } = Astro.props;
+const { title, description = site.description, image = '/og-image.png', schema = [], noindex = false, ogType = 'website' } = Astro.props;
 
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ERP, Custom Software & Managed IT Services`;
 const pathname = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
@@ -86,13 +88,16 @@ const organization = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
 
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0a1f3d" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -100,6 +105,7 @@ const organization = {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@emtek_lk" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />

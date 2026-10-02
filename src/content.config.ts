@@ -11,6 +11,8 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      /** Shorter page <title> for search results (the long title stays as the on-page heading) */
+      seoTitle: z.string().max(57).optional(),
       client: z.string(),
       industry: z.string().optional(),
       summary: z.string().max(200),

@@ -1,5 +1,6 @@
 ---
 title: Cortex ERP, the MetroFix mobile app, and a website for Vanguard Protection
+seoTitle: "Vanguard Protection: Cortex ERP, Mobile App & Website"
 client: Vanguard Protection (Pvt) Ltd
 summary: Vanguard Protection runs its operations on our Cortex ERP, works with MetroFix, a mobile app we developed for them, and has a company website we built.
 services: [erp-business-solutions, custom-software-development]

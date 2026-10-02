@@ -13,11 +13,22 @@ const steps = [
   { title: 'Discovery conversation', text: 'We learn how your business runs, which systems you use, and what success looks like for you.' },
   { title: 'A clear proposal', text: 'You get a recommended approach, timeline, and scope, covering development, deployment, and ongoing support.' },
 ];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contact EMTEK',
+    url: `${site.url}/contact`,
+    about: { '@id': `${site.url}/#organization` },
+  },
+];
 ---
 
 <BaseLayout
-  title="Contact Us"
-  description={`Talk to EMTEK about ERP, custom software, or managed IT services. Email ${site.email} or call ${site.phone}.`}
+  title="Contact EMTEK: ERP, Software & IT Services"
+  description={`Talk to EMTEK about ERP, custom software, or managed IT. Email ${site.email}, call ${site.phone}, or visit us in ${site.address.city}, ${site.address.country}.`}
+  schema={schema}
 >
   <PageHero
     eyebrow="Contact"

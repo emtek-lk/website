@@ -1,5 +1,6 @@
 ---
 title: Odoo implementation and a custom CRM and marketing web app for Smart Equip
+seoTitle: "Smart Equip: Odoo Implementation & Custom CRM App"
 client: Smart Equip Ltd
 summary: We implemented Odoo for Smart Equip in the UK and built a custom web app on top of it to improve their CRM and marketing.
 services: [erp-business-solutions, custom-software-development]
