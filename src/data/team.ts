@@ -1,5 +1,4 @@
 import type { ImageMetadata } from 'astro';
-import mdi from '@iconify-json/mdi/icons.json';
 import shamil from '../team_members/Shamil_Suraweera.jpg';
 import ashan from '../team_members/Ashan_Sandeepa.png';
 import safry from '../team_members/Muhammed_Safry.jpg';
@@ -46,6 +45,7 @@ export const team: TeamMember[] = [
   },
 ];
 
-// Fill-based brand glyphs (24x24) for the social links
-const glyph = (name: 'linkedin' | 'github') => (mdi as unknown as { icons: Record<string, { body: string }> }).icons[name].body;
-export const socialIcons = { linkedin: glyph('linkedin'), github: glyph('github') };
+export { socialLinks } from './social';
+import { socialLinks } from './social';
+const icon = (id: string) => socialLinks.find((s) => s.id === id)!.icon;
+export const socialIcons = { linkedin: icon('linkedin'), github: icon('github') };

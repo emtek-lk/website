@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import SocialLinks from './SocialLinks.astro';
 import logoLight from '../logos/Emtek_Logo-transparent-cropped.png';
 import { site } from '../data/site';
 import { services } from '../data/services';
@@ -73,6 +74,8 @@ const year = new Date().getFullYear();
           </a>
         </li>
       </ul>
+      <h2 class="mt-8 text-sm font-semibold text-white">Follow us</h2>
+      <SocialLinks class="mt-4" />
     </div>
   </div>
 
