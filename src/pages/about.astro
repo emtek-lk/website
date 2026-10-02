@@ -8,6 +8,9 @@ import TechLogo from '../components/TechLogo.astro';
 import ModuleIcon from '../components/erp/ModuleIcon.astro';
 import ExpertiseGrid from '../components/erp/ExpertiseGrid.astro';
 import { erpPlatforms, otherErps } from '../data/erp';
+import TeamSection from '../components/TeamSection.astro';
+import { getImage } from 'astro:assets';
+import { team } from '../data/team';
 import mark from '../logos/favicon.png';
 import { site } from '../data/site';
 import { services } from '../data/services';
@@ -37,7 +40,26 @@ const principles = [
 
 const otherErpText = otherErps.join(', ').replace(/, ([^,]*)$/, ', and $1');
 
+// Person markup helps search engines connect the team to the company
+const people = await Promise.all(
+  team.map(async (m) => {
+    const photo = await getImage({ src: m.photo, width: 400, height: 400, format: 'jpg' });
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: m.name,
+      jobTitle: m.role,
+      description: m.focus,
+      image: new URL(photo.src, site.url).href,
+      worksFor: { '@id': `${site.url}/#organization` },
+      sameAs: [m.linkedin, m.github],
+      knowsAbout: m.skills,
+    };
+  }),
+);
+
 const schema = [
+  ...people,
   {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
@@ -188,6 +210,8 @@ const schema = [
     title="What makes us the experts"
     lead="Deep ERP knowledge, real engineering, and the infrastructure skills to keep it all running: one team, accountable end to end."
   />
+
+  <TeamSection />
 
   <!-- Technologies -->
   <section class="container-page py-20 sm:py-28">

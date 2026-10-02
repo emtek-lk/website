@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import { team, socialIcons } from '../data/team';
+---
+
+<section class="container-page py-20 sm:py-28">
+  <div class="max-w-2xl">
+    <p class="eyebrow">Our team</p>
+    <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">The people behind EMTEK</h2>
+    <p class="mt-4 text-lg">
+      Hands-on engineers who build, deploy, and support the systems we deliver. When you work with EMTEK, you work with the people who do the work.
+    </p>
+  </div>
+
+  <ul class="mt-14 grid gap-x-6 gap-y-16 pt-8 md:grid-cols-3">
+    {
+      team.map((m) => (
+        <li class="card group relative !p-0 text-center">
+          <div class="hero-gradient h-24 rounded-t-2xl"></div>
+          <div class="-mt-[4.5rem] flex justify-center">
+            <Image
+              src={m.photo}
+              alt={`${m.name}, ${m.role} at EMTEK`}
+              width={144}
+              height={144}
+              densities={[1, 2]}
+              class="size-36 rounded-full object-cover object-top shadow-[0_18px_40px_-14px_rgba(10,31,61,0.55)] ring-[5px] ring-white transition duration-300 group-hover:scale-105"
+            />
+          </div>
+          <div class="px-6 pt-5 pb-7">
+            <h3 class="text-xl font-semibold">{m.name}</h3>
+            <p class="mt-1 text-[15px] font-semibold text-brand-600">{m.role}</p>
+            <p class="mt-3 text-sm leading-relaxed">{m.focus}</p>
+            <ul class="mt-4 flex flex-wrap justify-center gap-1.5" aria-label="Focus areas">
+              {m.skills.map((s) => (
+                <li class="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">{s}</li>
+              ))}
+            </ul>
+            <div class="mt-6 flex justify-center gap-3">
+              <a
+                href={m.linkedin}
+                target="_blank"
+                rel="noopener noreferrer me"
+                aria-label={`${m.name} on LinkedIn`}
+                class="grid size-10 place-items-center rounded-full bg-canvas text-ink transition hover:bg-[#0a66c2] hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true" set:html={socialIcons.linkedin} />
+              </a>
+              <a
+                href={m.github}
+                target="_blank"
+                rel="noopener noreferrer me"
+                aria-label={`${m.name} on GitHub`}
+                class="grid size-10 place-items-center rounded-full bg-canvas text-ink transition hover:bg-ink hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true" set:html={socialIcons.github} />
+              </a>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
