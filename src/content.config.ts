@@ -12,11 +12,15 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       client: z.string(),
-      industry: z.string(),
+      industry: z.string().optional(),
       summary: z.string().max(200),
       services: z.array(z.enum(serviceSlugs)).min(1),
       technologies: z.array(z.string()).default([]),
-      year: z.number().int(),
+      year: z.number().int().optional(),
+      /** Client logo (src/logos/clients/...), shown on cards and the case study */
+      clientLogo: image().optional(),
+      /** ISO 3166-1 alpha-2 code in lower case, e.g. lk, gb, in */
+      country: z.string().length(2).optional(),
       cover: image().optional(),
       coverAlt: z.string().optional(),
       /** Lower numbers are listed first */

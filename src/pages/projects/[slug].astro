@@ -6,6 +6,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { getService } from '../../data/services';
+import Flag from '../../components/Flag.astro';
+import { countryNames } from '../../data/testimonials';
 import { site } from '../../data/site';
 
 export const getStaticPaths = (async () => {
@@ -35,7 +37,21 @@ const schema = [
 ---
 
 <BaseLayout title={data.title} description={data.summary} schema={schema}>
-  <PageHero eyebrow={`Case study · ${data.industry}`} title={data.title} lead={data.summary} />
+  <PageHero eyebrow={data.industry ? `Case study · ${data.industry}` : 'Case study'} title={data.title} lead={data.summary}>
+    {
+      data.clientLogo && (
+        <div class="mt-8 inline-flex items-center gap-4 rounded-2xl bg-white px-5 py-3 shadow-lg">
+          <Image src={data.clientLogo} alt={`${data.client} logo`} width={200} class="max-h-12 w-auto max-w-40 object-contain" />
+          {data.country && (
+            <span class="inline-flex items-center gap-2 border-l border-line pl-4 text-sm font-semibold text-ink">
+              <Flag code={data.country} class="size-5" />
+              {countryNames[data.country as keyof typeof countryNames] ?? data.country.toUpperCase()}
+            </span>
+          )}
+        </div>
+      )
+    }
+  </PageHero>
 
   <section class="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-12">
     <article class="lg:col-span-8">
@@ -51,14 +67,33 @@ const schema = [
           <dt class="text-sm text-muted">Client</dt>
           <dd class="mt-1 font-semibold text-ink">{data.client}</dd>
         </div>
-        <div>
-          <dt class="text-sm text-muted">Industry</dt>
-          <dd class="mt-1 font-semibold text-ink">{data.industry}</dd>
-        </div>
-        <div>
-          <dt class="text-sm text-muted">Year</dt>
-          <dd class="mt-1 font-semibold text-ink">{data.year}</dd>
-        </div>
+        {
+          data.country && (
+            <div>
+              <dt class="text-sm text-muted">Country</dt>
+              <dd class="mt-1 flex items-center gap-2 font-semibold text-ink">
+                <Flag code={data.country} class="size-5" />
+                {countryNames[data.country as keyof typeof countryNames] ?? data.country.toUpperCase()}
+              </dd>
+            </div>
+          )
+        }
+        {
+          data.industry && (
+            <div>
+              <dt class="text-sm text-muted">Industry</dt>
+              <dd class="mt-1 font-semibold text-ink">{data.industry}</dd>
+            </div>
+          )
+        }
+        {
+          data.year && (
+            <div>
+              <dt class="text-sm text-muted">Year</dt>
+              <dd class="mt-1 font-semibold text-ink">{data.year}</dd>
+            </div>
+          )
+        }
         <div>
           <dt class="text-sm text-muted">Services</dt>
           <dd class="mt-2 flex flex-col gap-1.5">

@@ -29,7 +29,7 @@ onScroll();
 
 if (!reduceMotion) {
   // Reveal: only elements below the fold are hidden, so nothing flashes on first paint
-  const selector = '.card, .tech-wall > li, .prose-emtek > *, [data-reveal], .max-w-2xl:has(> .eyebrow)';
+  const selector = '.card, .tech-wall > li, .clients-wall > li, .prose-emtek > *, [data-reveal], .max-w-2xl:has(> .eyebrow)';
   const targets = [...document.querySelectorAll<HTMLElement>(selector)].filter(
     (el) => !el.parentElement?.closest(selector) && el.getBoundingClientRect().top > innerHeight * 0.92,
   );
