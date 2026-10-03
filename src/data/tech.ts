@@ -1,5 +1,8 @@
 // Build-time lookup from a technology's display name to an inline SVG logo.
-// Sources: Simple Icons (CC0) and the Iconify "logos" / "devicon" sets. Nothing here ships to the browser as JS.
+// Sources: Simple Icons (CC0), the Iconify "logos" / "devicon" sets, and full-colour artwork saved
+// in src/logos/brands/ for brands missing from those sets (Dynamics 365, NetSuite, and MuleSoft/
+// CrowdStrike from the open theSVG collection; ServiceNow and Cisco Meraki from Wikimedia Commons,
+// both public-domain text logos). Nothing here ships to the browser as JS.
 import {
   siOdoo,
   siSap,
@@ -40,6 +43,11 @@ import {
   siDatadog,
 } from 'simple-icons';
 import dynamicsSvg from '../logos/brands/dynamics-365.svg?raw';
+import netsuiteSvg from '../logos/brands/netsuite.svg?raw';
+import mulesoftSvg from '../logos/brands/mulesoft.svg?raw';
+import crowdstrikeSvg from '../logos/brands/crowdstrike.svg?raw';
+import servicenowSvg from '../logos/brands/servicenow.svg?raw';
+import merakiSvg from '../logos/brands/meraki.svg?raw';
 import logos from '@iconify-json/logos/icons.json';
 import devicon from '@iconify-json/devicon/icons.json';
 
@@ -89,6 +97,11 @@ const registry: Record<string, TechLogoData> = {
   'Microsoft Dynamics 365': fromSvg(dynamicsSvg),
   'SAP S/4HANA': simple(siSap),
   'Sage Intacct': simple(siSage),
+  'Oracle NetSuite': fromSvg(netsuiteSvg),
+  MuleSoft: fromSvg(mulesoftSvg),
+  CrowdStrike: fromSvg(crowdstrikeSvg),
+  ServiceNow: fromSvg(servicenowSvg),
+  'Cisco Meraki': fromSvg(merakiSvg),
   'Microsoft SQL Server': iconify(D, 'microsoftsqlserver'),
   PostgreSQL: simple(siPostgresql),
   MySQL: simple(siMysql),
