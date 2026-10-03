@@ -58,6 +58,20 @@ function initMotion() {
     observer.observe(el);
   }
 
+  // Coin flip: starts its loop once scrolled into view, instead of spinning off-screen from page load
+  const coin = document.querySelector<HTMLElement>('[data-coin]');
+  if (coin) {
+    const coinObserver = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        coin.classList.add('spin');
+        coinObserver.disconnect();
+      },
+      { threshold: 0.4 },
+    );
+    coinObserver.observe(coin);
+  }
+
   // Hero tilt follows the pointer
   const tilt = document.querySelector<HTMLElement>('[data-tilt]');
   const hero = tilt?.closest('section');

@@ -202,6 +202,31 @@
   transition: transform 0.3s ease-out;
 }
 
+/* Coin flip: two stacked faces turning at a constant rate, like a coin spinning on a table.
+   Always mid-motion (no held pause) so the transition reads at a glance. Starts once scrolled into view (see motion.ts). */
+.coin-flip {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.coin-flip.spin {
+  animation: coin-spin 5s linear infinite;
+}
+.coin-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.coin-face.coin-back {
+  transform: rotateY(180deg);
+}
+@keyframes coin-spin {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
 /* Sticky header turns into dark glass after scrolling */
 .site-header {
   transition:

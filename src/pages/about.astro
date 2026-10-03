@@ -12,6 +12,7 @@ import TeamSection from '../components/TeamSection.astro';
 import { getImage } from 'astro:assets';
 import { team } from '../data/team';
 import mark from '../logos/favicon.png';
+import logo from '../logos/logo.png';
 import { site } from '../data/site';
 import { services } from '../data/services';
 
@@ -94,8 +95,15 @@ const schema = [
       </div>
     </div>
     <div class="lg:col-span-5">
-      <div class="hero-gradient grid aspect-square place-items-center rounded-3xl">
-        <Image src={mark} alt="" width={200} densities={[1, 2]} class="size-40 drop-shadow-2xl sm:size-52" />
+      <div class="hero-gradient aspect-square rounded-3xl [perspective:1400px]">
+        <div class="coin-flip" data-coin>
+          <div class="coin-face coin-front grid place-items-center">
+            <Image src={mark} alt="" width={200} densities={[1, 2]} class="size-40 rounded-full drop-shadow-2xl sm:size-52" />
+          </div>
+          <div class="coin-face coin-back grid place-items-center">
+            <Image src={logo} alt="EMTEK" width={400} densities={[1, 2]} class="size-40 rounded-full object-cover drop-shadow-2xl sm:size-52" />
+          </div>
+        </div>
       </div>
     </div>
   </section>
