@@ -53,6 +53,19 @@ public/
 
 Every push to `main` then deploys to production, and other branches get preview URLs.
 
+### Contact form
+
+`/contact` posts to `functions/api/contact.ts`, a Cloudflare Pages Function that emails the submission to `hello@emtek.lk` via [Resend](https://resend.com). The form still works with JavaScript disabled (plain POST, redirects back to `/contact?sent=1` or `?error=1`); with JS it submits over `fetch` and shows the result inline.
+
+To wire up sending:
+
+1. Create a Resend account and verify `emtek.lk` as a sending domain (Resend gives you a few DNS records to add — SPF/DKIM).
+2. Create an API key in Resend.
+3. In the Cloudflare Pages project, go to **Settings → Environment variables** and add `RESEND_API_KEY` as a secret (for both Production and Preview).
+4. Redeploy. Until the key is set, the form fails closed with a friendly error rather than silently dropping messages.
+
+The function also rejects a hidden honeypot field to cut down on basic spam, and caps field lengths server-side.
+
 ## SEO built in
 
 - A unique title, description, and canonical URL on every page, with clean URLs (`/about`, not `/about/`)

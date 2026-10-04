@@ -23,8 +23,8 @@ const country = data.country ? (countryNames[data.country as keyof typeof countr
     data.cover ? (
       <Image src={data.cover} alt={data.coverAlt ?? ''} width={720} class="aspect-[16/9] w-full object-cover" />
     ) : data.clientLogo ? (
-      <div class="relative flex h-40 items-center justify-center bg-gradient-to-br from-white to-brand-50 px-8">
-        <Image src={data.clientLogo} alt={`${data.client} logo`} width={240} class="h-20 w-auto max-w-[65%] object-contain transition duration-300 group-hover:scale-105" />
+      <div class="relative flex h-40 items-end justify-center bg-gradient-to-br from-white to-brand-50 px-8 pb-7">
+        <Image src={data.clientLogo} alt={`${data.client} logo`} width={240} class="h-16 w-auto max-w-[60%] object-contain transition duration-300 group-hover:scale-105" />
         {country && (
           <span class="absolute top-4 right-4 inline-flex items-center gap-2 rounded-full bg-white py-1 pr-3 pl-1 text-xs font-semibold text-ink shadow-sm ring-1 ring-line">
             <Flag code={data.country!} class="size-5" />
