@@ -30,7 +30,7 @@
   }
 
   body {
-    @apply bg-white font-sans text-body;
+    @apply bg-canvas font-sans text-body;
     font-feature-settings: 'cv11', 'ss01';
   }
 
@@ -67,14 +67,54 @@
     @apply text-sm font-semibold tracking-wide text-brand-600;
   }
 
+  /* Light skeuomorphic / soft-UI system: every surface shares the canvas tone and is told apart only
+     by a dual-source shadow (white highlight top-left, brand-navy-tinted shadow bottom-right), as if
+     extruded from (or pressed into) the same material. Site-wide via these shared component classes. */
+
   .btn {
-    @apply inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[15px] font-semibold transition-colors duration-150;
+    @apply inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[15px] font-semibold transition duration-150;
   }
   .btn-primary {
-    @apply bg-brand-700 text-white hover:bg-brand-800;
+    @apply text-white;
+    background: linear-gradient(180deg, var(--color-brand-600) 0%, var(--color-brand-700) 100%);
+    border: 1px solid var(--color-brand-800);
+    box-shadow:
+      -5px -5px 12px rgba(255, 255, 255, 0.35),
+      5px 5px 14px rgb(15 42 79 / 0.35);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      -6px -6px 16px rgba(255, 255, 255, 0.45),
+      6px 6px 18px rgb(15 42 79 / 0.4);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    box-shadow:
+      inset 3px 3px 8px rgba(10, 20, 40, 0.5),
+      inset -2px -2px 6px rgba(255, 255, 255, 0.15);
+    transform: translateY(0);
   }
   .btn-light {
-    @apply bg-white text-brand-800 hover:bg-brand-50;
+    @apply text-brand-800;
+    background: var(--color-canvas);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-right-color: rgb(15 42 79 / 0.12);
+    border-bottom-color: rgb(15 42 79 / 0.12);
+    box-shadow:
+      -5px -5px 12px rgba(255, 255, 255, 0.85),
+      5px 5px 14px rgb(15 42 79 / 0.16);
+  }
+  .btn-light:hover {
+    box-shadow:
+      -6px -6px 16px rgba(255, 255, 255, 0.9),
+      6px 6px 18px rgb(15 42 79 / 0.2);
+    transform: translateY(-1px);
+  }
+  .btn-light:active {
+    box-shadow:
+      inset 4px 4px 10px rgb(15 42 79 / 0.14),
+      inset -4px -4px 10px rgba(255, 255, 255, 0.8);
+    transform: translateY(0);
   }
   .btn-ghost-light {
     @apply text-white hover:text-brand-200;
@@ -90,15 +130,92 @@
   }
 
   .card {
-    @apply rounded-2xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(10,31,61,0.04)] transition duration-200 sm:p-8;
+    @apply rounded-2xl p-6 transition duration-200 sm:p-8;
+    background: var(--color-canvas);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-right-color: rgb(15 42 79 / 0.12);
+    border-bottom-color: rgb(15 42 79 / 0.12);
+    box-shadow:
+      -7px -7px 16px rgba(255, 255, 255, 0.85),
+      7px 7px 16px rgb(15 42 79 / 0.14);
   }
   a.card:hover,
   .card-hover:hover {
-    @apply -translate-y-0.5 border-brand-200 shadow-[0_18px_40px_-18px_rgba(28,77,141,0.35)];
+    transform: translateY(-2px);
+    box-shadow:
+      -9px -9px 20px rgba(255, 255, 255, 0.9),
+      9px 9px 20px rgb(15 42 79 / 0.2);
+  }
+  a.card:active,
+  .card-hover:active {
+    transform: translateY(0);
+    box-shadow:
+      inset 4px 4px 10px rgb(15 42 79 / 0.14),
+      inset -4px -4px 10px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Larger floating panels (dropdowns, mega menus) — same material as .card, a bigger, softer throw */
+  .neu-surface {
+    background: var(--color-canvas);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-right-color: rgb(15 42 79 / 0.1);
+    border-bottom-color: rgb(15 42 79 / 0.1);
+    box-shadow:
+      -10px -10px 24px rgba(255, 255, 255, 0.7),
+      14px 20px 44px -16px rgb(15 42 79 / 0.4);
   }
 
   .chip {
-    @apply inline-flex items-center gap-2 rounded-full border border-line bg-white py-1.5 pr-3.5 pl-2.5 text-sm font-medium text-ink;
+    @apply inline-flex items-center gap-2 rounded-full py-1.5 pr-3.5 pl-2.5 text-sm font-medium text-ink;
+    background: var(--color-canvas);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-right-color: rgb(15 42 79 / 0.12);
+    border-bottom-color: rgb(15 42 79 / 0.12);
+    box-shadow:
+      -3px -3px 6px rgba(255, 255, 255, 0.85),
+      3px 3px 6px rgb(15 42 79 / 0.14);
+  }
+
+  /* Recessed form fields: inputs look pressed into the page rather than sitting on top of it */
+  .input {
+    @apply block w-full rounded-2xl px-4 py-2.5 text-ink transition;
+    background: var(--color-canvas);
+    border: 1px solid rgb(15 42 79 / 0.08);
+    box-shadow:
+      inset 3px 3px 7px rgb(15 42 79 / 0.1),
+      inset -3px -3px 7px rgba(255, 255, 255, 0.8);
+  }
+  .input:focus {
+    @apply outline-none;
+    box-shadow:
+      inset 3px 3px 7px rgb(15 42 79 / 0.14),
+      inset -3px -3px 7px rgba(255, 255, 255, 0.8),
+      0 0 0 3px rgb(45 127 208 / 0.3);
+  }
+
+  /* Circular icon badge, extruded off the canvas. Pass a size (e.g. size-14) and a text color utility. */
+  .icon-badge {
+    @apply grid shrink-0 place-items-center rounded-full;
+    background: var(--color-canvas);
+    box-shadow:
+      -4px -4px 8px rgba(255, 255, 255, 0.9),
+      4px 4px 8px rgb(15 42 79 / 0.18);
+  }
+
+  /* Same tactile idea for the dark footer: a faint light-from-above highlight against a near-black shadow */
+  .footer-icon {
+    @apply grid size-7 place-items-center rounded-[10px];
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow:
+      -2px -2px 4px rgba(255, 255, 255, 0.08),
+      2px 2px 5px rgba(0, 0, 0, 0.45);
+    transition: box-shadow 0.2s ease;
+  }
+  .group:hover .footer-icon {
+    box-shadow:
+      -2px -2px 5px rgba(255, 255, 255, 0.12),
+      2px 2px 6px rgba(0, 0, 0, 0.5),
+      0 0 0 2px rgb(45 127 208 / 0.35);
   }
 
   /* Stripe-style slanted gradient hero */
