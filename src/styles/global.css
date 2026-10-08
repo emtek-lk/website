@@ -207,6 +207,10 @@
 .coin-flip {
   position: absolute;
   inset: 0;
+  display: grid;
+  place-items: center;
+  /* Note: filter must never be animated on this element — an animated filter forces transform-style
+     to compute as flat per spec, which silently breaks the preserve-3d flip below it. */
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -214,16 +218,40 @@
   animation: coin-spin 5s linear infinite;
 }
 .coin-face {
-  position: absolute;
-  inset: 0;
+  /* Both faces stack in the same grid cell instead of each other */
+  grid-area: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
   backface-visibility: hidden;
+  /* Inset ring + lifted shadow read as the coin's beveled rim and a bit of thickness */
+  box-shadow:
+    inset 0 0 0 3px rgb(10 31 61 / 0.35),
+    0 16px 30px -10px rgb(10 31 61 / 0.55);
 }
 .coin-face.coin-back {
   transform: rotateY(180deg);
 }
+.coin-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgb(255 255 255 / 0.65) 48%, transparent 64%);
+  background-size: 280% 280%;
+  animation: coin-shine 5s linear infinite;
+  pointer-events: none;
+}
 @keyframes coin-spin {
   to {
     transform: rotateY(360deg);
+  }
+}
+@keyframes coin-shine {
+  from {
+    background-position: 220% 0%;
+  }
+  to {
+    background-position: -120% 0%;
   }
 }
 
