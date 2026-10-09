@@ -103,19 +103,19 @@ const headingClass = 'text-xs font-semibold tracking-widest text-white uppercase
         <ul class="mt-5 space-y-3.5 text-sm">
           <li>
             <a href={`mailto:${site.email}`} class="group flex items-start gap-2.5 transition hover:text-white">
-              <span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-brand-200 transition group-hover:bg-brand-500 group-hover:text-white"><Icon name="mail" class="size-3.5" /></span>
+              <span class="footer-icon mt-0.5 shrink-0 text-brand-200 transition group-hover:text-white"><Icon name="mail" class="size-3.5" /></span>
               <span class="break-all">{site.email}</span>
             </a>
           </li>
           <li>
             <a href={site.phoneHref} class="group flex items-start gap-2.5 whitespace-nowrap transition hover:text-white">
-              <span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-brand-200 transition group-hover:bg-brand-500 group-hover:text-white"><Icon name="phone" class="size-3.5" /></span>
+              <span class="footer-icon mt-0.5 shrink-0 text-brand-200 transition group-hover:text-white"><Icon name="phone" class="size-3.5" /></span>
               {site.phone}
             </a>
           </li>
           <li>
             <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="group flex items-start gap-2.5 transition hover:text-white">
-              <span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-brand-200 transition group-hover:bg-brand-500 group-hover:text-white"><Icon name="pin" class="size-3.5" /></span>
+              <span class="footer-icon mt-0.5 shrink-0 text-brand-200 transition group-hover:text-white"><Icon name="pin" class="size-3.5" /></span>
               <address class="leading-relaxed not-italic">
                 {site.address.street},<br />{site.address.city} {site.address.postalCode},<br />{site.address.country}
               </address>
