@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # wrangler/cloudflare worker state and cache
 .wrangler/
+
+# local secrets for wrangler pages dev (see .dev.vars.example)
+.dev.vars

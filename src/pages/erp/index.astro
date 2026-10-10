@@ -90,12 +90,12 @@ const schema = [
   />
 
   <!-- Platform cards -->
-  <section class="container-page py-20 sm:py-28">
+  <section class="container-page py-14 sm:py-28">
     <div class="max-w-2xl">
       <p class="eyebrow">Platforms</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">Three ERP platforms, one expert team</h2>
     </div>
-    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+    <div class="snap-lg mt-12 grid gap-6 lg:grid-cols-3">
       {
         erpPlatforms.map((p) => (
           <a
@@ -104,7 +104,7 @@ const schema = [
             style={`--accent:${p.theme.accent};--accent-soft:${p.theme.accentSoft}`}
           >
             <div class="hero-custom relative flex h-40 items-center justify-center" style={`--hero-bg:${p.theme.heroBg}`}>
-              <span class="grid size-24 place-items-center rounded-3xl bg-white/90 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.6)] ring-1 ring-white/70 transition duration-300 group-hover:scale-105">
+              <span class="grid size-24 place-items-center float-panel rounded-3xl transition duration-300 group-hover:scale-105">
                 <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-9 w-20' : 'size-14'} />
               </span>
             </div>
@@ -158,7 +158,7 @@ const schema = [
 
   <!-- FAQ -->
   <section class="bg-canvas">
-    <div class="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-12">
+    <div class="container-page grid gap-12 py-14 sm:py-28 lg:grid-cols-12">
       <div class="lg:col-span-4">
         <p class="eyebrow">FAQ</p>
         <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">ERP questions, answered</h2>

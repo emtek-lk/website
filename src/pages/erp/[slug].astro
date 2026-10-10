@@ -114,14 +114,14 @@ const schema = [
           <div class="orbit-ring orbit-ring-inner !size-72 !border-white/25"></div>
           <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <span class="absolute inset-0 -m-6 rounded-[2.5rem] bg-white/20 blur-2xl"></span>
-            <div class="float-a relative grid size-40 place-items-center rounded-[2rem] bg-white/90 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)] ring-1 ring-white/70 backdrop-blur-xl">
+            <div class="float-a relative grid size-40 place-items-center float-panel rounded-[2rem]">
               <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-14 w-32' : 'size-24'} />
             </div>
           </div>
           {
             heroModules.map((m, i) => (
               <div class={`absolute ${orbitSpots[i]}`} data-parallax={String(0.04 + (i % 3) * 0.04)}>
-                <div class:list={['rounded-2xl bg-white/90 p-2.5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] ring-1 ring-white/70 backdrop-blur', i % 2 ? 'float-b' : 'float-a']} style={`animation-delay:${-i * 0.9}s`}>
+                <div class:list={['float-panel rounded-2xl p-2.5', i % 2 ? 'float-b' : 'float-a']} style={`animation-delay:${-i * 0.9}s`}>
                   <ModuleIcon module={m} class="size-11" />
                 </div>
               </div>
@@ -132,7 +132,7 @@ const schema = [
     </section>
 
     <!-- Intro + capabilities -->
-    <section class="container-page grid gap-14 py-20 sm:py-28 lg:grid-cols-12">
+    <section class="container-page grid gap-14 py-14 sm:py-28 lg:grid-cols-12">
       <div class="lg:col-span-5">
         <p class="eyebrow !text-[var(--accent)]">{p.name}</p>
         <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">{p.intro.title}</h2>
@@ -156,17 +156,17 @@ const schema = [
     </section>
 
     <!-- Modules -->
-    <section id="modules" class="scroll-mt-20 bg-canvas">
-      <div class="container-page py-20 sm:py-28">
+    <section id="modules" class="bg-canvas">
+      <div class="container-page py-14 sm:py-28">
         <div class="max-w-2xl">
           <p class="eyebrow !text-[var(--accent)]">Modules</p>
           <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">{p.modulesTitle}</h2>
           <p class="mt-4 text-lg">{p.modulesLead}</p>
         </div>
-        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul class="snap-lg mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {
             p.modules.map((m) => (
-              <li class="card group flex flex-col !p-6 hover:-translate-y-1 hover:border-[var(--accent)]/30 hover:shadow-[0_22px_45px_-22px_rgba(10,31,61,0.4)]">
+              <li class="card group flex flex-col !p-6 hover:-translate-y-1 hover:border-[var(--accent)]/30 hover:shadow-float-sm">
                 <span class="transition duration-300 group-hover:scale-110 group-hover:-rotate-3">
                   <ModuleIcon module={m} class="size-12" />
                 </span>
@@ -198,7 +198,7 @@ const schema = [
     <RelatedProjects projects={projects} eyebrow="Case study" title={`${p.shortName} in production`} />
 
     <!-- FAQ -->
-    <section class="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-12">
+    <section class="container-page grid gap-12 py-14 sm:py-28 lg:grid-cols-12">
       <div class="lg:col-span-4">
         <p class="eyebrow !text-[var(--accent)]">FAQ</p>
         <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">Questions about {p.shortName}</h2>
@@ -211,13 +211,13 @@ const schema = [
 
     <!-- Other platforms -->
     <section class="bg-canvas">
-      <div class="container-page py-20 sm:py-24">
+      <div class="container-page py-14 sm:py-24">
         <h2 class="text-2xl font-semibold">Other ERP platforms we deliver</h2>
         <div class="mt-8 grid gap-6 md:grid-cols-2">
           {
             others.map((o) => (
               <a href={`/erp/${o.slug}`} class="card group flex items-center gap-5">
-                <span class="grid size-16 shrink-0 place-items-center rounded-2xl bg-canvas ring-1 ring-line">
+                <span class="well size-16">
                   <TechLogo name={o.logo} class={o.slug === 'odoo' ? 'h-6 w-14' : 'size-10'} />
                 </span>
                 <span class="flex-1">

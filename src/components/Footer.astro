@@ -26,9 +26,9 @@ const headingClass = 'text-xs font-semibold tracking-widest text-white uppercase
   </div>
 
   <div class="container-page pt-16 pb-10">
-    <div class="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-12">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-12">
       <!-- Brand -->
-      <div class="sm:col-span-2 lg:col-span-3">
+      <div class="col-span-2 lg:col-span-3">
         <a href="/" aria-label={`${site.name} home`} class="inline-block rounded-md">
           <Image src={logoLight} alt={site.name} width={120} densities={[1, 2]} class="h-auto w-[120px]" />
         </a>
@@ -98,7 +98,7 @@ const headingClass = 'text-xs font-semibold tracking-widest text-white uppercase
       </nav>
 
       <!-- Contact -->
-      <div class="lg:col-span-3">
+      <div class="col-span-2 lg:col-span-3">
         <h2 class={headingClass}>Contact</h2>
         <ul class="mt-5 space-y-3.5 text-sm">
           <li>

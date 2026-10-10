@@ -4,6 +4,7 @@ import '../styles/global.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 import { socialProfiles } from '../data/social';
 
@@ -121,6 +122,9 @@ const organization = {
       <slot />
     </main>
     <Footer />
+    <button type="button" class="to-top icon-badge" aria-label="Back to top">
+      <Icon name="arrowUp" class="size-5" strokeWidth={2.4} />
+    </button>
     <script>
       import '../scripts/motion';
     </script>

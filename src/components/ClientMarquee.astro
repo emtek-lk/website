@@ -1,17 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import { clients } from '../data/clients';
+import { logoSize } from '../data/logo-size';
+
+// Each (margin-trimmed) logo is sized by its aspect ratio so wide and square marks carry equal visual weight
+const items = clients.map((c) => ({ ...c, size: logoSize(c.logo, { area: 14000, maxWidth: 190, maxHeight: 92 }) }));
 ---
 
-<!-- Infinite logo marquee: the list is rendered twice and the track slides by exactly half its width -->
-<section class="pt-8 pb-4 sm:pt-12" aria-labelledby="clients-heading">
-  <p id="clients-heading" class="container-page text-center text-base font-semibold text-ink sm:text-lg">Trusted by businesses in Sri Lanka and around the world</p>
-  <div class="container-page"><div class="marquee group mt-8 overflow-hidden">
-    <ul class="marquee-track flex w-max items-center gap-4 group-hover:[animation-play-state:paused]">
+<!-- Infinite logo marquee: the list is rendered twice and the track slides by exactly half its width.
+     It pauses while hovered or while a logo has keyboard focus. -->
+<section class="pt-10 pb-6 sm:pt-14" aria-labelledby="clients-heading">
+  <p id="clients-heading" class="container-page text-center text-lg font-semibold text-ink sm:text-xl">Trusted by businesses in Sri Lanka and around the world</p>
+  <div class="container-page"><div class="marquee mt-10 overflow-hidden py-3">
+    <ul class="marquee-track flex w-max items-center gap-5">
       {
-        [...clients, ...clients].map((c, i) => (
-          <li class="grid h-24 w-48 shrink-0 place-items-center rounded-2xl bg-white px-6 ring-1 ring-line" aria-hidden={i >= clients.length ? 'true' : undefined}>
-            <Image src={c.logo} alt={i < clients.length ? `${c.name} logo` : ''} width={192} class="h-14 w-auto max-w-full object-contain" />
+        [...items, ...items].map((c, i) => (
+          <li class="tile grid h-32 w-60 shrink-0 place-items-center px-6" aria-hidden={i >= items.length ? 'true' : undefined}>
+            <Image src={c.logo} alt={i < items.length ? `${c.name} logo` : ''} width={c.size.width * 2} style={`width:${c.size.width}px;height:${c.size.height}px`} class="object-contain" />
           </li>
         ))
       }

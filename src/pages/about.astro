@@ -78,7 +78,7 @@ const schema = [
 >
   <PageHero eyebrow="About EMTEK" title={site.tagline} lead={site.description} />
 
-  <section class="container-page grid items-center gap-14 py-20 sm:py-28 lg:grid-cols-12">
+  <section class="container-page grid items-center gap-14 py-14 sm:py-28 lg:grid-cols-12">
     <div class="lg:col-span-7">
       <p class="eyebrow">Who we are</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">Technology should simplify your business, not complicate it</h2>
@@ -109,7 +109,7 @@ const schema = [
   </section>
 
   <section class="bg-canvas">
-    <div class="container-page py-20 sm:py-28">
+    <div class="container-page py-14 sm:py-28">
       <div class="max-w-2xl">
         <p class="eyebrow">How we work</p>
         <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">What you can expect from us</h2>
@@ -118,7 +118,7 @@ const schema = [
         {
           principles.map((p) => (
             <li class="card">
-              <span class="grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-700">
+              <span class="icon-tile size-12">
                 <Icon name={p.icon} class="size-6" />
               </span>
               <h3 class="mt-6 text-lg font-semibold">{p.title}</h3>
@@ -131,7 +131,7 @@ const schema = [
   </section>
 
   <!-- Services -->
-  <section class="container-page py-20 sm:py-28">
+  <section class="container-page py-14 sm:py-28">
     <div class="max-w-2xl">
       <p class="eyebrow">What we do</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">Three practices, one accountable team</h2>
@@ -139,11 +139,11 @@ const schema = [
         Most businesses need more than one kind of technology partner. We bring ERP, custom software, and managed IT together, so the systems that run your business are designed, built, and supported by the same people.
       </p>
     </div>
-    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+    <div class="snap-lg mt-12 grid gap-6 lg:grid-cols-3">
       {
         services.map((s) => (
           <a href={`/services/${s.slug}`} class="card group flex flex-col">
-            <span class="grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+            <span class="icon-tile size-12 transition group-hover:bg-brand-700 group-hover:text-white">
               <Icon name={s.icon} class="size-6" />
             </span>
             <h3 class="mt-6 text-xl font-semibold">{s.shortTitle}</h3>
@@ -167,7 +167,7 @@ const schema = [
 
   <!-- ERP expertise -->
   <section class="relative isolate overflow-hidden bg-gradient-to-b from-canvas to-white">
-    <div class="container-page grid gap-14 py-20 sm:py-28 lg:grid-cols-12">
+    <div class="container-page grid gap-14 py-14 sm:py-28 lg:grid-cols-12">
       <div class="lg:col-span-5">
         <p class="eyebrow">Our specialty</p>
         <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">ERP is where we go deepest</h2>
@@ -187,7 +187,7 @@ const schema = [
           erpPlatforms.map((p) => (
             <li style={`--accent:${p.theme.accent}`}>
               <a href={`/erp/${p.slug}`} class="card group flex flex-col gap-5 !p-6 sm:flex-row sm:items-center">
-                <span class="grid size-20 shrink-0 place-items-center rounded-2xl bg-canvas ring-1 ring-line transition group-hover:scale-105">
+                <span class="well size-20 transition group-hover:scale-105">
                   <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-7 w-16' : 'size-12'} />
                 </span>
                 <span class="flex-1">
@@ -222,7 +222,7 @@ const schema = [
   <TeamSection />
 
   <!-- Technologies -->
-  <section class="container-page py-20 sm:py-28">
+  <section class="container-page py-14 sm:py-28">
     <div class="max-w-2xl">
       <p class="eyebrow">Technologies we use</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">Enterprise-grade tools, chosen for your business</h2>
@@ -233,7 +233,7 @@ const schema = [
         services.map((s) => (
           <div class="card">
             <h3 class="flex items-center gap-3 text-lg font-semibold">
-              <span class="grid size-9 place-items-center rounded-lg bg-brand-50 text-brand-700">
+              <span class="icon-tile size-9">
                 <Icon name={s.icon} class="size-5" />
               </span>
               <a href={`/services/${s.slug}`} class="hover:text-brand-700">

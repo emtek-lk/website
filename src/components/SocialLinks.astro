@@ -23,7 +23,7 @@ const base = variant === 'dark' ? 'bg-white/10 text-brand-100 hover:text-white' 
           rel="noopener noreferrer me"
           aria-label={`EMTEK on ${s.label}`}
           title={s.label}
-          class:list={['social-btn grid place-items-center rounded-full', compact ? 'size-8' : 'size-10', 'transition duration-200 hover:-translate-y-0.5', base]}
+          class:list={['social-btn grid place-items-center rounded-full', compact ? 'size-8' : 'size-10', 'transition duration-300 hover:-translate-y-0.5', base]}
           style={`--hover:${s.color}`}
         >
           <svg viewBox="0 0 24 24" class={compact ? 'size-4' : 'size-5'} fill="currentColor" aria-hidden="true" set:html={s.icon} />

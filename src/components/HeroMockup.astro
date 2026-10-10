@@ -6,14 +6,14 @@ const insights = ['14 supplier invoices matched', 'Payroll run prepared for 128 
 ---
 
 <!-- Decorative product mock-up: light glass panels, live counters, self-drawing chart -->
-<div class="relative h-[29rem]" aria-hidden="true" data-tilt>
+<div class="relative lg:h-[29rem]" aria-hidden="true" data-tilt>
   <div class="blob absolute -top-8 right-0 size-64 rounded-full bg-brand-200/60 blur-3xl"></div>
   <div class="blob absolute bottom-0 left-8 size-56 rounded-full bg-sky-200/50 blur-3xl [animation-delay:-4s]"></div>
 
   <!-- Main dashboard -->
   <div data-parallax="0.05" class="relative">
     <div class="float-a">
-      <div class="rotate-[-1.5deg] rounded-3xl bg-white/85 p-5 shadow-[0_40px_90px_-25px_rgba(10,31,61,0.55)] ring-1 ring-white/70 backdrop-blur-xl">
+      <div class="rotate-[-1.5deg] float-panel rounded-3xl p-5">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <TechLogo name="Cortex ERP" class="size-8" />
@@ -31,20 +31,20 @@ const insights = ['14 supplier invoices matched', 'Payroll run prepared for 128 
           </span>
         </div>
 
-        <div class="mt-4 grid grid-cols-3 gap-3">
-          <div class="rounded-2xl bg-gradient-to-br from-brand-50 to-brand-200/70 p-3.5">
-            <p class="text-[11px] font-medium text-brand-700/80">Revenue</p>
-            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="1.24" data-decimals="2" data-prefix="Rs " data-suffix="M">Rs 1.24M</span></p>
+        <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+          <div class="rounded-2xl bg-gradient-to-br from-brand-50 to-brand-200/70 p-2.5 sm:p-3.5">
+            <p class="text-[10px] font-medium text-brand-700/80 sm:text-[11px]">Revenue</p>
+            <p class="mt-1 text-base font-semibold tracking-tight text-ink sm:text-xl"><span data-count="1.24" data-decimals="2" data-prefix="Rs " data-suffix="M">Rs 1.24M</span></p>
             <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 12.4%</p>
           </div>
-          <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-100/80 p-3.5">
-            <p class="text-[11px] font-medium text-teal-700/80">Orders</p>
-            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="3482">3,482</span></p>
+          <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-100/80 p-2.5 sm:p-3.5">
+            <p class="text-[10px] font-medium text-teal-700/80 sm:text-[11px]">Orders</p>
+            <p class="mt-1 text-base font-semibold tracking-tight text-ink sm:text-xl"><span data-count="3482">3,482</span></p>
             <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 8.1%</p>
           </div>
-          <div class="rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-100/80 p-3.5">
-            <p class="text-[11px] font-medium text-indigo-700/80">Stock health</p>
-            <p class="mt-1 text-xl font-semibold tracking-tight text-ink"><span data-count="98.6" data-decimals="1" data-suffix="%">98.6%</span></p>
+          <div class="rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-100/80 p-2.5 sm:p-3.5">
+            <p class="text-[10px] font-medium text-indigo-700/80 sm:text-[11px]">Stock health</p>
+            <p class="mt-1 text-base font-semibold tracking-tight text-ink sm:text-xl"><span data-count="98.6" data-decimals="1" data-suffix="%">98.6%</span></p>
             <p class="mt-1 text-[11px] font-semibold text-emerald-600">▲ 2.3%</p>
           </div>
         </div>
@@ -90,8 +90,8 @@ const insights = ['14 supplier invoices matched', 'Payroll run prepared for 128 
   </div>
 
   <!-- Floating: backup toast -->
-  <div data-parallax="0.2" class="absolute -top-5 right-2 z-10">
-    <div class="pop-cycle flex items-center gap-2.5 rounded-2xl bg-white px-3.5 py-2.5 shadow-[0_24px_50px_-18px_rgba(10,31,61,0.55)] ring-1 ring-brand-100">
+  <div data-parallax="0.2" class="absolute -top-5 right-2 z-10 hidden lg:block">
+    <div class="pop-cycle flex items-center gap-2.5 float-chip rounded-2xl px-3.5 py-2.5">
       <span class="grid size-8 place-items-center rounded-full bg-emerald-100 text-emerald-600"><Icon name="check" class="size-4" strokeWidth={3} /></span>
       <span class="leading-tight">
         <span class="block text-xs font-semibold text-ink">Backup complete</span>
@@ -101,8 +101,8 @@ const insights = ['14 supplier invoices matched', 'Payroll run prepared for 128 
   </div>
 
   <!-- Floating: infrastructure status -->
-  <div data-parallax="0.13" class="absolute -bottom-20 -left-14 z-10 w-64">
-    <div class="float-b rotate-[2deg] rounded-2xl bg-white/90 p-4 shadow-[0_30px_60px_-20px_rgba(10,31,61,0.55)] ring-1 ring-white/70 backdrop-blur-xl">
+  <div data-parallax="0.13" class="absolute -bottom-28 -left-14 z-10 hidden w-64 lg:block">
+    <div class="float-b rotate-[2deg] float-panel rounded-2xl p-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-200 text-brand-700"><Icon name="shield" class="size-4" /></span>

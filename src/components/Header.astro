@@ -18,7 +18,7 @@ const erpTagline: Record<string, string> = {
   odoo: 'Open, modular ERP',
 };
 const linkClass = (href: string) => [
-  'relative inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/85 transition hover:text-white',
+  'nav-link inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-medium text-white/90 hover:text-white',
   isActive(href) && 'text-white',
 ];
 ---
@@ -35,23 +35,23 @@ const linkClass = (href: string) => [
         nav.map((item) =>
           megaMenus.has(item.href) ? (
             <li class="group flex items-center">
-              <a href={item.href} class:list={linkClass(item.href)} aria-haspopup="true" aria-current={isActive(item.href) ? 'page' : undefined}>
+              <a href={item.href} class:list={linkClass(item.href)} aria-expanded="false" aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
-                <Icon name="chevronDown" class="size-4 transition duration-200 group-hover:rotate-180 group-focus-within:rotate-180" />
-                {isActive(item.href) && <span class="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-brand-300" />}
+                <Icon name="chevronDown" class="size-4 transition-transform duration-500 ease-flow group-hover:rotate-180 group-focus-within:rotate-180" />
+                
               </a>
 
               <!-- Mega menu: spans the page container, directly under the bar -->
-              <div class="invisible absolute inset-x-0 top-full translate-y-2 pt-1 opacity-0 transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div class="mega-menu absolute inset-x-0 top-full pt-1">
                 <div class="container-page">
                   <div class="neu-surface overflow-hidden rounded-3xl">
                     {item.href === '/services' ? (
                       <div class="grid lg:grid-cols-12">
                         <div class="grid gap-x-2 p-4 lg:col-span-9 lg:grid-cols-3">
-                          {services.map((s) => (
-                            <div class="rounded-2xl p-4 transition hover:bg-canvas">
+                          {services.map((s, i) => (
+                            <div class="mega-col rounded-2xl p-4 hover:bg-canvas" style={`--i:${i}`}>
                               <a href={`/services/${s.slug}`} class="group/col flex items-center gap-3">
-                                <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover/col:bg-brand-700 group-hover/col:text-white">
+                                <span class="icon-tile size-11 transition group-hover/col:bg-brand-700 group-hover/col:text-white">
                                   <Icon name={s.icon} class="size-5" />
                                 </span>
                                 <span class="text-[15px] leading-snug font-semibold text-ink group-hover/col:text-brand-700">{s.shortTitle}</span>
@@ -69,7 +69,7 @@ const linkClass = (href: string) => [
                             </div>
                           ))}
                         </div>
-                        <div class="hero-gradient relative flex flex-col justify-between p-7 lg:col-span-3">
+                        <div class="mega-col hero-gradient relative flex flex-col justify-between p-7 lg:col-span-3" style="--i:3">
                           <div>
                             <p class="text-sm font-semibold text-brand-200">Not sure where to start?</p>
                             <p class="mt-2 text-xl leading-snug font-semibold text-white">Tell us what’s slowing your business down.</p>
@@ -86,10 +86,10 @@ const linkClass = (href: string) => [
                     ) : (
                       <div class="grid lg:grid-cols-12">
                         <div class="grid gap-x-2 p-4 lg:col-span-9 lg:grid-cols-3">
-                          {erpPlatforms.map((p) => (
-                            <a href={`/erp/${p.slug}`} class="group/col rounded-2xl p-4 transition hover:bg-canvas" style={`--accent:${p.theme.accent}`}>
+                          {erpPlatforms.map((p, i) => (
+                            <a href={`/erp/${p.slug}`} class="mega-col group/col rounded-2xl p-4 hover:bg-canvas" style={`--accent:${p.theme.accent};--i:${i}`}>
                               <span class="flex items-center gap-3">
-                                <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-canvas ring-1 ring-line transition group-hover/col:bg-white">
+                                <span class="well size-12 transition group-hover/col:bg-white">
                                   <TechLogo name={p.logo} class={p.slug === 'odoo' ? 'h-4 w-9' : 'size-7'} />
                                 </span>
                                 <span class="leading-snug">
@@ -114,7 +114,7 @@ const linkClass = (href: string) => [
                             </a>
                           ))}
                         </div>
-                        <div class="flex flex-col justify-between bg-canvas p-7 lg:col-span-3">
+                        <div class="mega-col flex flex-col justify-between bg-canvas p-7 lg:col-span-3" style="--i:3">
                           <div>
                             <p class="text-sm font-semibold text-ink">Also implemented by EMTEK</p>
                             <ul class="mt-4 space-y-2">
@@ -140,7 +140,7 @@ const linkClass = (href: string) => [
             <li class="flex items-center">
               <a href={item.href} class:list={linkClass(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
-                {isActive(item.href) && <span class="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-brand-300" />}
+                
               </a>
             </li>
           ),
@@ -153,7 +153,7 @@ const linkClass = (href: string) => [
     </a>
 
     <!-- Mobile: <details> gives a working menu with zero JavaScript -->
-    <details class="group md:hidden">
+    <details class="mobile-menu group md:hidden">
       <summary class="grid size-10 cursor-pointer list-none place-items-center rounded-full text-white [&::-webkit-details-marker]:hidden" aria-label="Menu">
         <Icon name="menu" class="size-6 group-open:hidden" />
         <Icon name="close" class="hidden size-6 group-open:block" />
