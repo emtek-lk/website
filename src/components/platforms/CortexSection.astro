@@ -10,14 +10,16 @@ const features: { icon: IconName; title: string; text: string }[] = [
 ];
 
 // Modules orbiting the Cortex core; "a" is the angle around the ring
-const modules: { icon: IconName; label: string; a: number }[] = [
-  { icon: 'wallet', label: 'Finance', a: -90 },
-  { icon: 'users', label: 'HR', a: -30 },
-  { icon: 'box', label: 'Inventory', a: 30 },
-  { icon: 'chart', label: 'Sales', a: 90 },
-  { icon: 'sparkles', label: 'AI', a: 150 },
-  { icon: 'plug', label: 'Integrations', a: 210 },
+const modules: { icon: IconName; label: string; a: number; ring: 'inner' | 'outer' }[] = [
+  { icon: 'wallet', label: 'Finance', a: -90, ring: 'inner' },
+  { icon: 'users', label: 'HR', a: 0, ring: 'inner' },
+  { icon: 'box', label: 'Inventory', a: 90, ring: 'inner' },
+  { icon: 'chart', label: 'Sales', a: 180, ring: 'inner' },
+  { icon: 'sparkles', label: 'AI', a: -40, ring: 'outer' },
+  { icon: 'plug', label: 'Integrations', a: 140, ring: 'outer' },
 ];
+// Two rings turning the same way, the outer one slower, give the hub depth
+const rings = ['inner', 'outer'] as const;
 ---
 
 <section id="cortex" class="relative isolate overflow-hidden bg-ink">
@@ -42,10 +44,10 @@ const modules: { icon: IconName; label: string; a: number }[] = [
         Cortex is EMTEK’s proprietary ERP. It brings finance, HR, inventory, and sales into one dashboard, without the licensing fees of generic enterprise software, and connects to AI to turn your data into answers.
       </p>
 
-      <ul class="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+      <ul class="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2 max-sm:mt-8 max-sm:gap-0 max-sm:divide-y max-sm:divide-white/10 max-sm:overflow-hidden max-sm:rounded-2xl max-sm:bg-white/5 max-sm:ring-1 max-sm:ring-white/10">
         {
           features.map((f) => (
-            <li class="group flex gap-4">
+            <li class="group flex gap-4 max-sm:items-center max-sm:p-4">
               <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-white/15 to-white/5 text-brand-200 ring-1 ring-white/15 transition duration-300 group-hover:from-brand-400 group-hover:to-brand-600 group-hover:text-white">
                 <Icon name={f.icon} class="size-5" />
               </span>
@@ -64,29 +66,33 @@ const modules: { icon: IconName; label: string; a: number }[] = [
     </div>
 
     <!-- Orbiting module hub (decorative) -->
-    <div class="orbit mx-auto" aria-hidden="true" data-reveal>
+    <div class="orbit mx-auto max-sm:hidden" aria-hidden="true" data-reveal>
       <div class="orbit-ring orbit-ring-outer"></div>
       <div class="orbit-ring orbit-ring-inner"></div>
 
-      <div class="orbit-spin">
-        {
-          modules.map((m) => (
-            <div class="orbit-node" style={`--a:${m.a}deg`}>
-              <span class="orbit-spoke"></span>
-              <div class="orbit-pos">
-                <div class="orbit-counter">
-                  <div class="flex items-center gap-2 rounded-full bg-white/10 py-1.5 pr-3.5 pl-2 text-xs font-semibold text-white shadow-float-sm ring-1 ring-white/20 backdrop-blur-md">
-                    <span class="grid size-7 place-items-center rounded-full bg-gradient-to-br from-brand-300 to-brand-500 text-ink">
-                      <Icon name={m.icon} class="size-3.5" strokeWidth={2.4} />
-                    </span>
-                    {m.label}
+      {
+        rings.map((ring) => (
+          <div class:list={['orbit-spin', ring === 'outer' && 'orbit-spin-outer']}>
+            {modules
+              .filter((m) => m.ring === ring)
+              .map((m) => (
+                <div class="orbit-node" style={`--a:${m.a}deg;--pr:${ring === 'outer' ? 'calc(var(--s) * 0.5)' : 'var(--r)'}`}>
+                  <span class="orbit-spoke"></span>
+                  <div class="orbit-pos">
+                    <div class="orbit-counter">
+                      <div class="flex items-center gap-2 rounded-full bg-white/10 py-1.5 pr-3.5 pl-2 text-xs font-semibold text-white shadow-float-sm ring-1 ring-white/20 backdrop-blur-md">
+                        <span class="grid size-7 place-items-center rounded-full bg-gradient-to-br from-brand-300 to-brand-500 text-ink">
+                          <Icon name={m.icon} class="size-3.5" strokeWidth={2.4} />
+                        </span>
+                        {m.label}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))
-        }
-      </div>
+              ))}
+          </div>
+        ))
+      }
 
       <!-- Core -->
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">

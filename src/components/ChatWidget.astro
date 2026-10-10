@@ -1,0 +1,269 @@
+---
+// Message-us widget: a themed launcher + chat panel that guides a visitor through topic -> message -> name -> email,
+// then sends it through /api/contact (Cloudflare Pages Function, emails hello@emtek.lk). If that is unavailable
+// (offline, local Docker, key not set) it falls back to one-tap Email / WhatsApp / Call buttons, so a visitor is
+// never left with a dead end. No third-party script is loaded, which keeps the page fast and private.
+//
+// To switch to a hosted live-chat service later (Tawk.to, Tidio, Crisp, ...): keep this launcher as a "facade", and
+// in the click handler below load the provider's script on first open (so it costs nothing until used), then call the
+// provider's open/maximize API instead of showing this panel. Or set chat.enabled = false in src/data/site.ts and use
+// the provider's own bubble.
+import { Image } from 'astro:assets';
+import mdi from '@iconify-json/mdi/icons.json';
+import Icon from './Icon.astro';
+import mark from '../logos/favicon.png';
+import { site, chat } from '../data/site';
+
+const waBody = (mdi as unknown as { icons: Record<string, { body: string }> }).icons.whatsapp.body;
+---
+
+{
+  chat.enabled && (
+    <div class="chat" data-chat data-whatsapp={chat.whatsapp} data-email={site.email} data-phone={site.phone} data-phone-href={site.phoneHref} hidden>
+      <button type="button" class="chat-teaser" data-chat-teaser hidden>
+        <Image src={mark} alt="" width={64} height={64} class="size-8 shrink-0 rounded-full" />
+        <span class="text-left leading-tight">
+          <span class="block text-[13px] font-semibold text-ink">Have a question?</span>
+          <span class="block text-xs text-muted">Message the EMTEK team</span>
+        </span>
+      </button>
+
+      <section class="chat-panel" id="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" inert data-chat-panel>
+        <header class="chat-head hero-gradient">
+          <Image src={mark} alt="" width={96} height={96} class="size-11 shrink-0 rounded-full ring-2 ring-white/80" />
+          <div class="min-w-0 flex-1 leading-tight">
+            <h2 id="chat-title" class="!text-white text-base font-semibold">Message EMTEK</h2>
+            <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/85">
+              <span class="chat-dot"></span> We reply within one business day
+            </p>
+          </div>
+          <button type="button" class="chat-close" aria-label="Close chat" data-chat-close>
+            <Icon name="close" class="size-5" />
+          </button>
+        </header>
+
+        <div class="chat-log" role="log" aria-live="polite" aria-relevant="additions" data-chat-log />
+
+        <div class="chat-chips" data-chat-chips>
+          {chat.topics.map((t) => <button type="button" class="chip" data-topic={t}>{t}</button>)}
+        </div>
+
+        <form class="chat-form" data-chat-form novalidate>
+          <label class="sr-only" for="chat-input" data-chat-label>Your message</label>
+          <input id="chat-input" class="chat-input" type="text" autocomplete="off" maxlength="2000" placeholder="Type your message…" data-chat-input />
+          <button type="submit" class="chat-send" aria-label="Send message">
+            <Icon name="send" class="size-[18px]" />
+          </button>
+        </form>
+        <template data-wa-icon><svg viewBox="0 0 24 24" class="size-4" fill="currentColor" aria-hidden="true" set:html={waBody} /></template>
+      </section>
+
+      <button type="button" class="chat-launcher" aria-label="Chat with us" aria-expanded="false" aria-controls="chat-panel" data-chat-launcher>
+        <Icon name="chat" class="chat-icon-open size-6" strokeWidth={2.2} />
+        <Icon name="close" class="chat-icon-close size-6" strokeWidth={2.2} />
+        <span class="chat-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  )
+}
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-chat]');
+  if (root) {
+    root.hidden = false; // the widget only appears when JavaScript is available
+    const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+    const launcher = $<HTMLButtonElement>('[data-chat-launcher]');
+    const panel = $('[data-chat-panel]');
+    const log = $('[data-chat-log]');
+    const chips = $('[data-chat-chips]');
+    const form = $<HTMLFormElement>('[data-chat-form]');
+    const input = $<HTMLInputElement>('[data-chat-input]');
+    const label = $('[data-chat-label]');
+    const teaser = $<HTMLButtonElement>('[data-chat-teaser]');
+    const waIcon = $<HTMLTemplateElement>('[data-wa-icon]').innerHTML;
+    const { whatsapp, email: siteEmail, phone, phoneHref } = root.dataset as Record<string, string>;
+    const html = document.documentElement;
+    const phoneQuery = matchMedia('(max-width: 639.98px)');
+
+    type Step = 'topic' | 'message' | 'name' | 'email' | 'done';
+    let step: Step = 'topic';
+    const lead = { topic: '', message: '', name: '', email: '' };
+    let started = false;
+
+    const scrollLog = () => log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' });
+    const bubble = (who: 'bot' | 'user', content: string | Node) => {
+      const el = document.createElement('div');
+      el.className = `chat-msg chat-${who}`;
+      if (typeof content === 'string') el.textContent = content;
+      else el.append(content);
+      log.append(el);
+      scrollLog();
+      return el;
+    };
+    const bot = (content: string | Node, delay = 650) =>
+      new Promise<void>((resolve) => {
+        const typing = document.createElement('div');
+        typing.className = 'chat-msg chat-bot chat-typing';
+        typing.setAttribute('aria-hidden', 'true');
+        typing.innerHTML = '<i></i><i></i><i></i>';
+        log.append(typing);
+        scrollLog();
+        setTimeout(() => {
+          typing.remove();
+          bubble('bot', content);
+          resolve();
+        }, delay);
+      });
+
+    const ask = (next: Step, placeholder: string, type = 'text', name = 'Your message') => {
+      step = next;
+      input.type = type;
+      input.placeholder = placeholder;
+      input.inputMode = type === 'email' ? 'email' : 'text';
+      input.autocomplete = next === 'name' ? 'name' : next === 'email' ? 'email' : 'off';
+      label.textContent = name;
+      input.value = '';
+      input.disabled = false;
+      if (!phoneQuery.matches || next !== 'topic') input.focus();
+    };
+
+    const action = (href: string, text: string, icon?: string, external = false) => {
+      const a = document.createElement('a');
+      a.className = 'chat-action';
+      a.href = href;
+      if (external) {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
+      a.innerHTML = `${icon ?? ''}<span></span>`;
+      a.querySelector('span')!.textContent = text;
+      return a;
+    };
+    const handoff = (intro: string) => {
+      const summary = `Topic: ${lead.topic || 'General'}\nName: ${lead.name}\nEmail: ${lead.email}\n\n${lead.message}`;
+      const wrap = document.createElement('div');
+      const p = document.createElement('p');
+      p.textContent = intro;
+      const row = document.createElement('div');
+      row.className = 'chat-actions';
+      row.append(
+        action(`mailto:${siteEmail}?subject=${encodeURIComponent('Chat enquiry: ' + (lead.topic || 'General'))}&body=${encodeURIComponent(summary)}`, 'Email us'),
+        action(`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi EMTEK, ${lead.message}`)}`, 'WhatsApp', waIcon, true),
+        action(phoneHref, phone),
+      );
+      wrap.append(p, row);
+      return wrap;
+    };
+
+    const send = async () => {
+      input.disabled = true;
+      const body = new FormData();
+      body.set('name', lead.name);
+      body.set('email', lead.email);
+      body.set('message', `[Website chat] Topic: ${lead.topic || 'General'}\n\n${lead.message}`);
+      body.set('website', '');
+      try {
+        const res = await fetch('/api/contact', { method: 'POST', body, headers: { accept: 'application/json' } });
+        const data = await res.json().catch(() => ({ ok: false }));
+        if (!data.ok) throw new Error('send failed');
+        step = 'done';
+        await bot(`Thanks ${lead.name.split(' ')[0]}, your message is with our team. We’ll reply to ${lead.email} within one business day.`);
+        await bot(handoff('Need an answer sooner? Reach us directly:'), 500);
+      } catch {
+        step = 'done';
+        await bot(handoff('We couldn’t send that automatically. Please use one of these and we’ll pick it up right away:'));
+      }
+      html.dispatchEvent(new CustomEvent('emtek:chat-lead', { detail: { ...lead } }));
+    };
+
+    const handle = async (text: string) => {
+      const value = text.trim();
+      if (!value) return;
+      if (step === 'topic' || step === 'message') {
+        chips.hidden = true;
+        bubble('user', value);
+        lead.message = step === 'topic' ? value : lead.message + (lead.message ? '\n' : '') + value;
+        input.disabled = true;
+        await bot('Thanks! Who are we speaking with?');
+        ask('name', 'Your name', 'text', 'Your name');
+      } else if (step === 'name') {
+        bubble('user', value);
+        lead.name = value.slice(0, 200);
+        input.disabled = true;
+        await bot(`Nice to meet you, ${lead.name.split(' ')[0]}. What’s the best email to reach you on?`);
+        ask('email', 'you@company.com', 'email', 'Your email address');
+      } else if (step === 'email') {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          bubble('user', value);
+          input.disabled = true;
+          await bot('That email doesn’t look quite right. Could you check it?', 450);
+          ask('email', 'you@company.com', 'email', 'Your email address');
+          return;
+        }
+        bubble('user', value);
+        lead.email = value;
+        await send();
+      }
+    };
+
+    chips.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-topic]');
+      if (!btn) return;
+      lead.topic = btn.dataset.topic ?? '';
+      chips.hidden = true;
+      bubble('user', lead.topic);
+      input.disabled = true;
+      await bot(lead.topic === 'Something else' ? 'Sure. Tell us a bit about what you need.' : `Great, ${lead.topic.toLowerCase()}. What are you hoping to achieve? A line or two is plenty.`);
+      ask('message', 'Describe what you need…', 'text', 'Your message');
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = input.value;
+      input.value = '';
+      void handle(v);
+    });
+
+    const setOpen = (open: boolean) => {
+      root.toggleAttribute('data-open', open);
+      launcher.setAttribute('aria-expanded', String(open));
+      launcher.setAttribute('aria-label', open ? 'Close chat' : 'Chat with us');
+      panel.toggleAttribute('inert', !open);
+      html.toggleAttribute('data-chat-open', open);
+      html.style.overflow = open && phoneQuery.matches ? 'hidden' : '';
+      teaser.hidden = true;
+      if (open) {
+        if (!started) {
+          started = true;
+          void bot('Hi! 👋 What can we help you with? Pick a topic or type your message.', 500);
+        }
+        setTimeout(() => !phoneQuery.matches && input.focus(), 350);
+      } else {
+        launcher.focus({ preventScroll: true });
+      }
+    };
+    launcher.addEventListener('click', () => setOpen(!root.hasAttribute('data-open')));
+    $('[data-chat-close]').addEventListener('click', () => setOpen(false));
+    teaser.addEventListener('click', () => setOpen(true));
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && root.hasAttribute('data-open')) setOpen(false);
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!root.hasAttribute('data-open') || phoneQuery.matches) return;
+      if (!root.contains(e.target as Node)) setOpen(false);
+    });
+
+    // A small invitation, shown once per session after a few seconds, then it tucks itself away
+    try {
+      if (!sessionStorage.getItem('emtek-chat-teaser')) {
+        setTimeout(() => {
+          if (root.hasAttribute('data-open')) return;
+          teaser.hidden = false;
+          sessionStorage.setItem('emtek-chat-teaser', '1');
+          setTimeout(() => (teaser.hidden = true), 9000);
+        }, 7000);
+      }
+    } catch {
+      /* storage can be blocked; the teaser just won't show */
+    }
+  }
+</script>

@@ -1,6 +1,6 @@
 # EMTEK Website
 
-Marketing site for [emtek.lk](https://emtek.lk), built with Astro and Tailwind CSS v4, and hosted on Cloudflare Pages. Every page is pre-rendered to static HTML, and no JavaScript ships to the browser.
+Marketing site for [emtek.lk](https://emtek.lk), built with Astro and Tailwind CSS v4, and hosted on Cloudflare Pages. Every page is pre-rendered to static HTML. A small progressive-enhancement script (about 14 KB, no framework) adds motion, the chat widget and swipe-row controls; every page works without it.
 
 ## Commands
 
@@ -74,4 +74,4 @@ The function also rejects a hidden honeypot field to cut down on basic spam, and
 - Open Graph and Twitter card tags with a branded share image
 - JSON-LD `Organization` data on every page, plus `Service` and `BreadcrumbList` on service pages
 - An auto-generated sitemap and `robots.txt`
-- Self-hosted, preloaded Inter font (Latin subset only), WebP logos, and zero client-side JavaScript
+- Self-hosted, preloaded Inter font (Latin subset only), WebP logos, no third-party scripts or requests, and about 14 KB of first-party JavaScript

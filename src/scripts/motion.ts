@@ -5,7 +5,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer: fine)').matches;
 
 const header = document.querySelector<HTMLElement>('.site-header');
-const progress = document.querySelector<HTMLElement>('.scroll-progress');
+const progressArc = document.querySelector<SVGElement>('.to-top-arc');
 const parallax = [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
 const toTop = document.querySelector<HTMLButtonElement>('.to-top');
 
@@ -20,7 +20,7 @@ const updateWords = () => {
     const n = spans.length;
     spans.forEach((span, i) => {
       const t = Math.min(Math.max(p * (n + 2) - i, 0), 1);
-      span.style.opacity = String(0.3 + 0.7 * t);
+      span.style.opacity = String(0.65 + 0.35 * t);
     });
   }
 };
@@ -34,7 +34,7 @@ const onScroll = () => {
     const y = window.scrollY;
     const max = document.documentElement.scrollHeight - window.innerHeight;
     header?.toggleAttribute('data-scrolled', y > 24);
-    if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
+    if (progressArc) progressArc.style.strokeDashoffset = String(100 - (max > 0 ? Math.min(y / max, 1) : 0) * 100);
     toTop?.toggleAttribute('data-visible', y > 600);
     if (wordGroups.length) updateWords();
     if (!reduceMotion && y < 1400) {
@@ -117,6 +117,140 @@ if (mobileMenu) {
   });
 }
 
+const phone = matchMedia('(max-width: 639.98px)');
+
+// Accordions ([data-collapse-phone]): closed on phones, open everywhere else. Without JS they simply stay open.
+const collapsibles = [...document.querySelectorAll<HTMLDetailsElement>('[data-collapse-phone]')];
+const syncCollapsibles = () => collapsibles.forEach((d) => (d.open = !phone.matches));
+syncCollapsibles();
+phone.addEventListener('change', syncCollapsibles);
+
+
+
+// The logo strip scrolls on its own, so every logo will be needed within seconds. Safari leaves off-screen lazy images in
+// a moving track unloaded (blank tiles), so once the page has finished loading, fetch them all (after LCP, off the critical path).
+addEventListener('load', () => {
+  const warm = () => document.querySelectorAll<HTMLImageElement>('.marquee-track img[loading="lazy"]').forEach((img) => (img.loading = 'eager'));
+  'requestIdleCallback' in window ? requestIdleCallback(warm) : setTimeout(warm, 500);
+});
+
+// 3D coin: press and hold to turn it by hand. Its own spin/tilt/bob pause while held (so they resume from the same point), and
+// on release the extra rotation springs back to zero, leaving the coin upright and back in its original rhythm.
+for (const coin of document.querySelectorAll<HTMLElement>('[data-coin]')) {
+  const layer = coin.querySelector<HTMLElement>('.coin-drag');
+  if (!layer) continue;
+  let startX = 0, startY = 0, startRx = 0, startRy = 0, rx = 0, ry = 0, holding = false;
+  const apply = () => (layer.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`);
+  coin.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    holding = true;
+    coin.setPointerCapture(e.pointerId);
+    coin.setAttribute('data-drag', '');
+    layer.style.transition = 'none';
+    [startX, startY, startRx, startRy] = [e.clientX, e.clientY, rx, ry];
+  });
+  coin.addEventListener('pointermove', (e) => {
+    if (!holding) return;
+    ry = startRy + (e.clientX - startX) * 0.55;
+    rx = Math.max(-75, Math.min(75, startRx - (e.clientY - startY) * 0.55));
+    apply();
+  });
+  const release = () => {
+    if (!holding) return;
+    holding = false;
+    coin.removeAttribute('data-drag');
+    // Settle by the short way round (a few spins shouldn't unwind in reverse), then spring back to upright
+    ry = ((((ry + 180) % 360) + 360) % 360) - 180;
+    apply();
+    void layer.offsetWidth;
+    layer.style.transition = 'transform 1.2s cubic-bezier(0.2, 1.35, 0.3, 1)';
+    rx = ry = 0;
+    apply();
+  };
+  coin.addEventListener('dragstart', (e) => e.preventDefault());
+  coin.addEventListener('pointerup', release);
+  coin.addEventListener('pointercancel', release);
+  coin.addEventListener('lostpointercapture', release);
+}
+
+// Swipe rows: pagination dots (count + current position) and a one-time nudge that shows the row moves.
+for (const row of document.querySelectorAll<HTMLElement>('.snap-lg, .snap-md, .snap-ph')) {
+  const items = [...row.children] as HTMLElement[];
+  if (items.length < 2) continue;
+  const isRow = () => getComputedStyle(row).overflowX === 'auto';
+  const pad = () => parseFloat(getComputedStyle(row).paddingLeft) || 0;
+  const leftOf = (el: HTMLElement) => el.getBoundingClientRect().left - row.getBoundingClientRect().left + row.scrollLeft - pad();
+
+  const dots = document.createElement('div');
+  dots.className = 'snap-dots';
+  dots.setAttribute('role', 'group');
+  dots.setAttribute('aria-label', 'Choose an item');
+  if (row.dataset.dots === 'light') dots.dataset.tone = 'light';
+  const buttons = items.map((item, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', `Show item ${i + 1} of ${items.length}`);
+    b.addEventListener('click', () => row.scrollTo({ left: leftOf(item), behavior: reduceMotion ? 'auto' : 'smooth' }));
+    dots.append(b);
+    return b;
+  });
+  row.after(dots);
+
+  const update = () => {
+    dots.hidden = !isRow();
+    // A horizontally scrolling region must be reachable by keyboard (arrow keys scroll it once focused)
+    if (dots.hidden) {
+      row.removeAttribute('tabindex');
+      return;
+    }
+    row.tabIndex = 0;
+    if (!row.hasAttribute('aria-label')) row.setAttribute('aria-label', 'Scrollable list, use arrow keys or swipe');
+    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+    let active = atEnd ? items.length - 1 : 0;
+    if (!atEnd) {
+      let best = Infinity;
+      items.forEach((item, i) => {
+        const d = Math.abs(leftOf(item) - row.scrollLeft);
+        if (d < best) [best, active] = [d, i];
+      });
+    }
+    buttons.forEach((b, i) => b.toggleAttribute('aria-current', i === active) || b.removeAttribute('aria-current'));
+    buttons.forEach((b, i) => i === active && b.setAttribute('aria-current', 'true'));
+  };
+  let queued = false;
+  row.addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      update();
+    });
+  }, { passive: true });
+  new ResizeObserver(update).observe(row);
+  update();
+
+  // One gentle nudge the first time the row is mostly on screen, unless the visitor has already touched it
+  if (!reduceMotion) {
+    let touched = false;
+    for (const type of ['pointerdown', 'touchstart', 'wheel', 'keydown']) row.addEventListener(type, () => (touched = true), { once: true, passive: true });
+    const hint = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        hint.disconnect();
+        if (!isRow() || touched || row.scrollLeft > 0) return;
+        row.style.scrollSnapType = 'none';
+        row.scrollTo({ left: 44, behavior: 'smooth' });
+        setTimeout(() => {
+          if (!touched) row.scrollTo({ left: 0, behavior: 'smooth' });
+          setTimeout(() => (row.style.scrollSnapType = ''), 500);
+        }, 800);
+      },
+      { threshold: 0.6 },
+    );
+    hint.observe(row);
+  }
+}
+
 if (!reduceMotion) requestAnimationFrame(initMotion);
 
 function initMotion() {
@@ -170,8 +304,7 @@ function initMotion() {
   }
 
   // Coin flip: starts its loop once scrolled into view, instead of spinning off-screen from page load
-  const coin = document.querySelector<HTMLElement>('[data-coin]');
-  if (coin) {
+  for (const coin of document.querySelectorAll<HTMLElement>('[data-coin]')) {
     const coinObserver = new IntersectionObserver(
       (entries) => {
         if (!entries[0].isIntersecting) return;

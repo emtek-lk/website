@@ -33,10 +33,10 @@ const builtWith = ['Python', 'PostgreSQL'];
         Switch on the apps you need and let us extend the rest. We adapt Odoo to your established workflows with custom modules, integrations, and migrated data, instead of making your team adapt to generic software.
       </p>
 
-      <ul class="mt-10 divide-y divide-[#714b67]/10 overflow-hidden rounded-2xl bg-white/70 ring-1 ring-[#714b67]/10 backdrop-blur">
+      <ul class="mt-10 max-sm:mt-8 divide-y divide-[#714b67]/10 overflow-hidden rounded-2xl bg-white/70 ring-1 ring-[#714b67]/10 backdrop-blur">
         {
           capabilities.map((c) => (
-            <li class="group flex items-center gap-4 px-5 py-4 transition hover:bg-white">
+            <li class="group flex items-center gap-4 px-5 py-4 transition hover:bg-white max-sm:p-4">
               <span class="grid size-10 shrink-0 place-items-center rounded-full bg-[#f3e8f0] text-[#714b67] transition group-hover:bg-[#714b67] group-hover:text-white">
                 <Icon name={c.icon} class="size-5" />
               </span>
@@ -60,7 +60,7 @@ const builtWith = ['Python', 'PostgreSQL'];
     </div>
 
     <!-- App launcher (decorative) -->
-    <div class="relative mx-auto w-full max-w-md" aria-hidden="true" data-reveal>
+    <div class="relative mx-auto w-full max-w-md max-sm:hidden" aria-hidden="true" data-reveal>
       <div class="overflow-hidden rounded-3xl bg-white shadow-float ring-1 ring-[#714b67]/10">
         <div class="flex items-center justify-between bg-[#714b67] px-5 py-3.5 text-white">
           <span class="flex items-center gap-2.5">
