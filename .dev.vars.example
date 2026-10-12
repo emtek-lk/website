@@ -1,0 +1,4 @@
+# Local-only secrets for `wrangler pages dev` (the contact form's Cloudflare Pages Function).
+# Copy to `.dev.vars` (git-ignored) and fill in. NEVER commit real values.
+# In production, set RESEND_API_KEY in Cloudflare: Pages project > Settings > Environment variables (as a Secret).
+RESEND_API_KEY=

@@ -1,0 +1,32 @@
+---
+// A real 3D brand coin: a stack of thin discs gives it a ridged metallic edge, the two faces carry the mark and the
+// logo, and layered lighting (bevel, soft top-left gloss, a sweeping sheen) gives it depth. It spins on a slow
+// tilt-and-bob with a ground shadow that breathes in sync. Draggable: hold and move to turn it, release and it springs
+// back upright. Decorative only (aria-hidden, pointer-only). Starts when scrolled into view (motion.ts).
+import { Image } from 'astro:assets';
+import mark from '../logos/favicon.png';
+import logo from '../logos/logo.png';
+
+interface Props {
+  /** Any CSS length for the coin's diameter */
+  size?: string;
+  class?: string;
+}
+const { size = '13rem', class: className = '' } = Astro.props;
+const SLICES = 17; // thin discs that form the coin's thickness
+---
+
+<div class:list={['coin', className]} style={`--coin:${size}`} data-coin aria-hidden="true">
+  <div class="coin-bob">
+    <div class="coin-drag">
+    <div class="coin-tilt">
+      <div class="coin-spin">
+        {Array.from({ length: SLICES }, (_, i) => <span class="coin-slice" style={`--i:${i}`} />)}
+        <div class="coin-face coin-front"><Image src={mark} alt="" width={480} height={480} draggable="false" class="size-full object-cover" /></div>
+        <div class="coin-face coin-back"><Image src={logo} alt="" width={480} height={480} draggable="false" class="size-full object-cover" /></div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="coin-shadow"></div>
+</div>

@@ -4,6 +4,8 @@ import '../styles/global.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import ChatWidget from '../components/ChatWidget.astro';
 import { site } from '../data/site';
 import { socialProfiles } from '../data/social';
 
@@ -115,12 +117,20 @@ const organization = {
   </head>
   <body class="flex min-h-screen flex-col">
     <a href="#main" class="sr-only z-[60] rounded-full bg-white px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3">Skip to content</a>
-    <div class="scroll-progress" aria-hidden="true"></div>
     <Header />
-    <main id="main" class="flex-1">
+    <main id="main" class="flex-1 bg-canvas">
       <slot />
     </main>
     <Footer />
+    <button type="button" class="to-top icon-badge" aria-label="Back to top">
+      <!-- The ring doubles as a scroll-progress indicator -->
+      <svg class="to-top-ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" pathLength="100" class="to-top-track" />
+        <circle cx="24" cy="24" r="22" pathLength="100" class="to-top-arc" />
+      </svg>
+      <Icon name="arrowUp" class="relative size-5" strokeWidth={2.4} />
+    </button>
+    <ChatWidget />
     <script>
       import '../scripts/motion';
     </script>

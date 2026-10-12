@@ -24,7 +24,7 @@ const links: { href: string; title: string; text: string; icon: IconName }[] = [
         links.map((l) => (
           <li>
             <a href={l.href} class="card group flex h-full flex-col">
-              <span class="grid size-11 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+              <span class="icon-tile size-11 transition group-hover:bg-brand-700 group-hover:text-white">
                 <Icon name={l.icon} class="size-5" />
               </span>
               <span class="mt-5 text-lg font-semibold text-ink">{l.title}</span>
