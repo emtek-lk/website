@@ -2061,3 +2061,13 @@ html[data-chat-open] .to-top {
     display: none;
   }
 }
+
+/* The CTA band overlaps the top of the footer; give the footer matching room above its content */
+main:has(.cta-band) + footer > .container-page {
+  padding-top: 8.5rem;
+}
+@media (min-width: 640px) {
+  main:has(.cta-band) + footer > .container-page {
+    padding-top: 11rem;
+  }
+}
