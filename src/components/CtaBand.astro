@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import BrandCoin from './BrandCoin.astro';
 import TechLogo from './TechLogo.astro';
 import { site } from '../data/site';
 import { services } from '../data/services';
@@ -15,46 +16,56 @@ const {
   text = 'Tell us what’s slowing your business down. We’ll help you plan the right mix of ERP, software, and IT support, and stay with you long after launch.',
 } = Astro.props;
 
-// Orbit nodes come from our own platform and service data, so they stay current as those lists change.
-// Slots are offsets (px) from the centre of the rings.
-const slots = [
-  [0, -104],
-  [150, -55],
-  [48, 28],
-  [-90, 52],
-  [-155, -40],
-  [100, 110],
-];
-const nodes = [
-  ...erpPlatforms.map((p) => ({ logo: p.logo, wide: p.slug === 'odoo' })),
-  ...services.map((s) => ({ icon: s.icon })),
-].slice(0, slots.length);
+// Orbit nodes come from our own platform and service data (interleaved so logos and icons alternate), so they stay
+// current as those lists change. They are dealt onto rings of 1, 2 and 3 nodes; each ring drifts at its own speed.
+const pool = [] as { logo?: string; wide?: boolean; icon?: any }[];
+for (let i = 0; i < Math.max(erpPlatforms.length, services.length); i++) {
+  if (erpPlatforms[i]) pool.push({ logo: erpPlatforms[i].logo, wide: erpPlatforms[i].slug === 'odoo' });
+  if (services[i]) pool.push({ icon: services[i].icon });
+}
+const rings = [
+  { size: 8, count: 1, dur: 40, offset: 40 },
+  { size: 12, count: 2, dur: 60, offset: 200 },
+  { size: 16, count: 3, dur: 90, offset: 90 },
+].map((r, ri, all) => {
+  const before = all.slice(0, ri).reduce((n, x) => n + x.count, 0);
+  return {
+    ...r,
+    nodes: pool.slice(before, before + r.count).map((n, i) => {
+      const deg = r.offset + (360 / r.count) * i;
+      const rad = (deg * Math.PI) / 180;
+      return { ...n, x: 50 + 50 * Math.cos(rad), y: 50 + 50 * Math.sin(rad) };
+    }),
+  };
+});
 ---
 
 <!-- The card hangs over the top of the footer; the footer adds matching top padding when this band is on the page -->
 <section class="cta-band container-page relative z-10 -mb-16 pt-10 sm:-mb-24 sm:pt-28">
   <div class="hero-gradient relative overflow-hidden rounded-3xl px-6 py-14 shadow-2xl shadow-ink/30 sm:px-14 sm:py-16">
     <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-14">
-      <!-- Orbit of our platforms and services -->
-      <div class="relative order-last hidden h-64 lg:order-first lg:block" aria-hidden="true">
+      <!-- Orbit of our platforms and services around the brand coin -->
+      <div class="relative order-last hidden h-60 lg:order-first lg:block" aria-hidden="true">
         {
-          [7, 13, 20].map((rem) => (
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/25" style={`width:${rem}rem;height:${rem}rem`} />
-          ))
-        }
-        <div class="absolute top-1/2 left-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-white ring-1 ring-white/40 ring-inset">
-          <Icon name="layers" class="size-5" />
-        </div>
-        {
-          nodes.map((n, i) => (
-            <span
-              class="absolute grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white shadow-lg shadow-ink/30"
-              style={`left:calc(50% + ${slots[i][0]}px);top:calc(50% + ${slots[i][1]}px)`}
+          rings.map((r, ri) => (
+            <div
+              class="cta-orbit-ring absolute rounded-full border border-dashed border-white/25"
+              style={`--dur:${r.dur}s;left:50%;top:50%;width:${r.size}rem;height:${r.size}rem;margin:-${r.size / 2}rem 0 0 -${r.size / 2}rem;${ri === 1 ? 'animation-direction:reverse' : ''}`}
             >
-              {n.logo ? <TechLogo name={n.logo} class={n.wide ? 'h-3 w-6' : 'size-5'} /> : <Icon name={n.icon!} class="size-5 text-brand-700" />}
-            </span>
+              {r.nodes.map((n) => (
+                <span class="absolute" style={`left:${n.x}%;top:${n.y}%;width:2.5rem;height:2.5rem;margin:-1.25rem 0 0 -1.25rem`}>
+                  <span
+                    class="cta-orbit-node grid size-full place-items-center rounded-full shadow-lg shadow-ink/30"
+                    style={`background:#fff;--dur:${r.dur}s;${ri === 1 ? 'animation-direction:normal' : ''}`}
+                  >
+                    {n.logo ? <TechLogo name={n.logo} class={n.wide ? 'h-3 w-6' : 'size-5'} /> : <Icon name={n.icon} class="size-5 text-brand-700" />}
+                  </span>
+                </span>
+              ))}
+            </div>
           ))
         }
+        <div class="absolute inset-0 grid place-items-center"><BrandCoin size="4rem" /></div>
       </div>
 
       <div>

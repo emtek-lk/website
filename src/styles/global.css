@@ -2071,3 +2071,22 @@ main:has(.cta-band) + footer > .container-page {
     padding-top: 11rem;
   }
 }
+
+/* CTA orbit: rings drift slowly and each node counter-rotates so logos stay upright */
+@keyframes cta-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cta-orbit-ring {
+  animation: cta-orbit-spin var(--dur, 60s) linear infinite;
+}
+.cta-orbit-node {
+  animation: cta-orbit-spin var(--dur, 60s) linear infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-orbit-ring,
+  .cta-orbit-node {
+    animation: none;
+  }
+}
