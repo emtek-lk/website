@@ -242,6 +242,8 @@ const waBody = (mdi as unknown as { icons: Record<string, { body: string }> }).i
       }
     };
     launcher.addEventListener('click', () => setOpen(!root.hasAttribute('data-open')));
+    // Buttons elsewhere on the page (for example the call-to-action band on /contact) can open the chat
+    document.querySelectorAll('[data-open-chat]').forEach((el) => el.addEventListener('click', () => setOpen(true)));
     $('[data-chat-close]').addEventListener('click', () => setOpen(false));
     teaser.addEventListener('click', () => setOpen(true));
     addEventListener('keydown', (e) => {

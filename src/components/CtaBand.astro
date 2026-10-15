@@ -72,12 +72,15 @@ const rings = [
         <h2 class="text-3xl font-semibold text-white sm:text-4xl" data-words>{title}</h2>
         <p class="mt-4 max-w-xl text-lg text-brand-100/90">{text}</p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={`mailto:${site.email}`} class="btn btn-light">
-            <Icon name="mail" class="size-4" /> {site.email}
-          </a>
-          <a href={site.phoneHref} class="btn btn-outline-light">
-            <Icon name="phone" class="size-4" /> {site.phone}
-          </a>
+          <!-- A page can replace the default email and phone buttons through the "actions" slot -->
+          <slot name="actions">
+            <a href={`mailto:${site.email}`} class="btn btn-light">
+              <Icon name="mail" class="size-4" /> {site.email}
+            </a>
+            <a href={site.phoneHref} class="btn btn-outline-light">
+              <Icon name="phone" class="size-4" /> {site.phone}
+            </a>
+          </slot>
         </div>
       </div>
     </div>

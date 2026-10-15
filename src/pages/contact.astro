@@ -3,10 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import SocialLinks from '../components/SocialLinks.astro';
-import { site, mapsUrl } from '../data/site';
+import { site, mapsUrl, chat } from '../data/site';
 import { services } from '../data/services';
 import BrandCoin from '../components/BrandCoin.astro';
+import CtaBand from '../components/CtaBand.astro';
+import mdi from '@iconify-json/mdi/icons.json';
 
+const waBody = (mdi as unknown as { icons: Record<string, { body: string }> }).icons.whatsapp.body;
 const mailSubject = encodeURIComponent('Project enquiry');
 
 const steps = [
@@ -207,6 +210,23 @@ const schema = [
       </div>
     </aside>
   </section>
+  <CtaBand
+    title="Prefer to talk it through?"
+    text="Start a chat or message us on WhatsApp. Our team replies to every message within one business day, and we’ll take it from there."
+  >
+    <Fragment slot="actions">
+      {
+        chat.enabled && (
+          <button type="button" class="btn btn-light" data-open-chat>
+            <Icon name="chat" class="size-4" /> Chat with us
+          </button>
+        )
+      }
+      <a href={`https://wa.me/${chat.whatsapp}`} target="_blank" rel="noopener noreferrer" class="btn btn-outline-light">
+        <svg viewBox="0 0 24 24" class="size-4" fill="currentColor" aria-hidden="true" set:html={waBody} /> WhatsApp
+      </a>
+    </Fragment>
+  </CtaBand>
 </BaseLayout>
 
 <script>
