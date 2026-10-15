@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 
 const links: { href: string; title: string; text: string; icon: IconName }[] = [
@@ -24,7 +25,7 @@ const links: { href: string; title: string; text: string; icon: IconName }[] = [
         links.map((l) => (
           <li>
             <a href={l.href} class="card group flex h-full flex-col">
-              <span class="grid size-11 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+              <span class="icon-tile size-11 transition group-hover:bg-brand-700 group-hover:text-white">
                 <Icon name={l.icon} class="size-5" />
               </span>
               <span class="mt-5 text-lg font-semibold text-ink">{l.title}</span>
@@ -35,4 +36,5 @@ const links: { href: string; title: string; text: string; icon: IconName }[] = [
       }
     </ul>
   </section>
+  <CtaBand title="Still can’t find it?" text="Tell us what you were looking for and we’ll point you in the right direction, or help you plan something new." />
 </BaseLayout>

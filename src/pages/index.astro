@@ -51,30 +51,30 @@ const schema = [
   schema={schema}
 >
   <!-- Hero -->
-  <section class="hero-gradient hero-slant relative overflow-hidden pt-36 pb-32 sm:pt-44 sm:pb-44">
+  <section class="hero-gradient hero-slant relative overflow-hidden pt-32 pb-24 sm:pt-44 sm:pb-44">
     <div class="container-page relative grid items-center gap-16 lg:grid-cols-12">
       <div class="lg:col-span-6">
-        <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-brand-100 ring-1 ring-white/20">
+        <p class="enter pill-glass">
           ERP · Custom software · Managed IT
         </p>
-        <h1 class="mt-6 text-5xl font-semibold text-white sm:text-6xl lg:text-[4.25rem] lg:leading-[1.05]">
+        <h1 class="mt-5 text-[2.6rem] leading-[1.08] font-semibold text-white sm:mt-6 sm:text-6xl lg:text-[4.25rem] lg:leading-[1.05]">
           {site.tagline}
         </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-brand-100/90 sm:text-xl">{site.description}</p>
-        <div class="mt-10 flex flex-wrap items-center gap-4">
+        <p class="enter mt-4 max-w-xl text-base leading-relaxed text-brand-100/90 sm:mt-6 sm:text-xl" style="--d:120ms">{site.description}</p>
+        <div class="enter mt-7 flex flex-wrap items-center gap-3 sm:mt-10 sm:gap-4" style="--d:220ms">
           <a href="/contact" class="btn btn-light">Talk to us <Icon name="arrowRight" class="arrow size-4" /></a>
           <a href="/services" class="btn btn-ghost-light">Explore services <Icon name="arrowRight" class="arrow size-4" /></a>
         </div>
       </div>
 
-      <div class="hidden lg:col-span-6 lg:block"><HeroMockup /></div>
+      <div class="enter max-sm:hidden lg:col-span-6" style="--d:300ms"><HeroMockup /></div>
     </div>
   </section>
 
   <ClientMarquee />
 
   <!-- Services -->
-  <section class="container-page py-20 sm:py-28">
+  <section class="container-page py-10 sm:py-28">
     <div class="max-w-2xl">
       <p class="eyebrow">What we do</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">One partner for the systems that run your business</h2>
@@ -82,11 +82,11 @@ const schema = [
         From the ERP at the center of your operations to the apps your customers use and the infrastructure underneath, we design, build, and look after all of it.
       </p>
     </div>
-    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+    <div class="mt-8 sm:mt-14 grid gap-6 lg:grid-cols-3">
       {
         services.map((s) => (
           <a href={`/services/${s.slug}`} class="card group flex flex-col">
-            <span class="grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-700 group-hover:text-white">
+            <span class="icon-tile size-12 transition group-hover:bg-brand-700 group-hover:text-white">
               <Icon name={s.icon} class="size-6" />
             </span>
             <h3 class="mt-6 text-xl font-semibold">{s.shortTitle}</h3>
@@ -115,20 +115,34 @@ const schema = [
 
   <!-- Lifecycle -->
   <section class="bg-canvas">
-    <div class="container-page py-20 sm:py-28">
+    <div class="container-page py-10 sm:py-28">
       <div class="max-w-2xl">
         <p class="eyebrow">How we work</p>
-        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">With you from the first line of code to the thousandth support ticket</h2>
+        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl" data-words>With you from the first line of code to the thousandth support ticket</h2>
       </div>
-      <ol class="mt-14 grid gap-6 md:grid-cols-3">
+      <ol class="mt-6 space-y-3 md:hidden">
         {
-          lifecycle.map((step, i) => (
-            <li class="card relative">
+          lifecycle.map((step) => (
+            <li class="tile flex gap-4 p-4">
+              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-700 text-white">
+                <Icon name={step.icon} class="size-5" />
+              </span>
+              <div class="min-w-0">
+                <h3 class="font-semibold text-ink">{step.title}</h3>
+                <p class="mt-1 text-sm leading-snug">{step.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <ol class="mt-14 hidden gap-6 md:grid md:grid-cols-3">
+        {
+          lifecycle.map((step) => (
+            <li class="card card-hover group relative">
               <div class="flex items-center justify-between">
-                <span class="grid size-12 place-items-center rounded-xl bg-brand-700 text-white">
+                <span class="icon-pop grid size-12 place-items-center rounded-xl bg-brand-700 text-white">
                   <Icon name={step.icon} class="size-6" />
                 </span>
-                <span class="text-sm font-semibold text-muted">0{i + 1}</span>
               </div>
               <h3 class="mt-6 text-xl font-semibold">{step.title}</h3>
               <p class="mt-3">{step.text}</p>
@@ -142,17 +156,17 @@ const schema = [
   <ClientStories />
 
   <!-- Technology logo wall -->
-  <section class="container-page py-20 sm:py-24">
+  <section class="container-page py-10 sm:py-24">
     <div class="mx-auto max-w-2xl text-center">
       <p class="eyebrow">Technology</p>
       <h2 class="mt-3 text-3xl font-semibold sm:text-4xl">The platforms, languages, and clouds we work with</h2>
     </div>
-    <ul class="tech-wall mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+    <ul class="tech-wall mt-8 grid grid-cols-6 gap-1 sm:mt-12 sm:grid-cols-4 sm:gap-3 lg:grid-cols-8">
       {
         featuredTech.map(({ name, label }) => (
-          <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-2 py-5 text-center transition duration-200 hover:border-line hover:bg-canvas">
-            <TechLogo name={name} class="size-9" />
-            <span class="text-xs font-medium text-body transition group-hover:text-ink">{label ?? name}</span>
+          <li class="group flex flex-col items-center gap-3 rounded-2xl border border-transparent px-1 py-3 text-center transition duration-300 hover:border-line hover:bg-canvas sm:px-2 sm:py-5">
+            <TechLogo name={name} class="size-7 sm:size-9" />
+            <span class="text-xs font-medium text-body transition group-hover:text-ink max-sm:sr-only">{label ?? name}</span>
           </li>
         ))
       }

@@ -1,6 +1,6 @@
 # EMTEK Website
 
-Marketing site for [emtek.lk](https://emtek.lk), built with Astro and Tailwind CSS v4, and hosted on Cloudflare Pages. Every page is pre-rendered to static HTML, and no JavaScript ships to the browser.
+Marketing site for [emtek.lk](https://emtek.lk), built with Astro and Tailwind CSS v4, and hosted on Cloudflare Pages. Every page is pre-rendered to static HTML. A small progressive-enhancement script (about 14 KB, no framework) adds motion, the chat widget and swipe-row controls; every page works without it.
 
 ## Commands
 
@@ -64,6 +64,8 @@ To wire up sending:
 3. In the Cloudflare Pages project, go to **Settings → Environment variables** and add `RESEND_API_KEY` as a secret (for both Production and Preview).
 4. Redeploy. Until the key is set, the form fails closed with a friendly error rather than silently dropping messages.
 
+For local testing with `wrangler pages dev`, copy `.dev.vars.example` to `.dev.vars` (git-ignored) and add the key there. Never commit real keys, and don't put the production key in a committed `.env`. The Docker/nginx build has no `/api/contact`, so the form only works on Cloudflare.
+
 The function also rejects a hidden honeypot field to cut down on basic spam, and caps field lengths server-side.
 
 ## SEO built in
@@ -72,4 +74,4 @@ The function also rejects a hidden honeypot field to cut down on basic spam, and
 - Open Graph and Twitter card tags with a branded share image
 - JSON-LD `Organization` data on every page, plus `Service` and `BreadcrumbList` on service pages
 - An auto-generated sitemap and `robots.txt`
-- Self-hosted, preloaded Inter font (Latin subset only), WebP logos, and zero client-side JavaScript
+- Self-hosted, preloaded Inter font (Latin subset only), WebP logos, no third-party scripts or requests, and about 14 KB of first-party JavaScript

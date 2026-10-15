@@ -1,0 +1,160 @@
+---
+// Shared layout for the legal pages: themed hero, a sticky "On this page" list that highlights the section being read,
+// and the policy text on a card. Content comes from src/data/legal.ts.
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { site, mapsUrl } from '../data/site';
+import type { LegalDoc } from '../data/legal';
+
+interface Props {
+  doc: LegalDoc;
+}
+const { doc } = Astro.props;
+
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** [text](url) -> link. External links open in a new tab. */
+const inline = (s: string) =>
+  escape(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => {
+    const external = /^https?:/.test(href);
+    return `<a href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${text}</a>`;
+  });
+
+const others = [
+  { slug: 'privacy', title: 'Privacy Policy' },
+  { slug: 'terms', title: 'Terms of Service' },
+  { slug: 'cookies', title: 'Cookie Policy' },
+].filter((o) => o.slug !== doc.slug);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: doc.title,
+    url: `${site.url}/${doc.slug}`,
+    description: doc.description,
+    dateModified: doc.updatedISO,
+    isPartOf: { '@id': `${site.url}/#website` },
+    publisher: { '@id': `${site.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: doc.title, item: `${site.url}/${doc.slug}` },
+    ],
+  },
+];
+---
+
+<BaseLayout title={doc.seoTitle} description={doc.description} schema={schema}>
+  <PageHero eyebrow="Legal" title={doc.title} lead={doc.lead}>
+    <p class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-brand-100/80">
+      <span class="size-1.5 rounded-full bg-brand-300"></span>
+      Last updated: <time datetime={doc.updatedISO}>{doc.updated}</time>
+    </p>
+  </PageHero>
+
+  <section class="container-page py-10 sm:py-20">
+    <div class="grid gap-8 lg:grid-cols-12 lg:gap-12">
+      <!-- On this page: sticky on desktop; a compact two-column card on smaller screens -->
+      <aside class="lg:col-span-4 xl:col-span-3">
+        <nav aria-label="On this page" class="legal-toc card !p-5 lg:sticky lg:top-28 lg:!p-6">
+          <p class="text-xs font-semibold tracking-widest text-ink uppercase">On this page</p>
+          <ol class="mt-3 grid grid-cols-2 gap-x-4 lg:mt-4 lg:grid-cols-1">
+            {
+              doc.sections.map((s) => (
+                <li>
+                  <a href={`#${s.id}`} class="legal-toc-link" data-toc={s.id}>
+                    {s.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
+
+      <!-- Policy text -->
+      <article class="card !p-6 sm:!p-10 lg:col-span-8 xl:col-span-9">
+        <div class="legal-prose">
+          {
+            doc.sections.map((s) => (
+              <section id={s.id} data-section>
+                <h2>{s.title}</h2>
+                {s.blocks.map((b) =>
+                  'p' in b ? (
+                    <p set:html={inline(b.p)} />
+                  ) : 'h3' in b ? (
+                    <h3>{b.h3}</h3>
+                  ) : 'ul' in b ? (
+                    <ul>
+                      {b.ul.map((li) => (
+                        <li set:html={inline(li)} />
+                      ))}
+                    </ul>
+                  ) : (
+                    <address class="legal-contact">
+                      <strong>{site.name}</strong>
+                      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="legal-contact-row">
+                        <Icon name="pin" class="size-4" />
+                        <span>
+                          {site.address.street}, {site.address.city} {site.address.postalCode}, {site.address.country}
+                        </span>
+                      </a>
+                      <a href={`mailto:${site.email}`} class="legal-contact-row">
+                        <Icon name="mail" class="size-4" />
+                        <span>{site.email}</span>
+                      </a>
+                      <a href={site.phoneHref} class="legal-contact-row">
+                        <Icon name="phone" class="size-4" />
+                        <span>{site.phone}</span>
+                      </a>
+                    </address>
+                  ),
+                )}
+              </section>
+            ))
+          }
+        </div>
+
+        <!-- Related legal pages -->
+        <div class="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6 text-sm">
+          <span class="font-semibold text-ink">Also read</span>
+          {
+            others.map((o) => (
+              <a href={`/${o.slug}`} class="inline-flex items-center gap-1.5 font-semibold text-brand-700 hover:text-brand-900">
+                {o.title} <Icon name="arrowRight" class="size-4" />
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <CtaBand title="Questions about how we handle your data?" text="Get in touch and we’ll be happy to help. Our team replies to every message." />
+</BaseLayout>
+
+<script>
+  // Highlight the contents entry for the section being read (progressive enhancement; the list works without it)
+  const links = new Map(Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc]')).map((a) => [a.dataset.toc!, a]));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-section]'));
+  if (links.size && sections.length) {
+    const visible = new Set<string>();
+    const setActive = () => {
+      const first = sections.find((s) => visible.has(s.id));
+      links.forEach((a, id) => (id === first?.id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) e.isIntersecting ? visible.add((e.target as HTMLElement).id) : visible.delete((e.target as HTMLElement).id);
+        setActive();
+      },
+      { rootMargin: '-15% 0px -70% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+</script>
