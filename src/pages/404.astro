@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 
 const links: { href: string; title: string; text: string; icon: IconName }[] = [
@@ -35,4 +36,5 @@ const links: { href: string; title: string; text: string; icon: IconName }[] = [
       }
     </ul>
   </section>
+  <CtaBand title="Still can’t find it?" text="Tell us what you were looking for and we’ll point you in the right direction, or help you plan something new." />
 </BaseLayout>

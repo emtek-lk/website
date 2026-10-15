@@ -20,7 +20,8 @@ export const site = {
 
 /** One-line and multi-line forms of the office address */
 export const addressLine = `${site.address.street}, ${site.address.city} ${site.address.postalCode}, ${site.address.country}`;
-export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`EMTEK, ${addressLine}`)}`;
+/** Opens the EMTEK office pin in Google Maps. Used by the footer, the Contact page and the legal pages. */
+export const mapsUrl = 'https://maps.app.goo.gl/UtSp6hx4CGbbpzZ87';
 
 export const nav = [
   { label: 'Services', href: '/services' },

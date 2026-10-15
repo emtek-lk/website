@@ -281,26 +281,31 @@ function initMotion() {
       el.getBoundingClientRect().top > innerHeight * 0.92,
   );
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.left - b.boundingClientRect.left || a.boundingClientRect.top - b.boundingClientRect.top);
-      visible.forEach((entry, i) => {
-        const el = entry.target as HTMLElement;
-        observer.unobserve(el);
-        el.style.setProperty('--d', `${Math.min(i, 5) * 70}ms`);
-        el.classList.add('in');
-        // Hand control back to the element's own hover styles once the entrance has finished
-        setTimeout(() => {
-          el.classList.remove('reveal', 'in');
-          el.style.removeProperty('--d');
-        }, 900 + Math.min(i, 5) * 70);
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-  );
+  // The reveal callback is shared by two observers. Most elements reveal once 12% of them is on screen. An element
+  // taller than that can ever show (a long legal-text card on a short phone screen, for example) would never reach 12%
+  // and stay invisible, so very tall elements reveal as soon as any part of them enters.
+  const onReveal: IntersectionObserverCallback = (entries) => {
+    const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.left - b.boundingClientRect.left || a.boundingClientRect.top - b.boundingClientRect.top);
+    visible.forEach((entry, i) => {
+      const el = entry.target as HTMLElement;
+      observer.unobserve(el);
+      tallObserver.unobserve(el);
+      el.style.setProperty('--d', `${Math.min(i, 5) * 70}ms`);
+      el.classList.add('in');
+      // Hand control back to the element's own hover styles once the entrance has finished
+      setTimeout(() => {
+        el.classList.remove('reveal', 'in');
+        el.style.removeProperty('--d');
+      }, 900 + Math.min(i, 5) * 70);
+    });
+  };
+  const observer = new IntersectionObserver(onReveal, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  const tallObserver = new IntersectionObserver(onReveal, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
+  // 12% of the element must fit in the visible band (viewport minus the 6% bottom margin)
+  const isTall = (el: HTMLElement) => el.getBoundingClientRect().height * 0.12 > innerHeight * 0.94 * 0.8;
   for (const el of targets) {
     el.classList.add('reveal');
-    observer.observe(el);
+    (isTall(el) ? tallObserver : observer).observe(el);
   }
 
   // Coin flip: starts its loop once scrolled into view, instead of spinning off-screen from page load
